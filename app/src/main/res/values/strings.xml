@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Альфа-Банк QR</string>
+
+    <!-- Profile Activity -->
+    <string name="edit_profile">Править</string>
+    <string name="user_name">имя фамилия</string>
+
+    <!-- Cards Activity -->
+    <string name="saved_cards">Сохраненные визитки</string>
+
+    <!-- Bottom Navigation Menu -->
+    <string name="my_cards">Мои визитки</string>
+    <string name="scan_card">Сканировать</string>
+    <string name="profile">Профиль</string>
 </resources>
