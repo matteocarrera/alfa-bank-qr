@@ -3,6 +3,7 @@ package com.example.alpha_bank_qr
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 
@@ -11,6 +12,7 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
         bottom_bar.menu.getItem(2).isChecked = true
         bottom_bar.setOnNavigationItemSelectedListener {
             val nextActivity =
@@ -29,5 +31,12 @@ class ProfileActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
             true
         }
+
+        val description= arrayOf("email", "Мобильный телефон", "Домашний телефон", "Адрес", "email", "Мобильный телефон", "Домашний телефон", "Адрес")
+        val data= arrayOf("matteocarrera@mail.ru", "+79121083757", "+7343228228", "Россия, г.Екатеринбург, ул.Заводская, д.94, кв.211", "matteocarrera@mail.ru", "+79121083757", "+7343228228", "Россия, г.Екатеринбург, ул.Заводская, д.94, кв.211")
+
+        val adapter = DataListAdapter(this, description, data)
+        data_list.adapter = adapter
     }
+
 }

@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         actionBar?.hide()
         setContentView(R.layout.activity_splash)
         Handler().postDelayed({
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, CardsActivity::class.java))
             finish()
         }, SPLASH_TIME_OUT)
     }
