@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".CardsActivity"></activity>
-        <activity android:name=".ScanActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".Activities.CardsActivity"></activity>
+        <activity android:name=".Activities.ScanActivity" />
+        <activity android:name=".Activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".Activities.ProfileActivity" />
     </application>
     <uses-permission android:name="android.permission.CAMERA" />
 </manifest>

@@ -1,12 +1,9 @@
-package com.example.alpha_bank_qr
+package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_scan.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
-import kotlinx.android.synthetic.main.activity_profile.*
 import com.google.zxing.Result
 
 class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler{

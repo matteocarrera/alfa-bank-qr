@@ -6,10 +6,11 @@
     <string name="user_name">имя фамилия</string>
 
     <!-- Cards Activity -->
+    <string name="my_cards">Мои визитки</string>
     <string name="saved_cards">Сохраненные визитки</string>
 
     <!-- Bottom Navigation Menu -->
-    <string name="my_cards">Мои визитки</string>
+    <string name="cards">Визитки</string>
     <string name="scan_card">Сканировать</string>
     <string name="profile">Профиль</string>
 </resources>

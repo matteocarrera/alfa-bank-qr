@@ -1,10 +1,11 @@
-package com.example.alpha_bank_qr
+package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.R
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -29,13 +30,18 @@ class ProfileActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(intent)
             overridePendingTransition(0, 0)
+            finish()
             true
         }
 
         val description= arrayOf("email", "Мобильный телефон", "Домашний телефон", "Адрес", "email", "Мобильный телефон", "Домашний телефон", "Адрес")
         val data= arrayOf("matteocarrera@mail.ru", "+79121083757", "+7343228228", "Россия, г.Екатеринбург, ул.Заводская, д.94, кв.211", "matteocarrera@mail.ru", "+79121083757", "+7343228228", "Россия, г.Екатеринбург, ул.Заводская, д.94, кв.211")
 
-        val adapter = DataListAdapter(this, description, data)
+        val adapter = DataListAdapter(
+            this,
+            description,
+            data
+        )
         data_list.adapter = adapter
     }
 

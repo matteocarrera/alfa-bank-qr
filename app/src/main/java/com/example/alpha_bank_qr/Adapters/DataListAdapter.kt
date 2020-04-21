@@ -1,12 +1,14 @@
-package com.example.alpha_bank_qr
+package com.example.alpha_bank_qr.Adapters
 
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.alpha_bank_qr.R
 
 class DataListAdapter(private val context: Activity, private val title: Array<String>, private val description: Array<String>)
-    : ArrayAdapter<String>(context, R.layout.data_list_item, title) {
+    : ArrayAdapter<String>(context,
+    R.layout.data_list_item, title) {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater

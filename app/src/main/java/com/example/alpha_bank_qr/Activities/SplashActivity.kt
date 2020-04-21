@@ -1,10 +1,11 @@
-package com.example.alpha_bank_qr
+package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.alpha_bank_qr.R
 
 class SplashActivity : AppCompatActivity() {
 
