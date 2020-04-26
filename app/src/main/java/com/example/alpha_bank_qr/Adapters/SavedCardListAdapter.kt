@@ -18,12 +18,12 @@ class SavedCardListAdapter(private val context: Activity, private val users: Arr
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.saved_card_list_item, null, true)
 
-        val photo = rowView.findViewById(R.id.photo) as ImageView
+        //val photo = rowView.findViewById(R.id.photo) as ImageView
         val name = rowView.findViewById(R.id.name) as TextView
         val jobTitle = rowView.findViewById(R.id.job_title) as TextView
         val company = rowView.findViewById(R.id.company) as TextView
 
-        photo.setImageResource(users[position].photo)
+        //photo.setImageResource(users[position].photo)
         name.text = users[position].name + " " + users[position].surname
         jobTitle.text = users[position].jobTitle
         company.text = users[position].company

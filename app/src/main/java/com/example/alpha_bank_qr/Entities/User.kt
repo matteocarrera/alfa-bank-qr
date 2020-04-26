@@ -10,19 +10,22 @@ package com.example.alpha_bank_qr.Entities
 
 class User(
     val id: Int,
-    var photo : Int,
+    var photo : ByteArray,
+    var isOwner : Int,
+    var isScanned : Int,
     var name: String,
     var surname: String,
     var patronymic: String,
     var company: String,
     var jobTitle: String,
     var mobile: String,
-    var mobileSecond: String?,
+    var mobileSecond: String,
     var email: String,
     var emailSecond: String,
     var address: String,
     var addressSecond: String,
     var vk: String,
     var facebook: String,
-    var twitter: String
+    var twitter: String,
+    var notes : String
 )

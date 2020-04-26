@@ -8,6 +8,6 @@ package com.example.alpha_bank_qr.Entities
  */
 
 class Card (val id: Int,
-            var icon : Int,
+            var photo : ByteArray,
             var title : String,
             var userId: Int)
