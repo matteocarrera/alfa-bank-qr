@@ -11,7 +11,6 @@ import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.UserParser
 import kotlinx.android.synthetic.main.activity_profile.*
 
-
 class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,29 +37,29 @@ class ProfileActivity : AppCompatActivity() {
             true
         }
 
-        edit_profile.setOnClickListener {
+        val user = User(
+            0,
+            UserParser.getImageInByteArray(R.drawable.photo3, resources),
+            1,
+            0,
+            "Николай",
+            "Алексеев",
+            "Сергеевич",
+            "Альфа-Банк",
+            "Руководящий отделом",
+            "+79129995678",
+            "",
+            "nikolai@alfa-bank.ru",
+            "",
+            "Екатеринбург, ул. Пушкина 17",
+            "",
+            "",
+            "",
+            "nikolaialfa",
+            ""
+        )
 
-            val user = User(
-                0,
-                UserParser.getImageInByteArray(R.drawable.photo3, resources),
-                1,
-                0,
-                "Николай",
-                "Алексеев",
-                "Сергеевич",
-                "Альфа-Банк",
-                "Руководящий отделом",
-                "+79129995678",
-                "",
-                "nikolai@alfa-bank.ru",
-                "",
-                "Екатеринбург, ул. Пушкина 17",
-                "",
-                "",
-                "",
-                "nikolaialfa",
-                ""
-            )
+        edit_profile.setOnClickListener {
             val dbHelper = QRDatabaseHelper(this)
             val cursor = dbHelper.getOwnerUser()
             if (cursor!!.count == 0) {
@@ -84,7 +83,7 @@ class ProfileActivity : AppCompatActivity() {
 
             val data = UserParser.setUserData(cursor)
 
-            val adapter = DataListAdapter(this, data)
+            val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter
         }
 

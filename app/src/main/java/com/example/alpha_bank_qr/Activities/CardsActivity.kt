@@ -8,11 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
-import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
-import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Utils.ListUtils
 import kotlinx.android.synthetic.main.activity_cards.*
 
@@ -39,6 +35,13 @@ class CardsActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
             finish()
             true
+        }
+
+        add_card.setOnClickListener {
+            val intent = Intent(this, CreateCardActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }
 
         saved_cards_list.visibility = View.GONE

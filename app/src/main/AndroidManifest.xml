@@ -3,6 +3,8 @@
     package="com.example.alpha_bank_qr">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.CardActivity"></activity>
+        <activity android:name=".Activities.CreateCardActivity"></activity>
+        <activity android:name=".Activities.CardActivity" />
         <activity android:name=".Activities.CardsActivity" />
         <activity android:name=".Activities.ScanActivity" />
         <activity android:name=".Activities.SplashActivity">
