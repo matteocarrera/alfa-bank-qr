@@ -1,11 +1,11 @@
 package com.example.alpha_bank_qr
 
+import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Entities.DataItem
 import java.io.ByteArrayOutputStream
 
@@ -30,8 +30,8 @@ class UserParser {
             DataItem("заметки", "notes")
         )
 
-        fun getImageInByteArray(image: Int): ByteArray {
-            val drawable = AppCompatActivity().resources.getDrawable(image)
+        fun getImageInByteArray(image: Int, resources: Resources): ByteArray {
+            val drawable = resources.getDrawable(image)
             val bitmap = (drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
@@ -50,6 +50,7 @@ class UserParser {
         }
 
         fun setUserData(cursor: Cursor): ArrayList<DataItem> {
+            data.clear()
             for (i in titles.indices) {
                 addItem(titles[i].title, cursor.getString(cursor.getColumnIndex(titles[i].description)))
             }

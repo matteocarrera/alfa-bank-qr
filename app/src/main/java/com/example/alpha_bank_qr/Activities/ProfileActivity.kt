@@ -42,7 +42,7 @@ class ProfileActivity : AppCompatActivity() {
 
             val user = User(
                 0,
-                UserParser.getImageInByteArray(R.drawable.photo3),
+                UserParser.getImageInByteArray(R.drawable.photo3, resources),
                 1,
                 0,
                 "Николай",
@@ -62,13 +62,16 @@ class ProfileActivity : AppCompatActivity() {
                 ""
             )
             val dbHelper = QRDatabaseHelper(this)
-            dbHelper.addUser(user)
+            val cursor = dbHelper.getOwnerUser()
+            if (cursor!!.count == 0) {
+                dbHelper.addUser(user)
 
-            val intent = Intent(this, ProfileActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+                finish()
+            }
         }
 
         val dbHelper = QRDatabaseHelper(this)
