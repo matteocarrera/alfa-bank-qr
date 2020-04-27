@@ -9,6 +9,14 @@
     <string name="my_cards">Мои визитки</string>
     <string name="saved_cards">Сохраненные визитки</string>
 
+    <!-- AboutApp Activity -->
+    <string name="about">О программе</string>
+    <string name="alfa_bank_qr">Альфа-Банк QR</string>
+    <string name="version">Версия 1.0</string>
+    <string name="about_text">Приложение для создания, редактирования и быстрого обмена электронными визитками, используя QR-код</string>
+    <string name="alfa_bank_ekb">Альфа-Банк Екатеринбург</string>
+    <string name="year">2020 год</string>
+
     <!-- Bottom Navigation Menu -->
     <string name="cards">Визитки</string>
     <string name="scan_card">Сканировать</string>

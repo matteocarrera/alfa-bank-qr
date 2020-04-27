@@ -87,6 +87,13 @@ class ProfileActivity : AppCompatActivity() {
             data_list.adapter = adapter
         }
 
+        info.setOnClickListener {
+            val intent = Intent(this, AboutAppActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+        }
     }
 
 }
