@@ -36,6 +36,10 @@ class ProfileActivity : AppCompatActivity() {
         edit_profile.setOnClickListener {
             addUserToDatabase(setTestUser())
         }
+      
+        info.setOnClickListener {
+            goToActivity(AboutAppActivity::class.java)
+        }
 
         setDataToListview()
     }
