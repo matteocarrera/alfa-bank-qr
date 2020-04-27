@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Entities.Card
@@ -23,15 +24,19 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
 
-        back.setOnClickListener { finish() }
+        back.setOnClickListener { goToActivity(CardsActivity::class.java) }
 
         setDataToListView()
 
         selectedItems.clear()
 
         save.setOnClickListener {
-            saveCardToDatabase()
-            goToActivity(CardsActivity::class.java)
+            if (card_title.text.toString() != "") {
+                saveCardToDatabase()
+                goToActivity(CardsActivity::class.java)
+            }
+            else
+                Toast.makeText(this, "Введите название визитки!", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -66,13 +71,13 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         val dbHelper = QRDatabaseHelper(this)
         var cursor = dbHelper.getOwnerUser()
         cursor!!.moveToFirst()
-        val drawable = DataUtils.getImageInDrawable(cursor!!)
+        val drawable = DataUtils.getImageInDrawable(cursor)
         val user = DataUtils.parseDataToUser(selectedItems, drawable)
         dbHelper.addUser(user)
         cursor = dbHelper.getLastUserFromDb()
         if (cursor!!.count != 0){
-            cursor!!.moveToFirst()
-            val userId = cursor!!.getInt(cursor!!.getColumnIndex("id"))
+            cursor.moveToFirst()
+            val userId = cursor.getInt(cursor.getColumnIndex("id"))
             dbHelper.addCard(Card(0, DataUtils.getVectorImageInByteArray(R.drawable.ic_cards, resources), card_title.text.toString(), userId))
         }
     }

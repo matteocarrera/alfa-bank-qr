@@ -33,19 +33,12 @@ class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
                         null
                     }
                 }
-            val intent = Intent(this, nextActivity)
-            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
+            goToActivity(nextActivity!!)
             true
         }
 
         add_card.setOnClickListener {
-            val intent = Intent(this, CreateCardActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
-            overridePendingTransition(0, 0)
+            goToActivity(CreateCardActivity::class.java)
         }
 
         saved_cards_list.visibility = View.GONE
@@ -53,22 +46,8 @@ class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         setVisibility(my_cards_title, my_cards_list, my_cards_image)
         setVisibility(saved_cards_title, saved_cards_list, saved_cards_image)
 
-
-        val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getAllCards()
-        val cards = ArrayList<Card>()
-        if (cursor!!.moveToFirst()) {
-            while (!cursor.isAfterLast) {
-                val id = cursor.getInt(cursor.getColumnIndex("id"))
-                val icon = cursor.getBlob(cursor.getColumnIndex("photo"))
-                val title = cursor.getString(cursor.getColumnIndex("title"))
-                val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
-
-                cards.add(Card(id, icon, title, userId))
-                cursor.moveToNext()
-            }
-        }
-        dbHelper.close()
+        var cards = ArrayList<Card>()
+        cards = setCardsToView(cards)
 
         val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
         my_cards_list.adapter = myCardsAdapter
@@ -98,6 +77,32 @@ class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         println(item.userId)
         intent.putExtra("user_id", item.userId)
         startActivity(intent)
+    }
+
+    private fun goToActivity(cls : Class<*>) {
+        val intent = Intent(this, cls)
+        intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        finish()
+    }
+
+    private fun setCardsToView(cards : ArrayList<Card>) : ArrayList<Card> {
+        val dbHelper = QRDatabaseHelper(this)
+        val cursor = dbHelper.getAllCards()
+        if (cursor!!.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val id = cursor.getInt(cursor.getColumnIndex("id"))
+                val icon = cursor.getBlob(cursor.getColumnIndex("photo"))
+                val title = cursor.getString(cursor.getColumnIndex("title"))
+                val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
+
+                cards.add(Card(id, icon, title, userId))
+                cursor.moveToNext()
+            }
+        }
+        dbHelper.close()
+        return cards
     }
 }
 
