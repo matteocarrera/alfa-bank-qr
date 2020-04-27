@@ -34,25 +34,53 @@
         android:layout_marginEnd="15dp"
         android:hint="Название визитки"/>
 
-    <ListView
-        android:id="@+id/data_list"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:clickable="false"
-        android:fastScrollEnabled="false"
-        android:headerDividersEnabled="false"
-        android:isScrollContainer="true"
         app:layout_constraintBottom_toTopOf="@id/save"
-        app:layout_constraintTop_toBottomOf="@+id/card_title" />
+        app:layout_constraintTop_toBottomOf="@+id/card_title">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ListView
+                android:id="@+id/data_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:focusable="true" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/generate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scroll"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/save"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginRight="5dp"
+        android:text="QR код"
+        android:layout_marginEnd="5dp" />
 
     <Button
         android:id="@+id/save"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/data_list"
+        app:layout_constraintTop_toBottomOf="@id/scroll"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="15dp"
+        app:layout_constraintStart_toEndOf="@id/generate"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:text="Сохранить"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

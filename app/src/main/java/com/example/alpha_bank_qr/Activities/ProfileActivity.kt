@@ -8,7 +8,7 @@ import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.UserParser
+import com.example.alpha_bank_qr.Utils.DataUtils
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -39,7 +39,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val user = User(
             0,
-            UserParser.getImageInByteArray(R.drawable.photo3, resources),
+            DataUtils.getImageInByteArray(R.drawable.photo3, resources),
             1,
             0,
             "Николай",
@@ -77,11 +77,11 @@ class ProfileActivity : AppCompatActivity() {
         val cursor = dbHelper.getOwnerUser()
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
-            profile_name.text = UserParser.setNameAndSurname(cursor)
+            profile_name.text = DataUtils.setNameAndSurname(cursor)
 
-            profile_photo.setImageDrawable(UserParser.getImageInDrawable(cursor))
+            profile_photo.setImageDrawable(DataUtils.getImageInDrawable(cursor))
 
-            val data = UserParser.setUserData(cursor)
+            val data = DataUtils.setUserData(cursor)
 
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter

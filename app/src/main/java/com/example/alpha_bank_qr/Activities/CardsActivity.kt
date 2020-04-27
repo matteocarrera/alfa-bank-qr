@@ -4,15 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
+import com.example.alpha_bank_qr.Entities.Card
+import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ListUtils
 import kotlinx.android.synthetic.main.activity_cards.*
 
-class CardsActivity : AppCompatActivity() {
+class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +53,28 @@ class CardsActivity : AppCompatActivity() {
         setVisibility(my_cards_title, my_cards_list, my_cards_image)
         setVisibility(saved_cards_title, saved_cards_list, saved_cards_image)
 
-        /*val users = setUsers()
-        val cards = setCards()
 
-        val myCardsAdapter = MyCardListAdapter(this, cards)
+        val dbHelper = QRDatabaseHelper(this)
+        val cursor = dbHelper.getAllCards()
+        val cards = ArrayList<Card>()
+        if (cursor!!.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val id = cursor.getInt(cursor.getColumnIndex("id"))
+                val icon = cursor.getBlob(cursor.getColumnIndex("photo"))
+                val title = cursor.getString(cursor.getColumnIndex("title"))
+                val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
+
+                cards.add(Card(id, icon, title, userId))
+                cursor.moveToNext()
+            }
+        }
+        dbHelper.close()
+
+        val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
         my_cards_list.adapter = myCardsAdapter
-        val savedCardsAdapter = SavedCardListAdapter(this, users)
-        saved_cards_list.adapter = savedCardsAdapter*/
+        my_cards_list.onItemClickListener = this
+        //val savedCardsAdapter = SavedCardListAdapter(this, users)
+        //saved_cards_list.adapter = savedCardsAdapter*/
 
         ListUtils.setDynamicHeight(my_cards_list);
         ListUtils.setDynamicHeight(saved_cards_list);
@@ -71,6 +90,14 @@ class CardsActivity : AppCompatActivity() {
                 image.setImageResource(R.drawable.ic_hide)
             }
         }
+    }
+
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val item = p0?.getItemAtPosition(p2) as Card
+        val intent = Intent(this, CardActivity::class.java)
+        println(item.userId)
+        intent.putExtra("user_id", item.userId)
+        startActivity(intent)
     }
 }
 

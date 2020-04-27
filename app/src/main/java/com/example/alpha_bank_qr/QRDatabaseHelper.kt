@@ -51,7 +51,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     fun addCard(card: Card) {
         val values = ContentValues()
-        values.put("icon", card.photo)
+        values.put("photo", card.photo)
         values.put("title", card.title)
         values.put("user_id", card.userId)
         val db = this.writableDatabase
@@ -78,6 +78,11 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     fun getUser(id : Int): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM users WHERE id = $id", null)
+    }
+
+    fun getLastUserFromDb() : Cursor? {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT * FROM users WHERE id = (SELECT MAX(id) FROM users)", null)
     }
 
     fun getAllCards(): Cursor? {
