@@ -29,15 +29,19 @@ class ProfileActivity : AppCompatActivity() {
                         null
                     }
                 }
-            val intent = Intent(this, nextActivity)
-            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
+            goToActivity(nextActivity!!)
             true
         }
 
-        val user = User(
+        edit_profile.setOnClickListener {
+            addUserToDatabase(setTestUser())
+        }
+
+        setDataToListview()
+    }
+
+    private fun setTestUser() : User {
+        return User(
             0,
             DataUtils.getImageInByteArray(R.drawable.photo3, resources),
             1,
@@ -58,21 +62,27 @@ class ProfileActivity : AppCompatActivity() {
             "nikolaialfa",
             ""
         )
+    }
 
-        edit_profile.setOnClickListener {
-            val dbHelper = QRDatabaseHelper(this)
-            val cursor = dbHelper.getOwnerUser()
-            if (cursor!!.count == 0) {
-                dbHelper.addUser(user)
+    private fun addUserToDatabase(user : User) {
+        val dbHelper = QRDatabaseHelper(this)
+        val cursor = dbHelper.getOwnerUser()
+        if (cursor!!.count == 0) {
+            dbHelper.addUser(user)
 
-                val intent = Intent(this, ProfileActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-                finish()
-            }
+            goToActivity(ProfileActivity::class.java)
         }
+    }
 
+    private fun goToActivity(cls : Class<*>) {
+        val intent = Intent(this, cls)
+        intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        finish()
+    }
+
+    private fun setDataToListview() {
         val dbHelper = QRDatabaseHelper(this)
         val cursor = dbHelper.getOwnerUser()
         if (cursor!!.count != 0) {
@@ -86,7 +96,5 @@ class ProfileActivity : AppCompatActivity() {
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter
         }
-
     }
-
 }

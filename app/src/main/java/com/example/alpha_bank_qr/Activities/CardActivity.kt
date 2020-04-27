@@ -19,6 +19,10 @@ class CardActivity : AppCompatActivity() {
 
         back.setOnClickListener { finish() }
 
+        setDataToListview()
+    }
+
+    private fun setDataToListview() {
         val bundle : Bundle? = intent.extras
         val id = bundle!!.getInt("user_id")
 
