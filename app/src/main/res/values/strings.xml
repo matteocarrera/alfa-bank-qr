@@ -9,6 +9,19 @@
     <string name="my_cards">Мои визитки</string>
     <string name="saved_cards">Сохраненные визитки</string>
 
+    <!-- Card List Item -->
+    <string name="item_name">Название карты</string>
+
+    <!-- Saved Card List Item -->
+    <string name="job_title">Должность</string>
+    <string name="company">Компания</string>
+
+    <!-- Create Card Activity -->
+    <string name="create_card">Создание визитки</string>
+    <string name="card_name">Название визитки</string>
+    <string name="qr_code">QR код</string>
+    <string name="save">Сохранить</string>
+
     <!-- AboutApp Activity -->
     <string name="about">О программе</string>
     <string name="alfa_bank_qr">Альфа-Банк QR</string>
