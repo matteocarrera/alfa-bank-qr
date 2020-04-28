@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.DataItem
@@ -16,10 +17,12 @@ import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ListUtils
 import kotlinx.android.synthetic.main.activity_create_card.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
+import yuku.ambilwarna.AmbilWarnaDialog
 
 class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val selectedItems = ArrayList<DataItem>()
+    private var mDefaultColor : Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
@@ -29,6 +32,21 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         setDataToListView()
 
         selectedItems.clear()
+
+        mDefaultColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        color_tag.setOnClickListener {
+            val dialog = AmbilWarnaDialog(this, mDefaultColor, object:
+                AmbilWarnaDialog.OnAmbilWarnaListener {
+                override fun onOk(dialog:AmbilWarnaDialog, color:Int) {
+                    mDefaultColor = color
+                    color_tag.setBackgroundColor(mDefaultColor)
+                }
+                override fun onCancel(dialog:AmbilWarnaDialog) {
+                    // cancel was selected by the user
+                }
+            })
+            dialog.show()
+        }
 
         save.setOnClickListener {
             if (card_title.text.toString() != "") {
@@ -78,7 +96,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         if (cursor!!.count != 0){
             cursor.moveToFirst()
             val userId = cursor.getInt(cursor.getColumnIndex("id"))
-            dbHelper.addCard(Card(0, DataUtils.getVectorImageInByteArray(R.drawable.ic_cards, resources), card_title.text.toString(), userId))
+            dbHelper.addCard(Card(0, mDefaultColor, card_title.text.toString(), userId))
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.R
@@ -18,13 +19,13 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
         val rowView = inflater.inflate(R.layout.my_card_list_item, null, true)
 
         val id = rowView.findViewById(R.id.id) as TextView
+        val color = rowView.findViewById(R.id.color_tag) as TextView
         val userId = rowView.findViewById(R.id.user_id) as TextView
-        val photo = rowView.findViewById(R.id.photo) as ImageView
         val title = rowView.findViewById(R.id.title) as TextView
 
         id.text = cards[position].id.toString()
+        color.setBackgroundColor(cards[position].color)
         userId.text = cards[position].userId.toString()
-        photo.setImageDrawable(DataUtils.getImageInDrawable(cards[position].photo))
         title.text = cards[position].title
 
         return rowView

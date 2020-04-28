@@ -32,69 +32,84 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <EditText
-        android:id="@+id/card_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:hint="@string/card_name"/>
-
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/save"
-        app:layout_constraintTop_toBottomOf="@+id/card_title">
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/color_tag"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@color/colorPrimary"/>
+                <EditText
+                    android:id="@+id/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:textSize="18sp"
+                    android:hint="@string/card_name"/>
+            </LinearLayout>
+
             <ListView
                 android:id="@+id/data_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="15dp"
                 android:focusable="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/generate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/qr_code"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_main_style"/>
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/save"
+                    android:textSize="18sp"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_style"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/generate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/scroll"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/save"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="5dp"
-        android:text="@string/qr_code"
-        android:layout_marginEnd="5dp"
-        android:background="@drawable/button_main_style"/>
-
-    <Button
-        android:id="@+id/save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/scroll"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/generate"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:text="@string/save"
-        android:background="@drawable/button_style"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

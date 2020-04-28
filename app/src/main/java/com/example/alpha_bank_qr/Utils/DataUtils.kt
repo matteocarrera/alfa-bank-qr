@@ -40,14 +40,6 @@ class DataUtils {
             return stream.toByteArray()
         }
 
-        fun getVectorImageInByteArray(image: Int, resources: Resources): ByteArray {
-            val drawable = resources.getDrawable(image)
-            val bitmap = drawable.toBitmap()
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            return stream.toByteArray()
-        }
-
         private fun getImageInByteArray(drawable: Drawable): ByteArray {
             val bitmap = (drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
@@ -58,10 +50,6 @@ class DataUtils {
         fun getImageInDrawable(cursor: Cursor): Drawable {
             val blob = cursor.getBlob(cursor.getColumnIndex("photo"))
             return BitmapDrawable(BitmapFactory.decodeByteArray(blob, 0, blob.size))
-        }
-
-        fun getImageInDrawable(byteArray: ByteArray): Drawable {
-            return BitmapDrawable(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size))
         }
 
         fun setNameAndSurname(cursor: Cursor): String {

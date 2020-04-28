@@ -41,6 +41,8 @@ class ProfileActivity : AppCompatActivity() {
             goToActivity(AboutAppActivity::class.java)
         }
 
+        edit_profile.setOnClickListener { goToActivity(EditProfileActivity::class.java) }
+
         setDataToListview()
     }
 

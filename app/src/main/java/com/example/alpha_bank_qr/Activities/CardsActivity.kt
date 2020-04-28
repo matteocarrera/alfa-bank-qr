@@ -93,11 +93,11 @@ class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         if (cursor!!.moveToFirst()) {
             while (!cursor.isAfterLast) {
                 val id = cursor.getInt(cursor.getColumnIndex("id"))
-                val icon = cursor.getBlob(cursor.getColumnIndex("photo"))
+                val color = cursor.getInt(cursor.getColumnIndex("color"))
                 val title = cursor.getString(cursor.getColumnIndex("title"))
                 val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
 
-                cards.add(Card(id, icon, title, userId))
+                cards.add(Card(id, color, title, userId))
                 cursor.moveToNext()
             }
         }

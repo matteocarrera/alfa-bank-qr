@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.AboutAppActivity"></activity>
+        <activity android:name=".Activities.EditProfileActivity"></activity>
+        <activity android:name=".Activities.AboutAppActivity" />
         <activity android:name=".Activities.CreateCardActivity" />
         <activity android:name=".Activities.CardActivity" />
         <activity android:name=".Activities.CardsActivity" />

@@ -51,7 +51,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     fun addCard(card: Card) {
         val values = ContentValues()
-        values.put("photo", card.photo)
+        values.put("color", card.color)
         values.put("title", card.title)
         values.put("user_id", card.userId)
         val db = this.writableDatabase
@@ -121,7 +121,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         private const val SQL_CREATE_CARDS_TABLE =
             "CREATE TABLE cards(" +
                     "id INTEGER PRIMARY KEY," +
-                    "photo BLOB," +
+                    "color INTEGER," +
                     "title TEXT," +
                     "user_id INTEGER" +
                     ")"
