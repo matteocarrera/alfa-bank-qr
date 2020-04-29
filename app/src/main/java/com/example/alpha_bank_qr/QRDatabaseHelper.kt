@@ -24,6 +24,31 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         onUpgrade(db, oldVersion, newVersion)
     }
 
+    fun updateUser(user: User) {
+        val values = ContentValues()
+        values.put("photo", user.photo)
+        values.put("is_owner", user.isOwner)
+        values.put("is_scanned", user.isScanned)
+        values.put("name", user.name)
+        values.put("surname", user.surname)
+        values.put("patronymic", user.patronymic)
+        values.put("company", user.company)
+        values.put("job_title", user.jobTitle)
+        values.put("mobile", user.mobile)
+        values.put("mobile_second", user.mobileSecond)
+        values.put("email", user.email)
+        values.put("email_second", user.emailSecond)
+        values.put("address", user.address)
+        values.put("address_second", user.addressSecond)
+        values.put("vk", user.vk)
+        values.put("facebook", user.facebook)
+        values.put("twitter", user.twitter)
+        values.put("notes", user.notes)
+        val db = this.writableDatabase
+        db.update("users", values, "id = ${user.id}", arrayOf())
+        db.close()
+    }
+
     fun addUser(user: User) {
         val values = ContentValues()
         values.put("photo", user.photo)

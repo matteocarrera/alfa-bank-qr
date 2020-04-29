@@ -49,12 +49,14 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         }
 
         save.setOnClickListener {
-            if (card_title.text.toString() != "") {
+            if (card_title.text.toString() == "") {
+                Toast.makeText(this, "Введите название визитки!", Toast.LENGTH_LONG).show()
+            } else if (selectedItems.size == 0) {
+                Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
+            } else {
                 saveCardToDatabase()
                 goToActivity(CardsActivity::class.java)
             }
-            else
-                Toast.makeText(this, "Введите название визитки!", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -80,7 +82,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
             data_list.onItemClickListener = this
             data_list.adapter = adapter
 
-            ListUtils.setDynamicHeight(data_list);
+            ListUtils.setDynamicHeight(data_list)
         }
         dbHelper.close()
     }

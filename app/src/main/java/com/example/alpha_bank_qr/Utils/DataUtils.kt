@@ -40,7 +40,7 @@ class DataUtils {
             return stream.toByteArray()
         }
 
-        private fun getImageInByteArray(drawable: Drawable): ByteArray {
+        fun getImageInByteArray(drawable: Drawable): ByteArray {
             val bitmap = (drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)

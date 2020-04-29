@@ -45,6 +45,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/photo"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 app:srcCompat="@drawable/ic_user"
@@ -59,6 +60,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
+                android:maxLines="1"
                 android:hint="Фамилия"/>
 
             <EditText
@@ -70,6 +72,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
+                android:maxLines="1"
                 android:hint="Имя"/>
 
             <EditText
@@ -81,10 +84,10 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
+                android:maxLines="1"
                 android:hint="Отчество"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/company"
                 android:layout_width="match_parent"
@@ -97,10 +100,10 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_company"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="Компания"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/job_title"
                 android:layout_width="match_parent"
@@ -113,6 +116,7 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_manager"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="Должность"/>
 
             <EditText
@@ -127,10 +131,11 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
+                android:inputType="phone"
                 android:hint="Мобильный номер"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/mobile_second"
                 android:layout_width="match_parent"
@@ -143,6 +148,8 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
+                android:inputType="phone"
                 android:hint="Мобильный номер (другой)"/>
 
             <EditText
@@ -156,10 +163,11 @@
                 android:layout_marginBottom="5dp"
                 android:drawableLeft="@drawable/ic_email"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:hint="email"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/email_second"
                 android:layout_width="match_parent"
@@ -171,10 +179,11 @@
                 android:layout_marginBottom="5dp"
                 android:drawableLeft="@drawable/ic_email"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:hint="email (другой)"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/address"
                 android:layout_width="match_parent"
@@ -187,10 +196,10 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_location"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="Адрес"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/address_second"
                 android:layout_width="match_parent"
@@ -203,10 +212,10 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_location"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="Адрес (другой)"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/vk"
                 android:layout_width="match_parent"
@@ -219,10 +228,10 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_vk"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="vk"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/facebook"
                 android:layout_width="match_parent"
@@ -235,10 +244,10 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_facebook"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="facebook"/>
 
             <EditText
-                android:visibility="gone"
                 android:drawableRight="@drawable/ic_close"
                 android:id="@+id/twitter"
                 android:layout_width="match_parent"
@@ -251,6 +260,7 @@
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_twitter"
                 android:drawablePadding="5dp"
+                android:maxLines="1"
                 android:hint="twitter"/>
 
             <EditText
