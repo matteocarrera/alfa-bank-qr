@@ -1,7 +1,10 @@
 package com.example.alpha_bank_qr.Utils
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ListView
+import com.example.alpha_bank_qr.R
 
 class ListUtils {
     companion object {
@@ -19,6 +22,18 @@ class ListUtils {
             params.height = height + mListView.dividerHeight * (mListAdapter.count - 1)
             mListView.layoutParams = params
             mListView.requestLayout()
+        }
+
+        fun setVisibility(layout: LinearLayout, list: ListView, image: ImageView) {
+            layout.setOnClickListener {
+                if (list.visibility == View.VISIBLE) {
+                    list.visibility = View.GONE
+                    image.setImageResource(R.drawable.ic_expand)
+                } else {
+                    list.visibility = View.VISIBLE
+                    image.setImageResource(R.drawable.ic_hide)
+                }
+            }
         }
     }
 }

@@ -32,16 +32,14 @@ class DataUtils {
             DataItem("заметки", "notes")
         )
 
-        fun getImageInByteArray(image: Int, resources: Resources): ByteArray {
-            val drawable = resources.getDrawable(image)
+        fun getImageInByteArray(drawable: Drawable): ByteArray {
             val bitmap = (drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             return stream.toByteArray()
         }
 
-        fun getImageInByteArray(drawable: Drawable): ByteArray {
-            val bitmap = (drawable as BitmapDrawable).bitmap
+        fun getImageInByteArray(bitmap: Bitmap): ByteArray {
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             return stream.toByteArray()
@@ -70,10 +68,7 @@ class DataUtils {
         }
 
         fun parseDataToUser(data : ArrayList<DataItem>, drawable: Drawable) : User {
-            val user = User(0,
-                getImageInByteArray(
-                    drawable
-                ), 0, 0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+            val user = User(0, (drawable as BitmapDrawable).bitmap, 0, 0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description

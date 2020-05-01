@@ -1,6 +1,7 @@
 package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -49,7 +50,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun setTestUser() : User {
         return User(
             0,
-            DataUtils.getImageInByteArray(R.drawable.photo3, resources),
+            (resources.getDrawable(R.drawable.photo3) as BitmapDrawable).bitmap,
             1,
             0,
             "Николай",

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.alpha_bank_qr.Entities.Card
+import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 
@@ -29,5 +30,26 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
         title.text = cards[position].title
 
         return rowView
+    }
+
+    companion object {
+        fun setMyCardsToView(context: Activity) : ArrayList<Card> {
+            val dbHelper = QRDatabaseHelper(context)
+            val cursor = dbHelper.getAllCards()
+            val cards = ArrayList<Card>()
+            if (cursor!!.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    val id = cursor.getInt(cursor.getColumnIndex("id"))
+                    val color = cursor.getInt(cursor.getColumnIndex("color"))
+                    val title = cursor.getString(cursor.getColumnIndex("title"))
+                    val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
+
+                    cards.add(Card(id, color, title, userId))
+                    cursor.moveToNext()
+                }
+            }
+            dbHelper.close()
+            return cards
+        }
     }
 }

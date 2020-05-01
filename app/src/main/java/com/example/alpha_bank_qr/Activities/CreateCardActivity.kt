@@ -15,9 +15,12 @@ import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ListUtils
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_card.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
+import net.glxn.qrgen.android.QRCode
 import yuku.ambilwarna.AmbilWarnaDialog
+
 
 class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
@@ -46,6 +49,22 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                 }
             })
             dialog.show()
+        }
+
+        generate.setOnClickListener {
+            try {
+                val dbHelper = QRDatabaseHelper(this)
+                val cursor = dbHelper.getOwnerUser()
+                cursor!!.moveToFirst()
+                val drawable = DataUtils.getImageInDrawable(cursor)
+                val user = DataUtils.parseDataToUser(selectedItems, drawable)
+
+                val bitmap = QRCode.from(Gson().toJson(user)).withSize(1000, 1000).bitmap()
+
+                qr.setImageBitmap(bitmap)
+            } catch (e : Exception) {
+                e.printStackTrace()
+            }
         }
 
         save.setOnClickListener {

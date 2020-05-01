@@ -3,6 +3,7 @@ package com.example.alpha_bank_qr.Activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -136,7 +137,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (cursor != null) {
             cursor.moveToFirst()
             val user = User(cursor.getInt(cursor.getColumnIndex("id")),
-                            DataUtils.getImageInByteArray(photo.drawable),
+                            (photo.drawable as BitmapDrawable).bitmap,
                             1,
                             0,
                             name.text.toString(),
