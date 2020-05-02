@@ -5,10 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.drawable.BitmapDrawable
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.User
-import com.example.alpha_bank_qr.Utils.DataUtils
 
 class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
@@ -87,15 +85,26 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         db.close()
     }
 
-    fun deleteUser(user: User) {
+    fun deleteUser(id : Int) {
         val db = this.writableDatabase
-        db.delete("users", "id = ${user.id}", null)
+        db.delete("users", "id = $id", null)
+        db.close()
+    }
+
+    fun deleteCard(id : Int) {
+        val db = this.writableDatabase
+        db.delete("cards", "id = $id", null)
         db.close()
     }
 
     fun getOwnerUser(): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM users WHERE is_owner = 1", null)
+    }
+
+    fun getQRFromCard(id : Int) : Cursor? {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT qr FROM cards WHERE id = $id", null)
     }
 
     fun getScannedUsers(): Cursor? {

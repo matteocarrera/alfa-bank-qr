@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
 import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
@@ -13,9 +12,8 @@ import com.example.alpha_bank_qr.Entities.SavedCard
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ListUtils
 import kotlinx.android.synthetic.main.activity_cards.*
-import java.lang.Exception
 
-class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+class CardsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +46,13 @@ class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         val cards = MyCardListAdapter.setMyCardsToView(this)
         val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
         my_cards_list.adapter = myCardsAdapter
-        my_cards_list.onItemClickListener = this
+        my_cards_list.setOnItemClickListener { adapterView, _, i, _ ->
+            val item = adapterView?.getItemAtPosition(i) as Card
+            val intent = Intent(this, CardActivity::class.java)
+            intent.putExtra("user_id", item.userId)
+            intent.putExtra("card_id", item.id)
+            startActivity(intent)
+        }
 
         val savedCards = SavedCardListAdapter.setSavedCardsToView(this)
         val savedCardsAdapter = SavedCardListAdapter(this, savedCards.toTypedArray())
@@ -60,16 +64,8 @@ class CardsActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             startActivity(intent)
         }
 
-
         ListUtils.setDynamicHeight(my_cards_list);
         ListUtils.setDynamicHeight(saved_cards_list);
-    }
-
-    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        val item = p0?.getItemAtPosition(p2) as Card
-        val intent = Intent(this, CardActivity::class.java)
-        intent.putExtra("user_id", item.userId)
-        startActivity(intent)
     }
 
     private fun goToActivity(cls : Class<*>) {

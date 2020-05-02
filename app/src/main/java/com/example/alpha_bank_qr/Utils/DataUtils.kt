@@ -1,12 +1,10 @@
 package com.example.alpha_bank_qr.Utils
 
-import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.core.graphics.drawable.toBitmap
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import java.io.ByteArrayOutputStream
@@ -48,19 +46,14 @@ class DataUtils {
             return stream.toByteArray()
         }
 
-        fun getImageInDrawable(cursor: Cursor): Drawable? {
-            val blob = cursor.getBlob(cursor.getColumnIndex("photo"))
+        fun getImageInDrawable(cursor: Cursor, column : String): Drawable? {
+            val blob = cursor.getBlob(cursor.getColumnIndex(column))
             if (blob != null)
                 return BitmapDrawable(BitmapFactory.decodeByteArray(blob, 0, blob.size))
             return null
         }
 
-        fun setNameAndSurname(cursor: Cursor): String {
-            return cursor.getString(cursor.getColumnIndex("name")) +
-                    " " +
-                    cursor.getString(cursor.getColumnIndex("surname"))
-        }
-
+        // Для отображения в профиле
         fun setUserData(cursor: Cursor): ArrayList<DataItem> {
             data.clear()
             for (i in titles.indices) {
@@ -72,8 +65,10 @@ class DataUtils {
             return data
         }
 
+        // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
         fun parseDataToUser(data : ArrayList<DataItem>, drawable: Drawable?) : User {
-            val user = User(0, getImageInByteArray(drawable), 0, 0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+            val user = User()
+            user.photo = getImageInByteArray(drawable)
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description
@@ -96,6 +91,7 @@ class DataUtils {
             return user
         }
 
+        // Если какие-то данные пустые (отсутствуют), то мы не добавляем, иначе добавляем
         private fun addItem(title: String, description: String) {
             if (description.isNotEmpty()) data.add(DataItem(title, description))
         }

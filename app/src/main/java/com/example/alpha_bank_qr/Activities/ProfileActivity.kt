@@ -42,7 +42,7 @@ class ProfileActivity : AppCompatActivity() {
             goToActivity(AboutAppActivity::class.java)
         }
 
-        //edit_profile.setOnClickListener { goToActivity(EditProfileActivity::class.java) }
+        edit_profile.setOnClickListener { goToActivity(EditProfileActivity::class.java) }
 
         setDataToListview()
     }
@@ -94,9 +94,8 @@ class ProfileActivity : AppCompatActivity() {
         val cursor = dbHelper.getOwnerUser()
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
-            profile_name.text = DataUtils.setNameAndSurname(cursor)
 
-            profile_photo.setImageDrawable(DataUtils.getImageInDrawable(cursor))
+            profile_photo.setImageDrawable(DataUtils.getImageInDrawable(cursor, "photo"))
 
             val data = DataUtils.setUserData(cursor)
 

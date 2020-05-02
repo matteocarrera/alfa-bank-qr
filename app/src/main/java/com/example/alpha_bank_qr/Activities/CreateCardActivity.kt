@@ -43,9 +43,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     mDefaultColor = color
                     color_tag.setBackgroundColor(mDefaultColor)
                 }
-                override fun onCancel(dialog:AmbilWarnaDialog) {
-                    // cancel was selected by the user
-                }
+                override fun onCancel(dialog:AmbilWarnaDialog) { }
             })
             dialog.show()
         }
@@ -117,7 +115,6 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         val dbHelper = QRDatabaseHelper(this)
         var cursor = dbHelper.getOwnerUser()
         cursor!!.moveToFirst()
-        //val drawable = DataUtils.getImageInDrawable(cursor)
         val user = DataUtils.parseDataToUser(selectedItems, null)
         dbHelper.addUser(user)
         val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()

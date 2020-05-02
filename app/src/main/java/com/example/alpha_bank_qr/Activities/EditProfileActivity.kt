@@ -109,7 +109,7 @@ class EditProfileActivity : AppCompatActivity() {
         val cursor = dbHelper.getOwnerUser()
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
-            photo.setImageDrawable(DataUtils.getImageInDrawable(cursor))
+            photo.setImageDrawable(DataUtils.getImageInDrawable(cursor, "photo"))
             surname.setText(cursor.getString(cursor.getColumnIndex("surname")))
             name.setText(cursor.getString(cursor.getColumnIndex("name")))
             patronymic.setText(cursor.getString(cursor.getColumnIndex("patronymic")))

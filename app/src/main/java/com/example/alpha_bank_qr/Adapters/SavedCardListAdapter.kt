@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.alpha_bank_qr.Entities.SavedCard
 import com.example.alpha_bank_qr.R
@@ -24,6 +25,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
 
         val photo = rowView.findViewById(R.id.photo) as ImageView
         val letters = rowView.findViewById(R.id.letters) as TextView
+        val circle = rowView.findViewById(R.id.circle) as LinearLayout
         val id = rowView.findViewById(R.id.id) as TextView
         val name = rowView.findViewById(R.id.name) as TextView
         val jobTitle = rowView.findViewById(R.id.job_title) as TextView
@@ -32,17 +34,21 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
         if (savedCards[position].photo == null) {
             photo.visibility = View.GONE
             letters.visibility = View.VISIBLE
+            circle.visibility = View.VISIBLE
             letters.text = savedCards[position].name.take(1) + savedCards[position].surname.take(1)
         } else {
             photo.visibility = View.VISIBLE
             letters.visibility = View.GONE
+            circle.visibility = View.GONE
             photo.setImageDrawable(savedCards[position].photo)
         }
 
         id.text = savedCards[position].id.toString()
         name.text = savedCards[position].name + " " + savedCards[position].surname
         jobTitle.text = savedCards[position].jobTitle
+        if (jobTitle.text == "") jobTitle.text = "Должность не указана"
         company.text = savedCards[position].company
+        if (company.text == "") company.text = "Компания не указана"
 
         return rowView
     }
@@ -60,7 +66,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
                     val jobTitle = cursor.getString(cursor.getColumnIndex("job_title"))
                     val company = cursor.getString(cursor.getColumnIndex("company"))
 
-                    cards.add(SavedCard(id, DataUtils.getImageInDrawable(cursor), name, surname, jobTitle, company))
+                    cards.add(SavedCard(id, DataUtils.getImageInDrawable(cursor, "photo"), name, surname, jobTitle, company))
                     cursor.moveToNext()
                 }
             }
