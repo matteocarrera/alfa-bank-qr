@@ -11,6 +11,7 @@ import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.SavedCard
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ListUtils
+import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_cards.*
 
 class CardsActivity : AppCompatActivity() {
@@ -35,7 +36,8 @@ class CardsActivity : AppCompatActivity() {
         }
 
         add_card.setOnClickListener {
-            goToActivity(CreateCardActivity::class.java)
+            ProgramUtils.goToActivityAnimated(this, CreateCardActivity::class.java)
+            finish()
         }
 
         saved_cards_list.visibility = View.GONE

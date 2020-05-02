@@ -1,13 +1,24 @@
 package com.example.alpha_bank_qr.Utils
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.provider.ContactsContract
+import android.widget.Toast
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 
 class ProgramUtils {
     companion object {
+        fun goToActivityAnimated(context: Context, cls : Class<*>) {
+            val intent = Intent(context, cls)
+            context.startActivity(intent)
+        }
+
+        fun setError(context: Context, text : String) {
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        }
+
         fun exportContact(user: User) : Intent {
             val intent = Intent(ContactsContract.Intents.Insert.ACTION)
             intent.type = ContactsContract.RawContacts.CONTENT_TYPE

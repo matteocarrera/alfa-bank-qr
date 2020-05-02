@@ -5,8 +5,10 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.drawable.Drawable
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Utils.DataUtils
 
 class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
@@ -22,6 +24,14 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         onUpgrade(db, oldVersion, newVersion)
+    }
+
+    fun updateUserPhoto(id: Int, drawable: Drawable) {
+        val cv = ContentValues()
+        cv.put("photo", DataUtils.getImageInByteArray(drawable))
+        val db = this.writableDatabase
+        db.update("users", cv, "id = $id", null)
+        db.close()
     }
 
     fun updateUser(user: User) {

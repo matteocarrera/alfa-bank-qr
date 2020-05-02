@@ -4,6 +4,9 @@
         android:id="@+id/export"
         android:title="Экспорт контакта" />
     <item
+        android:id="@+id/add_photo"
+        android:title="Добавить фото" />
+    <item
         android:id="@+id/delete"
         android:title="Удалить"/>
 </menu>

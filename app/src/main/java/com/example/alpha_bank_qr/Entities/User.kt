@@ -12,7 +12,7 @@ import android.graphics.drawable.Drawable
  */
 
 class User(
-    val id: Int = 0,
+    var id: Int = 0,
     var photo : ByteArray? = null,
     var isOwner : Int = 0,
     var isScanned : Int = 0,

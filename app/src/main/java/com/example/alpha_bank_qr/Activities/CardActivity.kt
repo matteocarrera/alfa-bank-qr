@@ -16,20 +16,26 @@ import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_card.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
 
 class CardActivity : AppCompatActivity() {
 
+    var id : Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card)
 
         val bundle : Bundle? = intent.extras
-        val id = bundle!!.getInt("user_id")
+        id = bundle!!.getInt("user_id")
         val cardId = bundle.getInt("card_id")
 
-        back.setOnClickListener { finish() }
+        back.setOnClickListener {
+            ProgramUtils.goToActivityAnimated(this, CardsActivity::class.java)
+            finish()
+        }
 
         more.setOnClickListener {
             val dbHelper = QRDatabaseHelper(this)
@@ -55,6 +61,12 @@ class CardActivity : AppCompatActivity() {
                         startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor), null)))
                         dbHelper.close()
                     }
+                    R.id.add_photo -> {
+                        CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setAspectRatio(1, 1)
+                            .start(this);
+                    }
                 }
                 true
             }
@@ -62,6 +74,25 @@ class CardActivity : AppCompatActivity() {
         }
 
         setDataToListView(id)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (result != null) {
+                profile_photo.setImageURI(result.uri)
+                profile_photo.visibility = View.GONE
+                circle.visibility = View.VISIBLE
+                val dbHelper = QRDatabaseHelper(this)
+                val drawable = profile_photo.drawable
+                dbHelper.updateUserPhoto(id, drawable)
+                dbHelper.close()
+                setDataToListView(id)
+                finish();
+                startActivity(intent);
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")

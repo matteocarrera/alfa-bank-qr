@@ -15,6 +15,7 @@ import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ListUtils
+import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_card.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
@@ -29,7 +30,10 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
 
-        back.setOnClickListener { goToActivity(CardsActivity::class.java) }
+        back.setOnClickListener {
+            ProgramUtils.goToActivityAnimated(this, CardsActivity::class.java)
+            finish()
+        }
 
         setDataToListView()
 
