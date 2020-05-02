@@ -9,8 +9,9 @@ import android.graphics.drawable.Drawable
 
 class SavedCard (
     val id : Int,
-    val photo : Drawable,
+    val photo : Drawable?,
     val name : String,
+    val surname : String,
     val jobTitle : String,
     val company : String
 )

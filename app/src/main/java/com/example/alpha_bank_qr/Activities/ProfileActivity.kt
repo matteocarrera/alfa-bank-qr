@@ -42,7 +42,7 @@ class ProfileActivity : AppCompatActivity() {
             goToActivity(AboutAppActivity::class.java)
         }
 
-        edit_profile.setOnClickListener { goToActivity(EditProfileActivity::class.java) }
+        //edit_profile.setOnClickListener { goToActivity(EditProfileActivity::class.java) }
 
         setDataToListview()
     }
@@ -50,7 +50,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun setTestUser() : User {
         return User(
             0,
-            (resources.getDrawable(R.drawable.photo3) as BitmapDrawable).bitmap,
+            DataUtils.getImageInByteArray(resources.getDrawable(R.drawable.photo3)),
             1,
             0,
             "Николай",

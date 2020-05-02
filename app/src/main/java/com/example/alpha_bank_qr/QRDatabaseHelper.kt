@@ -28,7 +28,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     fun updateUser(user: User) {
         val values = ContentValues()
-        values.put("photo", DataUtils.getImageInByteArray(user.photo))
+        values.put("photo", user.photo)
         values.put("is_owner", user.isOwner)
         values.put("is_scanned", user.isScanned)
         values.put("name", user.name)
@@ -53,7 +53,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     fun addUser(user: User) {
         val values = ContentValues()
-        values.put("photo", DataUtils.getImageInByteArray(user.photo))
+        values.put("photo", user.photo)
         values.put("is_owner", user.isOwner)
         values.put("is_scanned", user.isScanned)
         values.put("name", user.name)
@@ -80,6 +80,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         val values = ContentValues()
         values.put("color", card.color)
         values.put("title", card.title)
+        values.put("qr", card.qr)
         values.put("user_id", card.userId)
         val db = this.writableDatabase
         db.insert("cards", null, values)
@@ -149,6 +150,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             "CREATE TABLE cards(" +
                     "id INTEGER PRIMARY KEY," +
                     "color INTEGER," +
+                    "qr BLOB," +
                     "title TEXT," +
                     "user_id INTEGER" +
                     ")"

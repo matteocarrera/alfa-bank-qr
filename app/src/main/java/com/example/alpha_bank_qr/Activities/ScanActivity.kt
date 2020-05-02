@@ -10,6 +10,8 @@ import com.google.gson.Gson
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import com.google.zxing.Result
 import kotlinx.android.synthetic.main.activity_create_card.*
+import java.nio.charset.Charset
+import java.nio.charset.CharsetEncoder
 
 class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler{
 
@@ -41,16 +43,8 @@ class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler{
         val dbHelper = QRDatabaseHelper(this)
         dbHelper.addUser(user)
 
-        println(user.name)
-        val byteArray = user.name.toByteArray(Charsets.UTF_8)
-
-        val output = String(byteArray, Charsets.UTF_8)
-        println(output)
-
         onBackPressed()
         val intent = Intent(this, CardsActivity::class.java)
         startActivity(intent)
-        // If you would like to resume scanning, call this method below:
-        //mScannerView.resumeCameraPreview(this);
     }
 }

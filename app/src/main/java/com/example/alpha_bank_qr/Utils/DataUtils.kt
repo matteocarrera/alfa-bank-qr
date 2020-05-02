@@ -32,11 +32,14 @@ class DataUtils {
             DataItem("заметки", "notes")
         )
 
-        fun getImageInByteArray(drawable: Drawable): ByteArray {
-            val bitmap = (drawable as BitmapDrawable).bitmap
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            return stream.toByteArray()
+        fun getImageInByteArray(drawable: Drawable?): ByteArray? {
+            if (drawable != null) {
+                val bitmap = (drawable as BitmapDrawable).bitmap
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                return stream.toByteArray()
+            }
+            return null
         }
 
         fun getImageInByteArray(bitmap: Bitmap): ByteArray {
@@ -45,9 +48,11 @@ class DataUtils {
             return stream.toByteArray()
         }
 
-        fun getImageInDrawable(cursor: Cursor): Drawable {
+        fun getImageInDrawable(cursor: Cursor): Drawable? {
             val blob = cursor.getBlob(cursor.getColumnIndex("photo"))
-            return BitmapDrawable(BitmapFactory.decodeByteArray(blob, 0, blob.size))
+            if (blob != null)
+                return BitmapDrawable(BitmapFactory.decodeByteArray(blob, 0, blob.size))
+            return null
         }
 
         fun setNameAndSurname(cursor: Cursor): String {
@@ -67,8 +72,8 @@ class DataUtils {
             return data
         }
 
-        fun parseDataToUser(data : ArrayList<DataItem>, drawable: Drawable) : User {
-            val user = User(0, (drawable as BitmapDrawable).bitmap, 0, 0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+        fun parseDataToUser(data : ArrayList<DataItem>, drawable: Drawable?) : User {
+            val user = User(0, getImageInByteArray(drawable), 0, 0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description

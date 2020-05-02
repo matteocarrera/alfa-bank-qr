@@ -13,7 +13,7 @@ import android.graphics.drawable.Drawable
 
 class User(
     val id: Int,
-    var photo : Bitmap,
+    var photo : ByteArray?,
     var isOwner : Int,
     var isScanned : Int,
     var name: String,
@@ -31,8 +31,4 @@ class User(
     var facebook: String,
     var twitter: String,
     var notes : String
-) {
-    override fun toString(): String {
-        return "User[id: ${this.id}, photo: ${this.photo}, isOwner: ${this.isOwner}, isScanned: ${this.isScanned}, name: ${this.name}, surname: ${this.surname}, patronymic: ${this.patronymic}, company: ${this.company}, jobTitle: ${this.jobTitle}, mobile: ${this.mobile}, mobileSecond: ${this.mobileSecond}, email: ${this.email}, emailSecond: ${this.emailSecond}, address: ${this.address}, addressSecond: ${this.addressSecond}, vk: ${this.vk}, facebook: ${this.facebook}, twitter: ${this.twitter}, notes: ${this.notes}]"
-    }
-}
+)

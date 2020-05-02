@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
 import net.glxn.qrgen.android.QRCode
 import yuku.ambilwarna.AmbilWarnaDialog
 
-
 class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val selectedItems = ArrayList<DataItem>()
@@ -53,28 +52,36 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
 
         generate.setOnClickListener {
             try {
-                val dbHelper = QRDatabaseHelper(this)
-                val cursor = dbHelper.getOwnerUser()
-                cursor!!.moveToFirst()
-                val drawable = DataUtils.getImageInDrawable(cursor)
-                val user = DataUtils.parseDataToUser(selectedItems, drawable)
+                if (selectedItems.size == 0) {
+                    Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
+                } else {
+                    val dbHelper = QRDatabaseHelper(this)
+                    val cursor = dbHelper.getOwnerUser()
+                    cursor!!.moveToFirst()
+                    val user = DataUtils.parseDataToUser(selectedItems, null)
 
-                val bitmap = QRCode.from(Gson().toJson(user)).withSize(1000, 1000).bitmap()
+                    val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
 
-                qr.setImageBitmap(bitmap)
+                    dbHelper.close()
+                    qr.setImageBitmap(bitmap)
+                }
             } catch (e : Exception) {
                 e.printStackTrace()
             }
         }
 
         save.setOnClickListener {
-            if (card_title.text.toString() == "") {
-                Toast.makeText(this, "Введите название визитки!", Toast.LENGTH_LONG).show()
-            } else if (selectedItems.size == 0) {
-                Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
-            } else {
-                saveCardToDatabase()
-                goToActivity(CardsActivity::class.java)
+            when {
+                card_title.text.toString() == "" -> {
+                    Toast.makeText(this, "Введите название визитки!", Toast.LENGTH_LONG).show()
+                }
+                selectedItems.size == 0 -> {
+                    Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                    saveCardToDatabase()
+                    goToActivity(CardsActivity::class.java)
+                }
             }
         }
     }
@@ -110,14 +117,15 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         val dbHelper = QRDatabaseHelper(this)
         var cursor = dbHelper.getOwnerUser()
         cursor!!.moveToFirst()
-        val drawable = DataUtils.getImageInDrawable(cursor)
-        val user = DataUtils.parseDataToUser(selectedItems, drawable)
+        //val drawable = DataUtils.getImageInDrawable(cursor)
+        val user = DataUtils.parseDataToUser(selectedItems, null)
         dbHelper.addUser(user)
+        val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
         cursor = dbHelper.getLastUserFromDb()
         if (cursor!!.count != 0){
             cursor.moveToFirst()
             val userId = cursor.getInt(cursor.getColumnIndex("id"))
-            dbHelper.addCard(Card(0, mDefaultColor, card_title.text.toString(), userId))
+            dbHelper.addCard(Card(0, mDefaultColor, DataUtils.getImageInByteArray(bitmap), card_title.text.toString(), userId))
         }
     }
 

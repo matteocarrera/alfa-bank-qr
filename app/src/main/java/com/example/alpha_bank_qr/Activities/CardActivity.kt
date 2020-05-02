@@ -27,17 +27,22 @@ class CardActivity : AppCompatActivity() {
         val id = bundle!!.getInt("user_id")
 
         val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getUser(id)
+        var cursor = dbHelper.getUser(id)
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
             profile_name.text = DataUtils.setNameAndSurname(cursor)
-
-            profile_photo.setImageDrawable(DataUtils.getImageInDrawable(cursor))
 
             val data = DataUtils.setUserData(cursor)
 
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter
+        }
+        if (cursor.getInt(cursor.getColumnIndex("is_owner")) == 1) {
+            cursor = dbHelper.getOwnerUser()
+            if (cursor!!.count != 0) {
+                cursor.moveToFirst()
+            }
+            profile_photo.setImageDrawable(DataUtils.getImageInDrawable(cursor))
         }
     }
 }

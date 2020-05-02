@@ -137,7 +137,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (cursor != null) {
             cursor.moveToFirst()
             val user = User(cursor.getInt(cursor.getColumnIndex("id")),
-                            (photo.drawable as BitmapDrawable).bitmap,
+                            DataUtils.getImageInByteArray(photo.drawable),
                             1,
                             0,
                             name.text.toString(),
