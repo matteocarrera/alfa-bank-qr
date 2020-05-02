@@ -1,11 +1,17 @@
 package com.example.alpha_bank_qr.Activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
@@ -18,6 +24,7 @@ import com.example.alpha_bank_qr.Utils.ListUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_card.*
+import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
 import net.glxn.qrgen.android.QRCode
 import yuku.ambilwarna.AmbilWarnaDialog
@@ -65,7 +72,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
 
                     dbHelper.close()
-                    qr.setImageBitmap(bitmap)
+                    setQRWindow(bitmap)
                 }
             } catch (e : Exception) {
                 e.printStackTrace()
@@ -95,6 +102,19 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         if (p1 != null) {
             p1.checkbox.isChecked = !p1.checkbox.isChecked
         }
+    }
+
+    private fun setQRWindow(bitmap: Bitmap) {
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_qr, null)
+
+        val mBuilder = AlertDialog.Builder(this)
+            .setTitle("Покажите QR код")
+            .setView(mDialogView)
+
+        mDialogView.qr_img.setImageBitmap(bitmap)
+        val  mAlertDialog = mBuilder.show()
+
+        mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
     }
 
     private fun setDataToListView() {

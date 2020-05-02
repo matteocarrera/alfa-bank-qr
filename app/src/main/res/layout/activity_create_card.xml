@@ -21,15 +21,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp" />
 
-    <ImageView
-        android:id="@+id/qr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/back"
-        app:layout_constraintBottom_toTopOf="@id/scroll"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +38,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr">
+        app:layout_constraintTop_toBottomOf="@+id/back">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
