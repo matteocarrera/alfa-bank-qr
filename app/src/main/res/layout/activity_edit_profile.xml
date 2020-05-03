@@ -54,7 +54,6 @@
                     android:id="@+id/photo"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    app:srcCompat="@drawable/ic_user"
                     android:layout_gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"

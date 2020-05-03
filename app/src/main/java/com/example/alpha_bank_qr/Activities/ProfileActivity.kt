@@ -12,6 +12,8 @@ import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile.data_list
+import kotlinx.android.synthetic.main.activity_profile.profile_photo
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -105,7 +107,14 @@ class ProfileActivity : AppCompatActivity() {
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
 
-            profile_photo.setImageDrawable(DataUtils.getImageInDrawable(cursor, "photo"))
+            val drawable = DataUtils.getImageInDrawable(cursor, "photo")
+            if (drawable != null) {
+                profile_photo.setImageDrawable(drawable)
+            } else {
+                profile_photo.visibility = View.GONE
+                circle.visibility = View.VISIBLE
+                letters.text = cursor.getString(cursor.getColumnIndex("name")).take(1) + cursor.getString(cursor.getColumnIndex("surname")).take(1)
+            }
 
             val data = DataUtils.setUserData(cursor)
 
