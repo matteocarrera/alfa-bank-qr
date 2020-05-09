@@ -31,4 +31,8 @@ class User(
     var facebook: String = "",
     var twitter: String = "",
     var notes : String = ""
-)
+) {
+    override fun toString(): String {
+        return "$name,$surname,$patronymic,$company,$jobTitle,$mobile,$mobileSecond,$email,$emailSecond,$address,$addressSecond,$vk,$facebook,$twitter,$notes"
+    }
+}

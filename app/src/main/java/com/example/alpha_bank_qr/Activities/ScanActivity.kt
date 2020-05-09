@@ -3,15 +3,10 @@ package com.example.alpha_bank_qr.Activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.alpha_bank_qr.Entities.Card
-import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.QRDatabaseHelper
-import com.google.gson.Gson
-import me.dm7.barcodescanner.zxing.ZXingScannerView
+import com.example.alpha_bank_qr.Utils.Json
 import com.google.zxing.Result
-import kotlinx.android.synthetic.main.activity_create_card.*
-import java.nio.charset.Charset
-import java.nio.charset.CharsetEncoder
+import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler{
 
@@ -37,8 +32,8 @@ class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler{
     }
 
     override fun handleResult(rawResult: Result) {
-        val user = Gson().fromJson(rawResult.text, User::class.java)
-        user.isScanned = 1
+        val user = Json.fromJson(rawResult.text)
+        println("Notes = " + user.notes)
 
         val dbHelper = QRDatabaseHelper(this)
         dbHelper.addUser(user)

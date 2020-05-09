@@ -37,10 +37,6 @@ class ProfileActivity : AppCompatActivity() {
             true
         }
 
-        edit_profile.setOnClickListener {
-            addUserToDatabase(setTestUser())
-        }
-      
         info.setOnClickListener {
             ProgramUtils.goToActivityAnimated(this, AboutAppActivity::class.java)
             finish()
@@ -57,40 +53,6 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         setDataToListView()
-    }
-
-    private fun setTestUser() : User {
-        return User(
-            0,
-            DataUtils.getImageInByteArray(resources.getDrawable(R.drawable.photo3)),
-            1,
-            0,
-            "Николай",
-            "Алексеев",
-            "Сергеевич",
-            "Альфа-Банк",
-            "Руководящий отделом",
-            "+79129995678",
-            "",
-            "nikolai@alfa-bank.ru",
-            "",
-            "Екатеринбург, ул. Пушкина 17",
-            "",
-            "",
-            "",
-            "nikolaialfa",
-            ""
-        )
-    }
-
-    private fun addUserToDatabase(user : User) {
-        val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getOwnerUser()
-        if (cursor!!.count == 0) {
-            dbHelper.addUser(user)
-
-            goToActivity(ProfileActivity::class.java)
-        }
     }
 
     private fun goToActivity(cls : Class<*>) {

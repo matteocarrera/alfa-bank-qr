@@ -17,9 +17,9 @@ import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.Json
 import com.example.alpha_bank_qr.Utils.ListUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_card.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
@@ -66,7 +66,9 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     cursor!!.moveToFirst()
                     val user = DataUtils.parseDataToUser(selectedItems, null)
 
-                    val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    //val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    println(user.toString())
 
                     dbHelper.close()
                     setQRWindow(bitmap)
@@ -138,7 +140,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         cursor!!.moveToFirst()
         val user = DataUtils.parseDataToUser(selectedItems, null)
         dbHelper.addUser(user)
-        val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+        val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
         cursor = dbHelper.getLastUserFromDb()
         if (cursor!!.count != 0){
             cursor.moveToFirst()

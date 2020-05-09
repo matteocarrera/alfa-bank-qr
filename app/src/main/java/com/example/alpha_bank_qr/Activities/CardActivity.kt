@@ -12,6 +12,7 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils

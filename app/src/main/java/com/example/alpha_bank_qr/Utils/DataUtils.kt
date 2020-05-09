@@ -85,7 +85,7 @@ class DataUtils {
                     "vk" -> user.vk = it.description
                     "facebook" -> user.facebook = it.description
                     "twitter" -> user.twitter = it.description
-                    "notes" -> user.notes = it.description
+                    "заметки" -> user.notes = it.description
                 }
             }
             return user
