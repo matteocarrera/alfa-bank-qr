@@ -118,8 +118,12 @@ class CardActivity : AppCompatActivity() {
             data_list.adapter = adapter
             data_list.setOnItemClickListener { adapterView, view, i, l ->
                 val item = adapterView?.getItemAtPosition(i) as DataItem
-                if (item.title == "мобильный номер" || item.title == "мобильный номер (другой)") ProgramUtils.makeCall(this, item.description)
-                else if (item.title == "email" || item.title == "email (другой)") ProgramUtils.makeEmail(this, item.description)
+                when (item.title) {
+                    "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.description)
+                    "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.description)
+                    "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.description)
+                    "vk", "facebook", "twitter" -> ProgramUtils.openWebsite(this, item)
+                }
             }
         }
         dbHelper.close()

@@ -1,6 +1,7 @@
 package com.example.alpha_bank_qr.Utils
 
 import android.Manifest
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -11,7 +12,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
-
 
 class ProgramUtils {
     companion object {
@@ -24,20 +24,32 @@ class ProgramUtils {
             Toast.makeText(context, text, Toast.LENGTH_LONG).show()
         }
 
-        fun makeCall(context: Context, number : String) {
+        fun makeCall(activity: Activity, context: Context, number : String) {
             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.CALL_PHONE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                return
-            }
-            context.startActivity(intent)
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            } else context.startActivity(intent)
         }
 
         fun makeEmail(context: Context, email : String) {
             val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+            context.startActivity(intent)
+        }
+
+        fun openMap(context : Context, location : String) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=$location"))
+            context.startActivity(intent)
+        }
+
+        fun openWebsite(context: Context, item: DataItem) {
+            var website = ""
+            when (item.title) {
+                "vk" -> website = "vk.com/"
+                "facebook" -> website = "facebook.com/"
+                "twitter" -> website = "twitter.com/"
+                else -> {}
+            }
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + website + item.description))
             context.startActivity(intent)
         }
 
