@@ -1,12 +1,17 @@
 package com.example.alpha_bank_qr.Utils
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.provider.ContactsContract
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
+
 
 class ProgramUtils {
     companion object {
@@ -17,6 +22,23 @@ class ProgramUtils {
 
         fun setError(context: Context, text : String) {
             Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        }
+
+        fun makeCall(context: Context, number : String) {
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return
+            }
+            context.startActivity(intent)
+        }
+
+        fun makeEmail(context: Context, email : String) {
+            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+            context.startActivity(intent)
         }
 
         fun exportContact(user: User) : Intent {

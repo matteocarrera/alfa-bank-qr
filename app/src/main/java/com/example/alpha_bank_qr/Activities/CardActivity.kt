@@ -116,6 +116,11 @@ class CardActivity : AppCompatActivity() {
 
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter
+            data_list.setOnItemClickListener { adapterView, view, i, l ->
+                val item = adapterView?.getItemAtPosition(i) as DataItem
+                if (item.title == "мобильный номер" || item.title == "мобильный номер (другой)") ProgramUtils.makeCall(this, item.description)
+                else if (item.title == "email" || item.title == "email (другой)") ProgramUtils.makeEmail(this, item.description)
+            }
         }
         dbHelper.close()
     }

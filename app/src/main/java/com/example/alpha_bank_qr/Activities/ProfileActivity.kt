@@ -2,18 +2,15 @@ package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
-import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.data_list
-import kotlinx.android.synthetic.main.activity_profile.profile_photo
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -23,17 +20,11 @@ class ProfileActivity : AppCompatActivity() {
 
         bottom_bar.menu.getItem(2).isChecked = true
         bottom_bar.setOnNavigationItemSelectedListener {
-            val nextActivity =
-                when (it.itemId) {
-                    R.id.cards -> CardsActivity::class.java
-                    R.id.scan -> ScanActivity::class.java
-                    R.id.profile -> ProfileActivity::class.java
-                    else -> {
-                        Log.e("Error", "Activity set error")
-                        null
-                    }
-                }
-            goToActivity(nextActivity!!)
+            when (it.itemId) {
+                R.id.cards -> goToActivity(CardsActivity::class.java)
+                R.id.scan -> goToActivity(ScanActivity::class.java)
+                else -> goToActivity(ProfileActivity::class.java)
+            }
             true
         }
 

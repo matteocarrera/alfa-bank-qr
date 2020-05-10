@@ -2,8 +2,8 @@ package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
 import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
@@ -19,19 +19,21 @@ class CardsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cards)
+
+        val bundle : Bundle? = intent.extras
+        try {
+            val flag = bundle!!.getBoolean("scan")
+
+            if (flag) Toast.makeText(this, "Визитная карточка успешно добавлена!", Toast.LENGTH_SHORT).show()
+        } catch (e : Exception) {}
+
         bottom_bar.menu.getItem(0).isChecked = true
         bottom_bar.setOnNavigationItemSelectedListener {
-            val nextActivity =
-                when (it.itemId) {
-                    R.id.cards -> CardsActivity::class.java
-                    R.id.scan -> ScanActivity::class.java
-                    R.id.profile -> ProfileActivity::class.java
-                    else -> {
-                        Log.e("Error", "Activity set error")
-                        null
-                    }
-                }
-            goToActivity(nextActivity!!)
+            when (it.itemId) {
+                R.id.cards -> goToActivity(CardsActivity::class.java)
+                R.id.scan -> goToActivity(ScanActivity::class.java)
+                else -> goToActivity(ProfileActivity::class.java)
+            }
             true
         }
 
