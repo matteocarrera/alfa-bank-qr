@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
+import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.Json
 import com.google.zxing.Result
 import com.karumi.dexter.Dexter
@@ -20,6 +21,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_scan.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
+import net.glxn.qrgen.android.QRCode
 
 
 class ScanActivity : AppCompatActivity() {
@@ -61,7 +63,8 @@ class ScanActivity : AppCompatActivity() {
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
                         val user = Json.fromJson(rawResult.text)
-
+                        val bitmap = QRCode.from(rawResult.text).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                        user.qr = DataUtils.getImageInByteArray(bitmap)
                         val dbHelper = QRDatabaseHelper(this@ScanActivity)
                         dbHelper.addUser(user)
 

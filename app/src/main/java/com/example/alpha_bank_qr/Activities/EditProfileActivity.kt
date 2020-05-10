@@ -32,7 +32,7 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_profile)
 
         fieldsNames = arrayListOf(
-            company, job_title, mobile_second, email_second, address, address_second, vk, facebook, twitter)
+            company, job_title, mobile_second, email_second, address, address_second, vk, facebook, instagram, twitter)
 
         setDataToEdittext()
 
@@ -103,6 +103,7 @@ class EditProfileActivity : AppCompatActivity() {
             "Адрес (другой)" -> address_second.visibility = visibility
             "vk" -> vk.visibility = visibility
             "facebook" -> facebook.visibility = visibility
+            "instagram" -> instagram.visibility = visibility
             "twitter" -> twitter.visibility = visibility
         }
     }
@@ -128,6 +129,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
             photo.setImageDrawable(DataUtils.getImageInDrawable(cursor, "photo"))
+            qr.setImageDrawable(DataUtils.getImageInDrawable(cursor, "qr"))
             surname.setText(cursor.getString(cursor.getColumnIndex("surname")))
             name.setText(cursor.getString(cursor.getColumnIndex("name")))
             patronymic.setText(cursor.getString(cursor.getColumnIndex("patronymic")))
@@ -141,6 +143,7 @@ class EditProfileActivity : AppCompatActivity() {
             address_second.setText(cursor.getString(cursor.getColumnIndex("address_second")))
             vk.setText(cursor.getString(cursor.getColumnIndex("vk")))
             facebook.setText(cursor.getString(cursor.getColumnIndex("facebook")))
+            instagram.setText(cursor.getString(cursor.getColumnIndex("instagram")))
             twitter.setText(cursor.getString(cursor.getColumnIndex("twitter")))
             notes.setText(cursor.getString(cursor.getColumnIndex("notes")))
         }
@@ -178,6 +181,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun getUserData() : User {
         return User(0,
             DataUtils.getImageInByteArray(photo.drawable),
+            DataUtils.getImageInByteArray(qr.drawable),
             1,
             0,
             name.text.toString(),
@@ -193,6 +197,7 @@ class EditProfileActivity : AppCompatActivity() {
             address_second.text.toString(),
             vk.text.toString(),
             facebook.text.toString(),
+            instagram.text.toString(),
             twitter.text.toString(),
             notes.text.toString())
     }

@@ -26,6 +26,7 @@ class DataUtils {
             DataItem("адрес (другой)", "address_second"),
             DataItem("vk", "vk"),
             DataItem("facebook", "facebook"),
+            DataItem("instagram", "instagram"),
             DataItem("twitter", "twitter"),
             DataItem("заметки", "notes")
         )
@@ -84,6 +85,7 @@ class DataUtils {
                     "адрес (другой)" -> user.addressSecond = it.description
                     "vk" -> user.vk = it.description
                     "facebook" -> user.facebook = it.description
+                    "instagram" -> user.instagram = it.description
                     "twitter" -> user.twitter = it.description
                     "заметки" -> user.notes = it.description
                 }

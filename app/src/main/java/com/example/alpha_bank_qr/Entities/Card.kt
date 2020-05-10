@@ -9,6 +9,5 @@ package com.example.alpha_bank_qr.Entities
 
 class Card (val id: Int,
             var color : Int,
-            var qr : ByteArray,
             var title : String,
             var userId: Int)

@@ -25,8 +25,9 @@ class Json {
             user.addressSecond = userData[10]
             user.vk = userData[11]
             user.facebook = userData[12]
-            user.twitter = userData[13]
-            user.notes = userData[14]
+            user.instagram = userData[13]
+            user.twitter = userData[14]
+            user.notes = userData[15]
             return user
         }
     }

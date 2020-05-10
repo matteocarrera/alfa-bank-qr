@@ -51,7 +51,7 @@ class CardActivity : AppCompatActivity() {
 
             popupMenu.setOnMenuItemClickListener { item ->
                 when(item.itemId) {
-                    R.id.qr -> { setQRWindow(cardId) }
+                    R.id.qr -> { setQRWindow(id) }
                     R.id.delete -> {
                         dbHelper.deleteUser(id)
                         if (!flag) dbHelper.deleteCard(cardId)
@@ -116,13 +116,13 @@ class CardActivity : AppCompatActivity() {
 
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter
-            data_list.setOnItemClickListener { adapterView, view, i, l ->
+            data_list.setOnItemClickListener { adapterView, _, i, _ ->
                 val item = adapterView?.getItemAtPosition(i) as DataItem
                 when (item.title) {
                     "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.description)
                     "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.description)
                     "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.description)
-                    "vk", "facebook", "twitter" -> ProgramUtils.openWebsite(this, item)
+                    "vk", "facebook", "instagram", "twitter" -> ProgramUtils.openWebsite(this, item)
                 }
             }
         }
@@ -132,7 +132,7 @@ class CardActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun setQRWindow(id : Int) {
         val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getQRFromCard(id)
+        val cursor = dbHelper.getQRFromUser(id)
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_qr, null)

@@ -66,7 +66,6 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     cursor!!.moveToFirst()
                     val user = DataUtils.parseDataToUser(selectedItems, null)
 
-                    //val bitmap = QRCode.from(Gson().toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
                     val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
                     println(user.toString())
 
@@ -139,13 +138,14 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         var cursor = dbHelper.getOwnerUser()
         cursor!!.moveToFirst()
         val user = DataUtils.parseDataToUser(selectedItems, null)
-        dbHelper.addUser(user)
         val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+        user.qr = DataUtils.getImageInByteArray(bitmap)
+        dbHelper.addUser(user)
         cursor = dbHelper.getLastUserFromDb()
         if (cursor!!.count != 0){
             cursor.moveToFirst()
             val userId = cursor.getInt(cursor.getColumnIndex("id"))
-            dbHelper.addCard(Card(0, mDefaultColor, DataUtils.getImageInByteArray(bitmap), card_title.text.toString(), userId))
+            dbHelper.addCard(Card(0, mDefaultColor, card_title.text.toString(), userId))
         }
     }
 

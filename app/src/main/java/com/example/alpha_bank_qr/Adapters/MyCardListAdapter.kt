@@ -40,12 +40,11 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
                     val id = cursor.getInt(cursor.getColumnIndex("id"))
-                    val qr = cursor.getBlob(cursor.getColumnIndex("qr"))
                     val color = cursor.getInt(cursor.getColumnIndex("color"))
                     val title = cursor.getString(cursor.getColumnIndex("title"))
                     val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
 
-                    cards.add(Card(id, color, qr, title, userId))
+                    cards.add(Card(id, color, title, userId))
                     cursor.moveToNext()
                 }
             }

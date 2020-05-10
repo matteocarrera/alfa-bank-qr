@@ -46,6 +46,7 @@ class ProgramUtils {
             when (item.title) {
                 "vk" -> website = "vk.com/"
                 "facebook" -> website = "facebook.com/"
+                "instagram" -> website = "instagram.com/"
                 "twitter" -> website = "twitter.com/"
                 else -> {}
             }
@@ -77,6 +78,7 @@ class ProgramUtils {
             val fields = arrayOf(
                 DataItem("vk.com/", user.vk),
                 DataItem("facebook.com/", user.facebook),
+                DataItem("instagram.com/", user.instagram),
                 DataItem("twitter.com/", user.twitter)
             )
 

@@ -37,6 +37,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     fun updateUser(user: User) {
         val values = ContentValues()
         values.put("photo", user.photo)
+        values.put("qr", user.qr)
         values.put("is_owner", user.isOwner)
         values.put("is_scanned", user.isScanned)
         values.put("name", user.name)
@@ -52,6 +53,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         values.put("address_second", user.addressSecond)
         values.put("vk", user.vk)
         values.put("facebook", user.facebook)
+        values.put("instagram", user.instagram)
         values.put("twitter", user.twitter)
         values.put("notes", user.notes)
         val db = this.writableDatabase
@@ -62,6 +64,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     fun addUser(user: User) {
         val values = ContentValues()
         values.put("photo", user.photo)
+        values.put("qr", user.qr)
         values.put("is_owner", user.isOwner)
         values.put("is_scanned", user.isScanned)
         values.put("name", user.name)
@@ -77,6 +80,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         values.put("address_second", user.addressSecond)
         values.put("vk", user.vk)
         values.put("facebook", user.facebook)
+        values.put("instagram", user.instagram)
         values.put("twitter", user.twitter)
         values.put("notes", user.notes)
         val db = this.writableDatabase
@@ -88,7 +92,6 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         val values = ContentValues()
         values.put("color", card.color)
         values.put("title", card.title)
-        values.put("qr", card.qr)
         values.put("user_id", card.userId)
         val db = this.writableDatabase
         db.insert("cards", null, values)
@@ -112,9 +115,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         return db.rawQuery("SELECT * FROM users WHERE is_owner = 1", null)
     }
 
-    fun getQRFromCard(id : Int) : Cursor? {
+    fun getQRFromUser(id : Int) : Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT qr FROM cards WHERE id = $id", null)
+        return db.rawQuery("SELECT qr FROM users WHERE id = $id", null)
     }
 
     fun getScannedUsers(): Cursor? {
@@ -146,6 +149,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             "CREATE TABLE users(" +
                     "id INTEGER PRIMARY KEY, " +
                     "photo BLOB," +
+                    "qr BLOB," +
                     "is_owner INTEGER," +
                     "is_scanned INTEGER," +
                     "name TEXT," +
@@ -161,6 +165,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     "address_second TEXT," +
                     "vk TEXT," +
                     "facebook TEXT," +
+                    "instagram TEXT," +
                     "twitter TEXT," +
                     "notes TEXT" +
                     ")"
@@ -169,7 +174,6 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             "CREATE TABLE cards(" +
                     "id INTEGER PRIMARY KEY," +
                     "color INTEGER," +
-                    "qr BLOB," +
                     "title TEXT," +
                     "user_id INTEGER" +
                     ")"

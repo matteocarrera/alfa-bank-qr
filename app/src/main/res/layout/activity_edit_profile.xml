@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Редактирование профиля"
+        android:text="@string/edit_profile_title"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@id/back"
@@ -55,10 +55,16 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"/>
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/qr"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Изменить"
+                    android:text="@string/change"
                     android:textColor="@android:color/black"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
@@ -69,6 +75,7 @@
 
             <EditText
                 android:id="@+id/surname"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -77,10 +84,11 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:maxLines="1"
-                android:hint="Фамилия"/>
+                android:hint="@string/surname"/>
 
             <EditText
                 android:id="@+id/name"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -89,10 +97,11 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:maxLines="1"
-                android:hint="Имя"/>
+                android:hint="@string/name"/>
 
             <EditText
                 android:id="@+id/patronymic"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -101,11 +110,13 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:maxLines="1"
-                android:hint="Отчество"/>
+                android:hint="@string/patronymic"/>
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/company"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -115,13 +126,16 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_company"
+                android:drawableStart="@drawable/ic_company"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="Компания"/>
+                android:hint="@string/company" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/job_title"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -131,9 +145,10 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_manager"
+                android:drawableStart="@drawable/ic_manager"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="Должность"/>
+                android:hint="@string/jobTitle" />
 
             <EditText
                 android:id="@+id/mobile"
@@ -146,13 +161,15 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_mobile"
+                android:drawableStart="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
                 android:inputType="phone"
-                android:hint="Мобильный номер"/>
+                android:hint="@string/mobile" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/mobile_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,10 +180,11 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_mobile"
+                android:drawableStart="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
                 android:inputType="phone"
-                android:hint="Мобильный номер (другой)"/>
+                android:hint="@string/mobileSecond" />
 
             <EditText
                 android:id="@+id/email"
@@ -178,13 +196,15 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:drawableLeft="@drawable/ic_email"
+                android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
-                android:hint="email"/>
+                android:hint="@string/email" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/email_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,13 +214,15 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:drawableLeft="@drawable/ic_email"
+                android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
-                android:hint="email (другой)"/>
+                android:hint="@string/emailSecond" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -211,12 +233,14 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_location"
+                android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="Адрес"/>
+                android:hint="@string/address" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/address_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,12 +251,14 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_location"
+                android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="Адрес (другой)"/>
+                android:hint="@string/addressSecond" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/vk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -243,12 +269,14 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_vk"
+                android:drawableStart="@drawable/ic_vk"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="vk"/>
+                android:hint="@string/vk" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -259,12 +287,32 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_facebook"
+                android:drawableStart="@drawable/ic_facebook"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="facebook"/>
+                android:hint="@string/facebook" />
 
             <EditText
                 android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
+                android:id="@+id/instagram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                android:drawableLeft="@drawable/ic_instagram"
+                android:drawableStart="@drawable/ic_instagram"
+                android:drawablePadding="5dp"
+                android:maxLines="1"
+                android:hint="@string/instagram" />
+
+            <EditText
+                android:drawableRight="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_close"
                 android:id="@+id/twitter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -275,9 +323,10 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
                 android:drawableLeft="@drawable/ic_twitter"
+                android:drawableStart="@drawable/ic_twitter"
                 android:drawablePadding="5dp"
                 android:maxLines="1"
-                android:hint="twitter"/>
+                android:hint="@string/twitter" />
 
             <EditText
                 android:id="@+id/notes"
@@ -289,7 +338,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="10dp"
                 android:lines="3"
-                android:hint="Заметки"/>
+                android:hint="@string/notes"/>
 
             <LinearLayout
                 android:id="@+id/add_field"
@@ -304,11 +353,12 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/ic_add"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Добавить поле"
+                    android:text="@string/addField"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"/>
             </LinearLayout>
@@ -322,7 +372,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="15dp"
-                android:text="Сохранить"
+                android:text="@string/save"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textAllCaps="false"
