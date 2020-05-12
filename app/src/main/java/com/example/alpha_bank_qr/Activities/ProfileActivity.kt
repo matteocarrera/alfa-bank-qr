@@ -11,7 +11,6 @@ import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_profile.*
 
-
 class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

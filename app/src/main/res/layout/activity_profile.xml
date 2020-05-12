@@ -13,7 +13,7 @@
         android:layout_width="33dp"
         android:layout_height="33dp"
         app:srcCompat="@drawable/ic_info"
-        android:tint="@android:color/black"
+        android:tint="@color/colorTextPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="1dp"
@@ -46,7 +46,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
         android:text="@string/edit_profile"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -114,7 +114,10 @@
         android:background="@android:color/white"
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@drawable/bottom_menu_item_selector"
+        app:itemBackground="@drawable/bottom_menu_item_selector"
         app:menu="@menu/bottom_navigation_menu"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

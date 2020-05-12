@@ -1,6 +1,7 @@
 package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -67,7 +68,6 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     val user = DataUtils.parseDataToUser(selectedItems, null)
 
                     val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
-                    println(user.toString())
 
                     dbHelper.close()
                     setQRWindow(bitmap)
@@ -85,10 +85,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                 selectedItems.size == 0 -> {
                     Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
                 }
-                else -> {
-                    saveCardToDatabase()
-                    goToActivity(CardsActivity::class.java)
-                }
+                else -> saveCardToDatabase()
             }
         }
     }
@@ -135,18 +132,35 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
 
     private fun saveCardToDatabase() {
         val dbHelper = QRDatabaseHelper(this)
-        var cursor = dbHelper.getOwnerUser()
-        cursor!!.moveToFirst()
-        val user = DataUtils.parseDataToUser(selectedItems, null)
-        val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
-        user.qr = DataUtils.getImageInByteArray(bitmap)
-        dbHelper.addUser(user)
-        cursor = dbHelper.getLastUserFromDb()
-        if (cursor!!.count != 0){
-            cursor.moveToFirst()
-            val userId = cursor.getInt(cursor.getColumnIndex("id"))
-            dbHelper.addCard(Card(0, mDefaultColor, card_title.text.toString(), userId))
+        var cursor = dbHelper.getAllCardsNames()
+        if (titleExists(cursor!!, card_title.text.toString().trimStart().trimEnd()))
+            Toast.makeText(this, "Визитка с таким именем уже существует!", Toast.LENGTH_SHORT).show()
+        else {
+            cursor = dbHelper.getOwnerUser()
+            cursor!!.moveToFirst()
+            val user = DataUtils.parseDataToUser(selectedItems, null)
+            val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+            user.qr = DataUtils.getImageInByteArray(bitmap)
+            dbHelper.addUser(user)
+            cursor = dbHelper.getLastUserFromDb()
+            if (cursor!!.count != 0){
+                cursor.moveToFirst()
+                val userId = cursor.getInt(cursor.getColumnIndex("id"))
+                dbHelper.addCard(Card(0, mDefaultColor, card_title.text.toString().trimStart().trimEnd(), userId))
+            }
+            goToActivity(CardsActivity::class.java)
         }
+    }
+
+    private fun titleExists(cursor : Cursor, currentTitle : String) : Boolean {
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val title = cursor.getString(cursor.getColumnIndex("title"))
+                if (title == currentTitle) return true
+                cursor.moveToNext()
+            }
+        }
+        return false
     }
 
     private fun goToActivity(cls : Class<*>) {

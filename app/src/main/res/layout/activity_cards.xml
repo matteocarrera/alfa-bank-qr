@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/my_cards"
                     android:textSize="20sp"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorTextPrimary"
                     android:layout_marginLeft="15dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="15dp" />
@@ -68,7 +68,7 @@
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/ic_hide"
                     android:layout_marginLeft="15dp"
-                    android:tint="@android:color/black"
+                    android:tint="@color/colorTextPrimary"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="15dp" />
             </LinearLayout>
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/saved_cards"
                     android:textSize="20sp"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorTextPrimary"
                     android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:layout_gravity="center_vertical"/>
@@ -103,7 +103,7 @@
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/ic_hide"
                     android:layout_marginLeft="15dp"
-                    android:tint="@android:color/black"
+                    android:tint="@color/colorTextPrimary"
                     android:layout_marginStart="15dp"
                     android:layout_gravity="center_vertical"/>
             </LinearLayout>
@@ -130,8 +130,11 @@
         android:background="@android:color/white"
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@drawable/bottom_menu_item_selector"
+        app:itemBackground="@drawable/bottom_menu_item_selector"
         app:menu="@menu/bottom_navigation_menu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

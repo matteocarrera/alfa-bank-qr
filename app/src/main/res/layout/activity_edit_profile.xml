@@ -13,7 +13,7 @@
         android:layout_width="33dp"
         android:layout_height="33dp"
         app:srcCompat="@drawable/ic_back"
-        android:tint="@android:color/black"
+        android:tint="@color/colorTextPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="1dp"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/edit_profile_title"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@id/back"
         app:layout_constraintBottom_toBottomOf="@id/back"
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/change"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorTextPrimary"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
                     android:textSize="16sp"
@@ -83,6 +83,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/surname"/>
 
@@ -96,6 +97,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/name"/>
 
@@ -109,6 +111,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/patronymic"/>
 
@@ -128,6 +131,7 @@
                 android:drawableLeft="@drawable/ic_company"
                 android:drawableStart="@drawable/ic_company"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/company" />
 
@@ -147,6 +151,7 @@
                 android:drawableLeft="@drawable/ic_manager"
                 android:drawableStart="@drawable/ic_manager"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/jobTitle" />
 
@@ -163,6 +168,7 @@
                 android:drawableLeft="@drawable/ic_mobile"
                 android:drawableStart="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="phone"
                 android:hint="@string/mobile" />
@@ -182,6 +188,7 @@
                 android:drawableLeft="@drawable/ic_mobile"
                 android:drawableStart="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="phone"
                 android:hint="@string/mobileSecond" />
@@ -198,6 +205,7 @@
                 android:drawableLeft="@drawable/ic_email"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
                 android:hint="@string/email" />
@@ -216,6 +224,7 @@
                 android:drawableLeft="@drawable/ic_email"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
                 android:hint="@string/emailSecond" />
@@ -235,6 +244,7 @@
                 android:drawableLeft="@drawable/ic_location"
                 android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/address" />
 
@@ -253,6 +263,7 @@
                 android:drawableLeft="@drawable/ic_location"
                 android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/addressSecond" />
 
@@ -271,6 +282,7 @@
                 android:drawableLeft="@drawable/ic_vk"
                 android:drawableStart="@drawable/ic_vk"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/vk" />
 
@@ -289,6 +301,7 @@
                 android:drawableLeft="@drawable/ic_facebook"
                 android:drawableStart="@drawable/ic_facebook"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/facebook" />
 
@@ -307,6 +320,7 @@
                 android:drawableLeft="@drawable/ic_instagram"
                 android:drawableStart="@drawable/ic_instagram"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/instagram" />
 
@@ -325,6 +339,7 @@
                 android:drawableLeft="@drawable/ic_twitter"
                 android:drawableStart="@drawable/ic_twitter"
                 android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/twitter" />
 
@@ -337,6 +352,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="10dp"
+                android:textColor="@color/colorTextPrimary"
                 android:lines="3"
                 android:hint="@string/notes"/>
 
@@ -360,7 +376,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/addField"
                     android:textSize="18sp"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@color/colorTextPrimary"/>
             </LinearLayout>
 
             <Button

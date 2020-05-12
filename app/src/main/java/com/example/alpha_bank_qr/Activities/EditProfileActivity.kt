@@ -23,6 +23,12 @@ import kotlinx.android.synthetic.main.activity_edit_profile.*
 
 class EditProfileActivity : AppCompatActivity() {
 
+    /*
+        Используем для того, чтобы добавить доп. поля для заполнения профиля
+        fieldsHints - Список с именами полей на русском языке
+        fieldsNames - Список с самими полями, используем для того, чтобы скрывать/отображать поля
+                      для пользователя в интерфейсе
+     */
     private val fieldsHints = ArrayList<String>()
     private var fieldsNames = ArrayList<EditText>()
 
@@ -64,6 +70,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Узнаем для каждого поля его текущее состояние для конкретного профиля пользователя
     private fun initializeFields() {
         for (i in fieldsNames.indices) {
             checkForVisibility(fieldsNames[i])
@@ -71,6 +78,14 @@ class EditProfileActivity : AppCompatActivity() {
         fieldsHints.sort()
     }
 
+    // Если поле пустое, то добавляем его в список тех, которые можно отображать при нажатии на кнопку "добавить поле"
+    private fun checkForVisibility(editText: EditText) {
+        if (editText.visibility == View.GONE &&
+            !fieldsHints.contains(editText.hint.toString())) fieldsHints.add(editText.hint.toString())
+        else if (editText.visibility == View.VISIBLE) fieldsHints.remove(editText.hint.toString())
+    }
+
+    // Функция для реализации возможности удаления доп. полей
     private fun deleteField(editText: EditText, event: MotionEvent): Boolean {
         val DRAWABLE_RIGHT = 2
         if (event.action == MotionEvent.ACTION_UP) {
@@ -85,12 +100,6 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
         return false
-    }
-
-    private fun checkForVisibility(editText: EditText) {
-        if (editText.visibility == View.GONE &&
-            !fieldsHints.contains(editText.hint.toString())) fieldsHints.add(editText.hint.toString())
-        else if (editText.visibility == View.VISIBLE) fieldsHints.remove(editText.hint.toString())
     }
 
     private fun changeFieldVisibility(name : String, visibility : Int) {
@@ -200,13 +209,5 @@ class EditProfileActivity : AppCompatActivity() {
             instagram.text.toString(),
             twitter.text.toString(),
             notes.text.toString())
-    }
-
-    private fun goToActivity(cls : Class<*>) {
-        val intent = Intent(this, cls)
-        intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-        startActivity(intent)
-        overridePendingTransition(0, 0)
-        finish()
     }
 }

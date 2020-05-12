@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_scan.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import net.glxn.qrgen.android.QRCode
 
-
 class ScanActivity : AppCompatActivity() {
 
     public override fun onCreate(state: Bundle?) {

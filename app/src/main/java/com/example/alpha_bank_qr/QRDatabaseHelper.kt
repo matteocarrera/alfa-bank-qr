@@ -140,6 +140,11 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         return db.rawQuery("SELECT * FROM cards", null)
     }
 
+    fun getAllCardsNames(): Cursor? {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT title FROM cards", null)
+    }
+
     companion object {
         // If you change the database schema, you must increment the database version.
         const val DATABASE_VERSION = 1
