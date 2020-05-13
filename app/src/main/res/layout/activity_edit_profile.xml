@@ -115,9 +115,8 @@
                 android:maxLines="1"
                 android:hint="@string/patronymic"/>
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/company"
                 android:inputType="text"
                 android:layout_width="match_parent"
@@ -128,16 +127,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_company"
-                android:drawableStart="@drawable/ic_company"
+                app:drawableStartCompat="@drawable/ic_company"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/company" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/job_title"
                 android:inputType="text"
                 android:layout_width="match_parent"
@@ -148,14 +145,13 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_manager"
-                android:drawableStart="@drawable/ic_manager"
+                app:drawableStartCompat="@drawable/ic_manager"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/jobTitle" />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,17 +161,15 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_mobile"
-                android:drawableStart="@drawable/ic_mobile"
+                app:drawableStartCompat="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="phone"
                 android:hint="@string/mobile" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/mobile_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,15 +179,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_mobile"
-                android:drawableStart="@drawable/ic_mobile"
+                app:drawableStartCompat="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="phone"
                 android:hint="@string/mobileSecond" />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -202,17 +195,15 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
-                android:drawableLeft="@drawable/ic_email"
-                android:drawableStart="@drawable/ic_email"
+                app:drawableStartCompat="@drawable/ic_email"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
                 android:hint="@string/email" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/email_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -221,17 +212,15 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
-                android:drawableLeft="@drawable/ic_email"
-                android:drawableStart="@drawable/ic_email"
+                app:drawableStartCompat="@drawable/ic_email"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
                 android:hint="@string/emailSecond" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -241,16 +230,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawableStart="@drawable/ic_location"
+                app:drawableStartCompat="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/address" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/address_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -260,16 +247,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawableStart="@drawable/ic_location"
+                app:drawableStartCompat="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/addressSecond" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/vk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -279,16 +264,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_vk"
-                android:drawableStart="@drawable/ic_vk"
+                app:drawableStartCompat="@drawable/ic_vk"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/vk" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -298,16 +281,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_facebook"
-                android:drawableStart="@drawable/ic_facebook"
+                app:drawableStartCompat="@drawable/ic_facebook"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/facebook" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/instagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -317,16 +298,14 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_instagram"
-                android:drawableStart="@drawable/ic_instagram"
+                app:drawableStartCompat="@drawable/ic_instagram"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/instagram" />
 
-            <EditText
-                android:drawableRight="@drawable/ic_close"
-                android:drawableEnd="@drawable/ic_close"
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/twitter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -336,8 +315,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_twitter"
-                android:drawableStart="@drawable/ic_twitter"
+                app:drawableStartCompat="@drawable/ic_twitter"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"

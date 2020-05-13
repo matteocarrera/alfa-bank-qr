@@ -2,8 +2,8 @@ package com.example.alpha_bank_qr.Utils
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ListView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.alpha_bank_qr.R
 
 class ListUtils {
@@ -24,14 +24,14 @@ class ListUtils {
             mListView.requestLayout()
         }
 
-        fun setVisibility(layout: LinearLayout, list: ListView, image: ImageView) {
+        fun setVisibility(layout: ConstraintLayout, list: ListView, image: ImageView) {
             layout.setOnClickListener {
                 if (list.visibility == View.VISIBLE) {
                     list.visibility = View.GONE
-                    image.setImageResource(R.drawable.ic_expand)
+                    image.setImageResource(R.drawable.ic_down)
                 } else {
                     list.visibility = View.VISIBLE
-                    image.setImageResource(R.drawable.ic_hide)
+                    image.setImageResource(R.drawable.ic_up)
                 }
             }
         }

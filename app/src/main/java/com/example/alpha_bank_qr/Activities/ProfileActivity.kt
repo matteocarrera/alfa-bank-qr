@@ -29,17 +29,14 @@ class ProfileActivity : AppCompatActivity() {
 
         info.setOnClickListener {
             ProgramUtils.goToActivityAnimated(this, AboutAppActivity::class.java)
-            finish()
         }
 
         edit_profile.setOnClickListener {
             ProgramUtils.goToActivityAnimated(this, EditProfileActivity::class.java)
-            finish()
         }
 
         add_profile.setOnClickListener {
             ProgramUtils.goToActivityAnimated(this, EditProfileActivity::class.java)
-            finish()
         }
 
         setDataToListView()

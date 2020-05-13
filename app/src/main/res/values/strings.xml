@@ -52,6 +52,6 @@
 
     <!-- Bottom Navigation Menu -->
     <string name="cards">Визитки</string>
-    <string name="scan_card">Сканировать</string>
+    <string name="scan_card">Камера</string>
     <string name="profile">Профиль</string>
 </resources>

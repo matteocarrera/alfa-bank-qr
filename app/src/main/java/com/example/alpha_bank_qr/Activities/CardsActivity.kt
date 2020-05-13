@@ -3,8 +3,11 @@ package com.example.alpha_bank_qr.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
 import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
 import com.example.alpha_bank_qr.Entities.Card
@@ -42,14 +45,15 @@ class CardsActivity : AppCompatActivity() {
             finish()
         }
 
-        saved_cards_list.visibility = View.GONE
-        saved_cards_image.setImageResource(R.drawable.ic_expand)
+        /*saved_cards_list.visibility = View.GONE
+        saved_cards_image.setImageResource(R.drawable.ic_down)
         ListUtils.setVisibility(my_cards_title, my_cards_list, my_cards_image)
-        ListUtils.setVisibility(saved_cards_title, saved_cards_list, saved_cards_image)
+        ListUtils.setVisibility(saved_cards_title, saved_cards_list, saved_cards_image)*/
 
         val cards = MyCardListAdapter.setMyCardsToView(this)
         val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
         my_cards_list.adapter = myCardsAdapter
+        countCheck(my_cards_list, my_cards_notification)
         my_cards_list.setOnItemClickListener { adapterView, _, i, _ ->
             val item = adapterView?.getItemAtPosition(i) as Card
             val intent = Intent(this, CardActivity::class.java)
@@ -61,6 +65,7 @@ class CardsActivity : AppCompatActivity() {
         val savedCards = SavedCardListAdapter.setSavedCardsToView(this)
         val savedCardsAdapter = SavedCardListAdapter(this, savedCards.toTypedArray())
         saved_cards_list.adapter = savedCardsAdapter
+        countCheck(saved_cards_list, saved_cards_notification)
         saved_cards_list.setOnItemClickListener { adapterView, _, i, _ ->
             val item = adapterView?.getItemAtPosition(i) as SavedCard
             val intent = Intent(this, CardActivity::class.java)
@@ -70,6 +75,11 @@ class CardsActivity : AppCompatActivity() {
 
         ListUtils.setDynamicHeight(my_cards_list);
         ListUtils.setDynamicHeight(saved_cards_list);
+    }
+
+    private fun countCheck(list : ListView, notification : TextView) {
+        if (list.count == 0) notification.visibility = View.VISIBLE
+        else notification.visibility = View.GONE
     }
 
     private fun goToActivity(cls : Class<*>) {
