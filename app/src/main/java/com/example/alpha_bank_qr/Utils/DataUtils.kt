@@ -24,6 +24,9 @@ class DataUtils {
             DataItem("email (другой)", "email_second"),
             DataItem("адрес", "address"),
             DataItem("адрес (другой)", "address_second"),
+            DataItem("Сбербанк (расчетный счет)", "sberbank"),
+            DataItem("ВТБ (расчетный счет)", "vtb"),
+            DataItem("Альфа-Банк (расчетный счет)", "alfabank"),
             DataItem("vk", "vk"),
             DataItem("facebook", "facebook"),
             DataItem("instagram", "instagram"),
@@ -83,6 +86,9 @@ class DataUtils {
                     "email (другой)" -> user.emailSecond = it.description
                     "адрес" -> user.address = it.description
                     "адрес (другой)" -> user.addressSecond = it.description
+                    "Сбербанк (расчетный счет)" -> user.sberbank = it.description
+                    "ВТБ (расчетный счет)" -> user.vtb = it.description
+                    "Альфа-Банк (расчетный счет)" -> user.alfabank = it.description
                     "vk" -> user.vk = it.description
                     "facebook" -> user.facebook = it.description
                     "instagram" -> user.instagram = it.description

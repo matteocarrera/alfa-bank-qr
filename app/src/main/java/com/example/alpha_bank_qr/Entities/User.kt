@@ -28,6 +28,9 @@ class User(
     var emailSecond: String = "",
     var address: String = "",
     var addressSecond: String = "",
+    var sberbank: String = "",
+    var vtb: String = "",
+    var alfabank: String = "",
     var vk: String = "",
     var facebook: String = "",
     var instagram: String = "",
@@ -35,6 +38,6 @@ class User(
     var notes : String = ""
 ) {
     override fun toString(): String {
-        return "$name,$surname,$patronymic,$company,$jobTitle,$mobile,$mobileSecond,$email,$emailSecond,$address,$addressSecond,$vk,$facebook,$instagram,$twitter,$notes"
+        return "$name,$surname,$patronymic,$company,$jobTitle,$mobile,$mobileSecond,$email,$emailSecond,$address,$addressSecond,$sberbank,$vtb,$alfabank,$vk,$facebook,$instagram,$twitter,$notes"
     }
 }

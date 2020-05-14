@@ -35,6 +35,9 @@
     <string name="emailSecond">email (другой)</string>
     <string name="address">Адрес</string>
     <string name="addressSecond">Адрес (другой)</string>
+    <string name="sberbank">Сбербанк (расчетный счет)</string>
+    <string name="vtb">ВТБ (расчетный счет)</string>
+    <string name="alfabank">Альфа-Банк (расчетный счет)</string>
     <string name="vk">vk</string>
     <string name="facebook">facebook</string>
     <string name="instagram">instagram</string>

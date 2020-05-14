@@ -46,4 +46,6 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
+
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
 }

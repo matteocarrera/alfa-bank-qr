@@ -23,11 +23,14 @@ class Json {
             user.emailSecond = userData[8]
             user.address = userData[9]
             user.addressSecond = userData[10]
-            user.vk = userData[11]
-            user.facebook = userData[12]
-            user.instagram = userData[13]
-            user.twitter = userData[14]
-            user.notes = userData[15]
+            user.sberbank = userData[11]
+            user.vtb = userData[12]
+            user.alfabank = userData[13]
+            user.vk = userData[14]
+            user.facebook = userData[15]
+            user.instagram = userData[16]
+            user.twitter = userData[17]
+            user.notes = userData[18]
             return user
         }
     }

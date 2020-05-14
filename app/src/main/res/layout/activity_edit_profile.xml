@@ -255,6 +255,63 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 app:drawableEndCompat="@drawable/ic_close"
+                android:id="@+id/sberbank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_sberbank"
+                android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="20"
+                android:hint="@string/sberbank" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
+                android:id="@+id/vtb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_vtb"
+                android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="20"
+                android:hint="@string/vtb" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
+                android:id="@+id/alfabank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_alfabank"
+                android:drawablePadding="5dp"
+                android:textColor="@color/colorTextPrimary"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="20"
+                android:hint="@string/alfabank" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/vk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

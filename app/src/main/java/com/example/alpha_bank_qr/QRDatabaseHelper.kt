@@ -51,6 +51,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         values.put("email_second", user.emailSecond)
         values.put("address", user.address)
         values.put("address_second", user.addressSecond)
+        values.put("sberbank", user.sberbank)
+        values.put("vtb", user.vtb)
+        values.put("alfabank", user.alfabank)
         values.put("vk", user.vk)
         values.put("facebook", user.facebook)
         values.put("instagram", user.instagram)
@@ -78,6 +81,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         values.put("email_second", user.emailSecond)
         values.put("address", user.address)
         values.put("address_second", user.addressSecond)
+        values.put("sberbank", user.sberbank)
+        values.put("vtb", user.vtb)
+        values.put("alfabank", user.alfabank)
         values.put("vk", user.vk)
         values.put("facebook", user.facebook)
         values.put("instagram", user.instagram)
@@ -168,6 +174,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     "email_second TEXT," +
                     "address TEXT," +
                     "address_second TEXT," +
+                    "sberbank TEXT," +
+                    "vtb TEXT," +
+                    "alfabank TEXT," +
                     "vk TEXT," +
                     "facebook TEXT," +
                     "instagram TEXT," +

@@ -38,7 +38,7 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_profile)
 
         fieldsNames = arrayListOf(
-            company, job_title, mobile_second, email_second, address, address_second, vk, facebook, instagram, twitter)
+            company, job_title, mobile_second, email_second, address, address_second, sberbank, vtb, alfabank, vk, facebook, instagram, twitter)
 
         setDataToEdittext()
 
@@ -110,6 +110,9 @@ class EditProfileActivity : AppCompatActivity() {
             "Мобильный номер (другой)" -> mobile_second.visibility = visibility
             "Адрес" -> address.visibility = visibility
             "Адрес (другой)" -> address_second.visibility = visibility
+            "Сбербанк (расчетный счет)" -> sberbank.visibility = visibility
+            "ВТБ (расчетный счет)" -> vtb.visibility = visibility
+            "Альфа-Банк (расчетный счет)" -> alfabank.visibility = visibility
             "vk" -> vk.visibility = visibility
             "facebook" -> facebook.visibility = visibility
             "instagram" -> instagram.visibility = visibility
@@ -150,6 +153,9 @@ class EditProfileActivity : AppCompatActivity() {
             email_second.setText(cursor.getString(cursor.getColumnIndex("email_second")))
             address.setText(cursor.getString(cursor.getColumnIndex("address")))
             address_second.setText(cursor.getString(cursor.getColumnIndex("address_second")))
+            sberbank.setText(cursor.getString(cursor.getColumnIndex("sberbank")))
+            vtb.setText(cursor.getString(cursor.getColumnIndex("vtb")))
+            alfabank.setText(cursor.getString(cursor.getColumnIndex("alfabank")))
             vk.setText(cursor.getString(cursor.getColumnIndex("vk")))
             facebook.setText(cursor.getString(cursor.getColumnIndex("facebook")))
             instagram.setText(cursor.getString(cursor.getColumnIndex("instagram")))
@@ -204,6 +210,9 @@ class EditProfileActivity : AppCompatActivity() {
             email_second.text.toString(),
             address.text.toString(),
             address_second.text.toString(),
+            sberbank.text.toString(),
+            vtb.text.toString(),
+            alfabank.text.toString(),
             vk.text.toString(),
             facebook.text.toString(),
             instagram.text.toString(),
