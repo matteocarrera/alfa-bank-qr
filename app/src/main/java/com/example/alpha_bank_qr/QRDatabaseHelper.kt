@@ -131,9 +131,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         return db.rawQuery("SELECT * FROM users WHERE is_scanned = 1", null)
     }
 
-    fun getAllUsersQR(): Cursor? {
+    fun getScannedUsersQR(): Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT qr FROM users", null)
+        return db.rawQuery("SELECT qr FROM users WHERE is_scanned = 1", null)
     }
 
     fun getUser(id : Int): Cursor? {
@@ -160,7 +160,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         // Функция для проверки по QR коду, существует ли такая визитка уже или еще нет
         fun checkCardForExistence(context: Context, qr : ByteArray) : Boolean {
             val dbHelper = QRDatabaseHelper(context)
-            val cursor = dbHelper.getAllUsersQR()
+            val cursor = dbHelper.getScannedUsersQR()
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
                     val qrFromDB = cursor.getBlob(cursor.getColumnIndex("qr"))
