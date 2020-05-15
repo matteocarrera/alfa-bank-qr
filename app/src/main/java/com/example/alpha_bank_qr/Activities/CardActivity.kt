@@ -131,7 +131,7 @@ class CardActivity : AppCompatActivity() {
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val clip = ClipData.newPlainText("text", item.description)
                         clipboard.setPrimaryClip(clip)
-                        Toast.makeText(this, item.title + " " + "скопирован", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Данные скопированы", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

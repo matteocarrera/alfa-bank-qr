@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/ok"
+        app:layout_constraintBottom_toTopOf="@id/share"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -20,7 +20,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginLeft="15dp"
@@ -31,16 +30,14 @@
         android:textAllCaps="false"
         android:background="@drawable/button_main_style"
         app:layout_constraintTop_toBottomOf="@id/qr_img"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ok"/>
 
     <Button
         android:id="@+id/ok"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginLeft="15dp"
@@ -50,9 +47,9 @@
         android:textSize="18sp"
         android:textAllCaps="false"
         android:background="@drawable/button_style"
-        app:layout_constraintTop_toBottomOf="@id/qr_img"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/share"
         app:layout_constraintStart_toEndOf="@id/share"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/share"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

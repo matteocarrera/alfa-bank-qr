@@ -131,6 +131,11 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         return db.rawQuery("SELECT * FROM users WHERE is_scanned = 1", null)
     }
 
+    fun getAllUsersQR(): Cursor? {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT qr FROM users", null)
+    }
+
     fun getUser(id : Int): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM users WHERE id = $id", null)
@@ -152,6 +157,24 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     }
 
     companion object {
+        // Функция для проверки по QR коду, существует ли такая визитка уже или еще нет
+        fun checkCardForExistence(context: Context, qr : ByteArray) : Boolean {
+            val dbHelper = QRDatabaseHelper(context)
+            val cursor = dbHelper.getAllUsersQR()
+            if (cursor!!.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    val qrFromDB = cursor.getBlob(cursor.getColumnIndex("qr"))
+                    if (qrFromDB != null && qr.contentEquals(qrFromDB)) {
+                        dbHelper.close()
+                        return true
+                    }
+                    cursor.moveToNext()
+                }
+            }
+            dbHelper.close()
+            return false
+        }
+
         // If you change the database schema, you must increment the database version.
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "QRDatabase.db"

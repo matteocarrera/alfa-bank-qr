@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
@@ -34,6 +35,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
         back.setOnClickListener {
             ProgramUtils.goToActivityAnimated(this, CardsActivity::class.java)

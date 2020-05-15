@@ -59,17 +59,25 @@ class ScanActivity : AppCompatActivity() {
                     goToActivity(CardsActivity::class.java)
                 }
 
+                // Обрабатываем результат сканирования QR
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
                         val user = Json.fromJson(rawResult.text)
                         val bitmap = QRCode.from(rawResult.text).withCharset("utf-8").withSize(1000, 1000).bitmap()
                         user.qr = DataUtils.getImageInByteArray(bitmap)
-                        val dbHelper = QRDatabaseHelper(this@ScanActivity)
-                        dbHelper.addUser(user)
 
-                        onBackPressed()
+                        // Проверяем по QR, существует ли уже такая визитка или нет
+                        val flag = QRDatabaseHelper.checkCardForExistence(this@ScanActivity, user.qr!!)
+                        val dbHelper = QRDatabaseHelper(this@ScanActivity)
                         val intent = Intent(this@ScanActivity, CardsActivity::class.java)
-                        intent.putExtra("scan", true)
+                        if (flag) {
+                            intent.putExtra("fail", true)
+                        } else {
+                            dbHelper.addUser(user)
+                            intent.putExtra("success", true)
+                        }
+                        onBackPressed()
+                        dbHelper.close()
                         startActivity(intent)
                     }
                 }

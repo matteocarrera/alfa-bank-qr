@@ -34,9 +34,11 @@ class CardsActivity : AppCompatActivity() {
 
         val bundle : Bundle? = intent.extras
         try {
-            val flag = bundle!!.getBoolean("scan")
+            val success = bundle!!.getBoolean("success")
+            val fail = bundle.getBoolean("fail")
 
-            if (flag) Toast.makeText(this, "Визитная карточка успешно добавлена!", Toast.LENGTH_SHORT).show()
+            if (success) Toast.makeText(this, "Визитная карточка успешно добавлена!", Toast.LENGTH_LONG).show()
+            if (fail) Toast.makeText(this, "Такая визитная карточка уже существует!", Toast.LENGTH_LONG).show()
         } catch (e : Exception) {}
 
         bottom_bar.menu.getItem(0).isChecked = true
@@ -113,22 +115,36 @@ class CardsActivity : AppCompatActivity() {
         addUserFromQR(result.text, bitmap)
     }
 
+    // Добавляем пользователя как визитку, считанную с QR изображения вне приложения
     private fun addUserFromQR(result : String, bitmap : Bitmap) {
         try {
             val user = Json.fromJson(result)
             user.qr = DataUtils.getImageInByteArray(bitmap)
-            val dbHelper = QRDatabaseHelper(this)
-            dbHelper.addUser(user)
-            Toast.makeText(this, "QR успешно считан!", Toast.LENGTH_SHORT).show()
+
+            // Проверяем по QR коду, есть ли такая визитка с человеком уже в списке или нет
+            val cardExists = QRDatabaseHelper.checkCardForExistence(this, user.qr!!)
+            if (cardExists) Toast.makeText(this, "Такая визитная карточка уже существует!", Toast.LENGTH_LONG).show()
+            else {
+                val dbHelper = QRDatabaseHelper(this)
+                dbHelper.addUser(user)
+                dbHelper.close()
+                Toast.makeText(this, "QR успешно считан!", Toast.LENGTH_LONG).show()
+            }
         } catch (e : Exception) {
-            Toast.makeText(this, "Ошибка считывания QR", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ошибка считывания QR", Toast.LENGTH_LONG).show()
         }
     }
 
     // Если список пуст, то устанавливаем соответствеющее уведомление
     private fun countCheck(list : ListView, notification : TextView) {
-        if (list.count == 0) notification.visibility = View.VISIBLE
-        else notification.visibility = View.GONE
+        if (list.count == 0) {
+            list.visibility = View.GONE
+            notification.visibility = View.VISIBLE
+        }
+        else {
+            list.visibility = View.VISIBLE
+            notification.visibility = View.GONE
+        }
     }
 
     private fun goToActivity(cls : Class<*>) {
