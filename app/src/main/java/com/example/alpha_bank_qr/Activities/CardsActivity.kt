@@ -24,6 +24,7 @@ import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import kotlinx.android.synthetic.main.activity_cards.*
+import net.glxn.qrgen.android.QRCode
 
 
 class CardsActivity : AppCompatActivity() {
@@ -112,13 +113,14 @@ class CardsActivity : AppCompatActivity() {
 
         val reader: Reader = MultiFormatReader()
         val result = reader.decode(bMap)
-        addUserFromQR(result.text, bitmap)
+        addUserFromQR(result.text)
     }
 
     // Добавляем пользователя как визитку, считанную с QR изображения вне приложения
-    private fun addUserFromQR(result : String, bitmap : Bitmap) {
+    private fun addUserFromQR(result : String) {
         try {
             val user = Json.fromJson(result)
+            val bitmap = QRCode.from(result).withCharset("utf-8").withSize(1000, 1000).bitmap()
             user.qr = DataUtils.getImageInByteArray(bitmap)
 
             // Проверяем по QR коду, есть ли такая визитка с человеком уже в списке или нет

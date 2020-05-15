@@ -1,20 +1,27 @@
 package com.example.alpha_bank_qr.Activities
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract.PhoneLookup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.QRDatabaseHelper
@@ -28,10 +35,17 @@ import kotlinx.android.synthetic.main.activity_qr.view.*
 
 class CardActivity : AppCompatActivity() {
 
-    var id : Int = 0
+    private var id : Int = 0
+    private var cursor : Cursor? = null
+    private var READ_CONTACTS_PERMISSION = 0
+    private var WRITE_CONTACTS_PERMISSION = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card)
+
+        READ_CONTACTS_PERMISSION = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+        WRITE_CONTACTS_PERMISSION = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS)
 
         val bundle : Bundle? = intent.extras
         id = bundle!!.getInt("user_id")
@@ -44,10 +58,10 @@ class CardActivity : AppCompatActivity() {
 
         more.setOnClickListener {
             val dbHelper = QRDatabaseHelper(this)
-            val cursor = dbHelper.getUser(id)
-            if (cursor!!.count != 0) { cursor.moveToFirst() }
+            cursor = dbHelper.getUser(id)
+            if (cursor!!.count != 0) { cursor!!.moveToFirst() }
 
-            val flag = (cursor.getInt(cursor.getColumnIndex("is_scanned")) == 1)
+            val flag = (cursor!!.getInt(cursor!!.getColumnIndex("is_scanned")) == 1)
 
             val popupMenu = PopupMenu(this, more)
             if (flag) popupMenu.menuInflater.inflate(R.menu.saved_card_menu, popupMenu.menu)
@@ -63,7 +77,8 @@ class CardActivity : AppCompatActivity() {
                         goToActivity(CardsActivity::class.java)
                     }
                     R.id.export -> {
-                        startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor), null)))
+                        if (!contactExists(cursor!!.getString(cursor!!.getColumnIndex("mobile"))))
+                            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), null)))
                         dbHelper.close()
                     }
                     R.id.add_photo -> {
@@ -81,6 +96,45 @@ class CardActivity : AppCompatActivity() {
         setDataToListView(id)
     }
 
+    // Проверяем, существует ли такой контакт в списке контактов самого телефона, а не приложения
+    private fun contactExists(number: String?): Boolean {
+        if (READ_CONTACTS_PERMISSION != PackageManager.PERMISSION_GRANTED &&
+            WRITE_CONTACTS_PERMISSION != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
+                1)
+            return true
+        } else {
+            if (number != null) {
+                val lookupUri: Uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number))
+                val mPhoneNumberProjection = arrayOf(
+                    PhoneLookup._ID,
+                    PhoneLookup.NUMBER,
+                    PhoneLookup.DISPLAY_NAME)
+                val cur: Cursor? = contentResolver
+                    .query(lookupUri, mPhoneNumberProjection, null, null, null)
+                cur.use { cur ->
+                    if (cur != null) {
+                        if (cur.moveToFirst()) {
+                            Toast.makeText(this, "Контакт с таким мобильным номером уже существует!", Toast.LENGTH_LONG).show()
+                            return true
+                        }
+                    }
+                }
+                return false
+            } else return false
+        }
+    }
+
+    // Обрабатываем результат запроса на разрешение доступа к контактам телефона
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), null)))
+        }
+    }
+
+    // Обработка добавления фотографии для визитки пользователя
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
