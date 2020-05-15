@@ -110,6 +110,10 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         val  mAlertDialog = mBuilder.show()
 
         mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
+
+        mDialogView.share.setOnClickListener {
+            ProgramUtils.saveImage(this, bitmap)
+        }
     }
 
     private fun setDataToListView() {
@@ -152,6 +156,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         }
     }
 
+    // Проверяем, существует ли уже визитка с таким названием или нет
     private fun titleExists(cursor : Cursor, currentTitle : String) : Boolean {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {

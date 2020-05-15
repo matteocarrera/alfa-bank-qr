@@ -54,6 +54,7 @@
                     android:id="@+id/photo"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
+                    android:background="@color/colorPrimary"
                     android:layout_gravity="center"/>
                 <ImageView
                     android:visibility="gone"

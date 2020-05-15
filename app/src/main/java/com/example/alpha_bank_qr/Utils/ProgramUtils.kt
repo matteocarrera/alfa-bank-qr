@@ -1,17 +1,23 @@
 package com.example.alpha_bank_qr.Utils
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.ContactsContract
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
+import java.io.File
+import java.io.FileOutputStream
+
 
 class ProgramUtils {
     companion object {
@@ -52,6 +58,32 @@ class ProgramUtils {
             }
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + website + item.description))
             context.startActivity(intent)
+        }
+
+        @SuppressLint("SetWorldReadable")
+        fun saveImage(context: Context, bitmap: Bitmap) {
+            try {
+                val file = File(context.externalCacheDir, "qr.png")
+                val fOut = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+                fOut.flush()
+                fOut.close()
+                file.setReadable(true, false)
+                val photoURI = FileProvider.getUriForFile(
+                    context,
+                    context.applicationContext.packageName.toString() + ".provider",
+                    file
+                )
+                val shareIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    putExtra(Intent.EXTRA_STREAM, photoURI)
+                    type = "image/jpeg"
+                }
+                context.startActivity(Intent.createChooser(shareIntent, "Поделиться QR кодом с помощью"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         fun exportContact(user: User) : Intent {

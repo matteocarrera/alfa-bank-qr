@@ -29,16 +29,21 @@ class EditProfileActivity : AppCompatActivity() {
         fieldsNames - Список с самими полями, используем для того, чтобы скрывать/отображать поля
                       для пользователя в интерфейсе
      */
-    private val fieldsHints = ArrayList<String>()
-    private var fieldsNames = ArrayList<EditText>()
+    private val fieldsHints = arrayOf(
+        "Мобильный номер (другой)", "email (другой)", "Должность", "Компания",
+        "Сбербанк (расчетный счет)", "ВТБ (расчетный счет)", "Альфа-Банк (расчетный счет)",
+        "VK", "Facebook", "Instagram", "Twitter")
+    private var additionalFields = ArrayList<EditText>()
+    private var availableFields = ArrayList<String>()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        fieldsNames = arrayListOf(
-            company, job_title, mobile_second, email_second, address, address_second, sberbank, vtb, alfabank, vk, facebook, instagram, twitter)
+        additionalFields = arrayListOf(
+            company, job_title, mobile_second, email_second, address, address_second,
+            sberbank, vtb, alfabank, vk, facebook, instagram, twitter)
 
         setDataToEdittext()
 
@@ -57,8 +62,8 @@ class EditProfileActivity : AppCompatActivity() {
                 .start(this);
         }
 
-        for (i in fieldsNames.indices) {
-            fieldsNames[i].setOnTouchListener { _, event -> deleteField(fieldsNames[i], event) }
+        for (i in additionalFields.indices) {
+            additionalFields[i].setOnTouchListener { _, event -> deleteField(additionalFields[i], event) }
         }
     }
 
@@ -72,17 +77,16 @@ class EditProfileActivity : AppCompatActivity() {
 
     // Узнаем для каждого поля его текущее состояние для конкретного профиля пользователя
     private fun initializeFields() {
-        for (i in fieldsNames.indices) {
-            checkForVisibility(fieldsNames[i])
+        for (i in additionalFields.indices) {
+            checkForVisibility(additionalFields[i])
         }
-        fieldsHints.sort()
     }
 
     // Если поле пустое, то добавляем его в список тех, которые можно отображать при нажатии на кнопку "добавить поле"
     private fun checkForVisibility(editText: EditText) {
         if (editText.visibility == View.GONE &&
-            !fieldsHints.contains(editText.hint.toString())) fieldsHints.add(editText.hint.toString())
-        else if (editText.visibility == View.VISIBLE) fieldsHints.remove(editText.hint.toString())
+            !availableFields.contains(editText.hint.toString())) availableFields.add(editText.hint.toString())
+        else if (editText.visibility == View.VISIBLE) availableFields.remove(editText.hint.toString())
     }
 
     // Функция для реализации возможности удаления доп. полей
@@ -113,10 +117,10 @@ class EditProfileActivity : AppCompatActivity() {
             "Сбербанк (расчетный счет)" -> sberbank.visibility = visibility
             "ВТБ (расчетный счет)" -> vtb.visibility = visibility
             "Альфа-Банк (расчетный счет)" -> alfabank.visibility = visibility
-            "vk" -> vk.visibility = visibility
-            "facebook" -> facebook.visibility = visibility
-            "instagram" -> instagram.visibility = visibility
-            "twitter" -> twitter.visibility = visibility
+            "VK" -> vk.visibility = visibility
+            "Facebook" -> facebook.visibility = visibility
+            "Instagram" -> instagram.visibility = visibility
+            "Twitter" -> twitter.visibility = visibility
         }
     }
 
@@ -124,9 +128,16 @@ class EditProfileActivity : AppCompatActivity() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle("Добавить поле")
 
-        val fields = fieldsHints.toTypedArray()
+        val fieldsList = ArrayList<String>()
+        fieldsList.clear()
+        fieldsHints.forEach {
+            if (availableFields.contains(it)) fieldsList.add(it)
+        }
+
+        val fields = fieldsList.toTypedArray()
         builder.setItems(fields) { _, item ->
             val selectedText = fields[item]
+
             changeFieldVisibility(selectedText, View.VISIBLE)
             initializeFields()
         }
@@ -162,7 +173,7 @@ class EditProfileActivity : AppCompatActivity() {
             twitter.setText(cursor.getString(cursor.getColumnIndex("twitter")))
             notes.setText(cursor.getString(cursor.getColumnIndex("notes")))
         }
-        fieldsNames.forEach {
+        additionalFields.forEach {
             if (it.text.toString() == "") it.visibility = View.GONE
         }
     }

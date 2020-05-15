@@ -1,6 +1,9 @@
 package com.example.alpha_bank_qr.Activities
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -9,6 +12,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
@@ -123,6 +127,12 @@ class CardActivity : AppCompatActivity() {
                     "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.description)
                     "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.description)
                     "vk", "facebook", "instagram", "twitter" -> ProgramUtils.openWebsite(this, item)
+                    else -> {
+                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("text", item.description)
+                        clipboard.setPrimaryClip(clip)
+                        Toast.makeText(this, item.title + " " + "скопирован", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -152,6 +162,10 @@ class CardActivity : AppCompatActivity() {
             val  mAlertDialog = mBuilder.show()
 
             mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
+
+            mDialogView.share.setOnClickListener {
+                ProgramUtils.saveImage(this, bitmap)
+            }
         }
         dbHelper.close()
     }
