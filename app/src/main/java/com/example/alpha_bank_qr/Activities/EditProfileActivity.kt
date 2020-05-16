@@ -69,7 +69,6 @@ class EditProfileActivity : AppCompatActivity() {
         initializeFields()
 
         back.setOnClickListener {
-            ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
             finish()
         }
 

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SettingsActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/ic_back"
+        android:tint="@color/colorTextPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="1dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Настройки"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/back"
+        app:layout_constraintBottom_toBottomOf="@id/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/camera_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Доступ к камере"
+        android:textSize="18sp"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintTop_toBottomOf="@id/back"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"/>
+
+    <Switch
+        android:id="@+id/camera_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/camera_permission"
+        app:layout_constraintBottom_toBottomOf="@id/camera_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <TextView
+        android:id="@+id/gallery_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Доступ к галерее"
+        android:textSize="18sp"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintTop_toBottomOf="@id/camera_permission"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"/>
+
+    <Switch
+        android:id="@+id/gallery_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/gallery_permission"
+        app:layout_constraintBottom_toBottomOf="@id/gallery_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <TextView
+        android:id="@+id/call_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Доступ к звонкам"
+        android:textSize="18sp"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintTop_toBottomOf="@id/gallery_permission"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"/>
+
+    <Switch
+        android:id="@+id/call_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/call_permission"
+        app:layout_constraintBottom_toBottomOf="@id/call_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <TextView
+        android:id="@+id/contacts_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Доступ к звонкам"
+        android:textSize="18sp"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintTop_toBottomOf="@id/call_permission"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"/>
+
+    <Switch
+        android:id="@+id/contacts_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/contacts_permission"
+        app:layout_constraintBottom_toBottomOf="@id/contacts_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

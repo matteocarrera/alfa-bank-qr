@@ -40,7 +40,6 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
         back.setOnClickListener {
-            ProgramUtils.goToActivityAnimated(this, CardsActivity::class.java)
             finish()
         }
 

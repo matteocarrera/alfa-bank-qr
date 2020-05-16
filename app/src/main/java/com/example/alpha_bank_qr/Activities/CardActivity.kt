@@ -69,10 +69,19 @@ class CardActivity : AppCompatActivity() {
                 when(item.itemId) {
                     R.id.qr -> { setQRWindow(id) }
                     R.id.delete -> {
-                        dbHelper.deleteUser(id)
-                        if (!flag) dbHelper.deleteCard(cardId)
-                        dbHelper.close()
-                        goToActivity(CardsActivity::class.java)
+                        val builder = AlertDialog.Builder(this)
+                        builder.setTitle("Удаление визитки")
+                        builder.setMessage("Вы действительно хотите удалить данную визитку?")
+                        builder.setPositiveButton("Да"){ _, _ ->
+                            dbHelper.deleteUser(id)
+                            if (!flag) dbHelper.deleteCard(cardId)
+                            dbHelper.close()
+                            goToActivity(CardsActivity::class.java)
+                            Toast.makeText(this,"Визитка успешно удалена!",Toast.LENGTH_SHORT).show()
+                        }
+                        builder.setNegativeButton("Нет"){ _, _ -> }
+                        val dialog: AlertDialog = builder.create()
+                        dialog.show()
                     }
                     R.id.export -> {
                         if (!contactExists(cursor!!.getString(cursor!!.getColumnIndex("mobile"))))

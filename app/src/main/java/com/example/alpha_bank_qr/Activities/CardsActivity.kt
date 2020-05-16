@@ -52,9 +52,12 @@ class CardsActivity : AppCompatActivity() {
             true
         }
 
+        settings.setOnClickListener {
+            ProgramUtils.goToActivityAnimated(this, SettingsActivity::class.java)
+        }
+
         add_card.setOnClickListener {
             ProgramUtils.goToActivityAnimated(this, CreateCardActivity::class.java)
-            finish()
         }
 
         // Получение QR-визитки в виде изображения вне приложения

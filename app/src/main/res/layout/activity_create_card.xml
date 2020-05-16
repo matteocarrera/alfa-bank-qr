@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/create_card"
         android:textColor="@color/colorTextPrimary"
+        android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@id/back"
         app:layout_constraintBottom_toBottomOf="@id/back"
