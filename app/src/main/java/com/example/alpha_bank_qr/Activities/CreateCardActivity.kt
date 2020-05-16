@@ -3,6 +3,8 @@ package com.example.alpha_bank_qr.Activities
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -108,7 +110,11 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
             .setTitle("Покажите QR код")
             .setView(mDialogView)
 
-        mDialogView.qr_img.setImageBitmap(bitmap)
+        val d: Drawable = BitmapDrawable(
+            resources,
+            Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
+        )
+        mDialogView.qr_img.setImageDrawable(d)
         val  mAlertDialog = mBuilder.show()
 
         mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }

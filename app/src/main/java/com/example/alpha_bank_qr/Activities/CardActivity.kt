@@ -64,8 +64,6 @@ class CardActivity : AppCompatActivity() {
             val flag = (cursor!!.getInt(cursor!!.getColumnIndex("is_scanned")) == 1)
 
             val popupMenu = PopupMenu(this, more)
-            if (flag) popupMenu.menuInflater.inflate(R.menu.saved_card_menu, popupMenu.menu)
-            else popupMenu.menuInflater.inflate(R.menu.my_card_menu, popupMenu.menu)
 
             popupMenu.setOnMenuItemClickListener { item ->
                 when(item.itemId) {
@@ -90,6 +88,23 @@ class CardActivity : AppCompatActivity() {
                 }
                 true
             }
+
+            if (flag) popupMenu.menuInflater.inflate(R.menu.saved_card_menu, popupMenu.menu)
+            else popupMenu.menuInflater.inflate(R.menu.my_card_menu, popupMenu.menu)
+
+            try {
+                val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+                fieldMPopup.isAccessible = true
+                val mPopup = fieldMPopup.get(popupMenu)
+                mPopup.javaClass
+                    .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(mPopup, true)
+            } catch (e: Exception) {
+
+            } finally {
+                popupMenu.show()
+            }
+
             popupMenu.show()
         }
 
