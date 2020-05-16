@@ -31,7 +31,7 @@ import yuku.ambilwarna.AmbilWarnaDialog
 class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val selectedItems = ArrayList<DataItem>()
-    private var mDefaultColor : Int = 0
+    private var cardColor : Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
@@ -46,13 +46,13 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
 
         selectedItems.clear()
 
-        mDefaultColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        cardColor = ContextCompat.getColor(this, R.color.colorPrimary)
         color_tag.setOnClickListener {
-            val dialog = AmbilWarnaDialog(this, mDefaultColor, object:
+            val dialog = AmbilWarnaDialog(this, cardColor, object:
                 AmbilWarnaDialog.OnAmbilWarnaListener {
                 override fun onOk(dialog:AmbilWarnaDialog, color:Int) {
-                    mDefaultColor = color
-                    color_tag.setBackgroundColor(mDefaultColor)
+                    cardColor = color
+                    color_tag.setBackgroundColor(cardColor)
                 }
                 override fun onCancel(dialog:AmbilWarnaDialog) { }
             })
@@ -152,7 +152,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
             if (cursor!!.count != 0){
                 cursor.moveToFirst()
                 val userId = cursor.getInt(cursor.getColumnIndex("id"))
-                dbHelper.addCard(Card(0, mDefaultColor, card_title.text.toString().trimStart().trimEnd(), userId))
+                dbHelper.addCard(Card(0, cardColor, card_title.text.toString().trimStart().trimEnd(), userId))
             }
             goToActivity(CardsActivity::class.java)
         }

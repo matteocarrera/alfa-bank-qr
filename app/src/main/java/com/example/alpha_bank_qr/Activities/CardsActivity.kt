@@ -58,14 +58,8 @@ class CardsActivity : AppCompatActivity() {
         }
 
         // Получение QR-визитки в виде изображения вне приложения
-        when (intent.action) {
-            Intent.ACTION_SEND -> {
-                if (intent.type?.startsWith("image/") == true) {
-                    handleSendImage(intent)
-                }
-            }
-            else -> { }
-        }
+        if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("image/") == true)
+            handleSendImage(intent)
 
         val cards = MyCardListAdapter.setMyCardsToView(this)
         val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())

@@ -21,15 +21,27 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_create_card.back
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 
-
 class EditProfileActivity : AppCompatActivity() {
 
-    /*
+    /*  Описание списков, использующихся в классе
+        allEditTexts - Список всех EditText на экране EditProfileActivity
+
         Используем для того, чтобы добавить доп. поля для заполнения профиля
-        fieldsHints - Список с именами полей на русском языке
-        fieldsNames - Список с самими полями, используем для того, чтобы скрывать/отображать поля
-                      для пользователя в интерфейсе
+        fieldsHints -      Список с именами полей на русском языке, которые являются дополнительными
+        additionalFields - Список с самими полями, используем для того, чтобы скрывать/отображать
+                           поля для пользователя в интерфейсе
+        availableFields -  Поля, доступные на данный момент для выбора из списка
+
+        Общая логика такова:
+        В onCreate мы проверяем, пустые ли доп. поля или нет (используем метод initializeFields).
+        Те поля, которые оказываются пустыми, добавляем в лист availableFields, причем вносим туда
+        описание EditText, а не сам объект. После чего, в методе setFieldsDialog мы проверяем,
+        содержится ли элемент availableFields в fieldsHints (данная проверка нужна для того, чтобы
+        выставить поля в нужном нам списке, заданом нами ниже) и выводим их далее в выпадающем
+        списке для выбора пользователем.
      */
+
+    private var allEditTexts = ArrayList<EditText>()
     private val fieldsHints = arrayOf(
         "Мобильный номер (другой)", "email (другой)", "Должность", "Компания",
         "Сбербанк (расчетный счет)", "ВТБ (расчетный счет)", "Альфа-Банк (расчетный счет)",
@@ -43,6 +55,11 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_profile)
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
+        allEditTexts = arrayListOf(
+            surname, name, patronymic, company, job_title, mobile, mobile_second, email, email_second,
+            address, address_second, sberbank, vtb, alfabank, vk, facebook, instagram, twitter, notes
+        )
+
         additionalFields = arrayListOf(
             company, job_title, mobile_second, email_second, address, address_second,
             sberbank, vtb, alfabank, vk, facebook, instagram, twitter)
@@ -55,8 +72,11 @@ class EditProfileActivity : AppCompatActivity() {
             ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
             finish()
         }
+
         add_field.setOnClickListener { setFieldsDialog() }
+
         save.setOnClickListener { saveUser() }
+
         change_photo.setOnClickListener {
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
@@ -101,29 +121,10 @@ class EditProfileActivity : AppCompatActivity() {
                 editText.visibility = View.GONE
                 editText.text.clear()
                 initializeFields()
-                changeFieldVisibility(editText.hint.toString(), View.GONE)
                 return true
             }
         }
         return false
-    }
-
-    private fun changeFieldVisibility(name : String, visibility : Int) {
-        when (name) {
-            "Компания" -> company.visibility = visibility
-            "Должность" -> job_title.visibility = visibility
-            "email (другой)" -> email_second.visibility = visibility
-            "Мобильный номер (другой)" -> mobile_second.visibility = visibility
-            "Адрес" -> address.visibility = visibility
-            "Адрес (другой)" -> address_second.visibility = visibility
-            "Сбербанк (расчетный счет)" -> sberbank.visibility = visibility
-            "ВТБ (расчетный счет)" -> vtb.visibility = visibility
-            "Альфа-Банк (расчетный счет)" -> alfabank.visibility = visibility
-            "VK" -> vk.visibility = visibility
-            "Facebook" -> facebook.visibility = visibility
-            "Instagram" -> instagram.visibility = visibility
-            "Twitter" -> twitter.visibility = visibility
-        }
     }
 
     private fun setFieldsDialog() {
@@ -139,8 +140,9 @@ class EditProfileActivity : AppCompatActivity() {
         val fields = fieldsList.toTypedArray()
         builder.setItems(fields) { _, item ->
             val selectedText = fields[item]
-
-            changeFieldVisibility(selectedText, View.VISIBLE)
+            allEditTexts.forEach {
+                if (it.hint.toString() == selectedText) it.visibility = View.VISIBLE
+            }
             initializeFields()
         }
 
@@ -155,25 +157,10 @@ class EditProfileActivity : AppCompatActivity() {
             cursor.moveToFirst()
             photo.setImageDrawable(DataUtils.getImageInDrawable(cursor, "photo"))
             qr.setImageDrawable(DataUtils.getImageInDrawable(cursor, "qr"))
-            surname.setText(cursor.getString(cursor.getColumnIndex("surname")))
-            name.setText(cursor.getString(cursor.getColumnIndex("name")))
-            patronymic.setText(cursor.getString(cursor.getColumnIndex("patronymic")))
-            company.setText(cursor.getString(cursor.getColumnIndex("company")))
-            job_title.setText(cursor.getString(cursor.getColumnIndex("job_title")))
-            mobile.setText(cursor.getString(cursor.getColumnIndex("mobile")))
-            mobile_second.setText(cursor.getString(cursor.getColumnIndex("mobile_second")))
-            email.setText(cursor.getString(cursor.getColumnIndex("email")))
-            email_second.setText(cursor.getString(cursor.getColumnIndex("email_second")))
-            address.setText(cursor.getString(cursor.getColumnIndex("address")))
-            address_second.setText(cursor.getString(cursor.getColumnIndex("address_second")))
-            sberbank.setText(cursor.getString(cursor.getColumnIndex("sberbank")))
-            vtb.setText(cursor.getString(cursor.getColumnIndex("vtb")))
-            alfabank.setText(cursor.getString(cursor.getColumnIndex("alfabank")))
-            vk.setText(cursor.getString(cursor.getColumnIndex("vk")))
-            facebook.setText(cursor.getString(cursor.getColumnIndex("facebook")))
-            instagram.setText(cursor.getString(cursor.getColumnIndex("instagram")))
-            twitter.setText(cursor.getString(cursor.getColumnIndex("twitter")))
-            notes.setText(cursor.getString(cursor.getColumnIndex("notes")))
+
+            for (i in 0 until QRDatabaseHelper.allUserColumns.size) {
+                allEditTexts[i].setText(cursor.getString(cursor.getColumnIndex(QRDatabaseHelper.allUserColumns[i])))
+            }
         }
         additionalFields.forEach {
             if (it.text.toString() == "") it.visibility = View.GONE

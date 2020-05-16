@@ -157,6 +157,12 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     }
 
     companion object {
+        val allUserColumns = arrayListOf(
+            "surname", "name", "patronymic", "company", "job_title", "mobile", "mobile_second",
+            "email", "email_second", "address", "address_second", "sberbank", "vtb", "alfabank",
+            "vk", "facebook", "instagram", "twitter", "notes"
+        )
+
         // Функция для проверки по QR коду, существует ли такая визитка уже или еще нет
         fun checkCardForExistence(context: Context, qr : ByteArray) : Boolean {
             val dbHelper = QRDatabaseHelper(context)
