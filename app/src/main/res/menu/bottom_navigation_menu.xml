@@ -6,7 +6,7 @@
         android:title="@string/cards" />
     <item
         android:id="@+id/scan"
-        android:icon="@drawable/ic_scan"
+        android:icon="@drawable/ic_camera"
         android:title="@string/scan_card"/>
     <item
         android:id="@+id/profile"
