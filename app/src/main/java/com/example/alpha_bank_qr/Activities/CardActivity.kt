@@ -20,6 +20,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
@@ -43,6 +44,7 @@ class CardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         READ_CONTACTS_PERMISSION = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
         WRITE_CONTACTS_PERMISSION = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS)
@@ -66,6 +68,7 @@ class CardActivity : AppCompatActivity() {
             val popupMenu = PopupMenu(this, more)
 
             popupMenu.setOnMenuItemClickListener { item ->
+
                 when(item.itemId) {
                     R.id.qr -> { setQRWindow(id) }
                     R.id.delete -> {
