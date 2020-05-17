@@ -15,16 +15,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="1dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp" />
+        android:layout_marginTop="@dimen/app_margin_top_medium"
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Настройки"
         android:textColor="@color/colorTextPrimary"
-        android:textSize="20sp"
+        android:textSize="@dimen/app_text_size_title"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/back"
         app:layout_constraintBottom_toBottomOf="@id/back"
@@ -36,13 +36,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Доступ к камере"
-        android:textSize="18sp"
+        android:textSize="@dimen/app_text_size_large"
         android:textColor="@color/colorTextPrimary"
         app:layout_constraintTop_toBottomOf="@id/back"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin"
+        android:layout_marginTop="@dimen/app_margin_top_large"/>
 
     <Switch
         android:id="@+id/camera_switch"
@@ -51,21 +51,21 @@
         app:layout_constraintTop_toTopOf="@id/camera_permission"
         app:layout_constraintBottom_toBottomOf="@id/camera_permission"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:layout_marginRight="@dimen/app_right_margin"
+        android:layout_marginEnd="@dimen/app_right_margin"/>
 
     <TextView
         android:id="@+id/gallery_permission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Доступ к галерее"
-        android:textSize="18sp"
+        android:textSize="@dimen/app_text_size_large"
         android:textColor="@color/colorTextPrimary"
         app:layout_constraintTop_toBottomOf="@id/camera_permission"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin"
+        android:layout_marginTop="@dimen/app_margin_top_large"/>
 
     <Switch
         android:id="@+id/gallery_switch"
@@ -74,21 +74,21 @@
         app:layout_constraintTop_toTopOf="@id/gallery_permission"
         app:layout_constraintBottom_toBottomOf="@id/gallery_permission"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:layout_marginRight="@dimen/app_right_margin"
+        android:layout_marginEnd="@dimen/app_right_margin"/>
 
     <TextView
         android:id="@+id/call_permission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Доступ к звонкам"
-        android:textSize="18sp"
+        android:textSize="@dimen/app_text_size_large"
         android:textColor="@color/colorTextPrimary"
         app:layout_constraintTop_toBottomOf="@id/gallery_permission"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin"
+        android:layout_marginTop="@dimen/app_margin_top_large"/>
 
     <Switch
         android:id="@+id/call_switch"
@@ -97,21 +97,21 @@
         app:layout_constraintTop_toTopOf="@id/call_permission"
         app:layout_constraintBottom_toBottomOf="@id/call_permission"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:layout_marginRight="@dimen/app_right_margin"
+        android:layout_marginEnd="@dimen/app_right_margin"/>
 
     <TextView
         android:id="@+id/contacts_permission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Доступ к контактам"
-        android:textSize="18sp"
+        android:textSize="@dimen/app_text_size_large"
         android:textColor="@color/colorTextPrimary"
         app:layout_constraintTop_toBottomOf="@id/call_permission"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin"
+        android:layout_marginTop="@dimen/app_margin_top_large"/>
 
     <Switch
         android:id="@+id/contacts_switch"
@@ -120,8 +120,8 @@
         app:layout_constraintTop_toTopOf="@id/contacts_permission"
         app:layout_constraintBottom_toBottomOf="@id/contacts_permission"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:layout_marginRight="@dimen/app_right_margin"
+        android:layout_marginEnd="@dimen/app_right_margin"/>
 
     <TextView
         android:id="@+id/attention"
@@ -129,26 +129,26 @@
         android:layout_height="wrap_content"
         android:text="Внимание!"
         android:textStyle="bold"
-        android:textSize="16sp"
+        android:textSize="@dimen/app_text_size_medium"
         android:textColor="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/contacts_permission"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin"
+        android:layout_marginTop="@dimen/app_margin_top_large"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Убрать доступ к функциям можно только в настройках самого телефона, в данном меню Вы можете только выдать доступ!\nИменно поэтому некоторые кнопки отключены!"
-        android:textSize="16sp"
+        android:textSize="@dimen/app_text_size_medium"
         android:textColor="@color/colorTextPrimary"
         app:layout_constraintTop_toBottomOf="@id/attention"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp" />
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin"
+        android:layout_marginRight="@dimen/app_right_margin"
+        android:layout_marginEnd="@dimen/app_right_margin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

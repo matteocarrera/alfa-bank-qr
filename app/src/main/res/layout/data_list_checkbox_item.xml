@@ -18,24 +18,24 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                android:textSize="16sp"
+                android:layout_marginTop="@dimen/app_margin_top_small"
+                android:layout_marginLeft="@dimen/app_left_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginStart="@dimen/app_left_margin"
+                android:textSize="@dimen/app_text_size_medium"
                 android:textColor="#6D7986"/>
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="18sp"
+                android:layout_marginLeft="@dimen/app_left_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginStart="@dimen/app_left_margin"
+                android:layout_marginBottom="@dimen/app_margin_bottom_small"
+                android:textSize="@dimen/app_text_size_large"
                 android:textColor="@color/colorTextPrimary"/>
         </LinearLayout>
         <CheckBox
