@@ -33,6 +33,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/save"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/ic_accept"
+        android:tint="@color/colorTextPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="1dp"
+        android:layout_marginTop="@dimen/app_margin_top_medium"
+        android:layout_marginRight="@dimen/app_right_margin"
+        android:layout_marginEnd="@dimen/app_right_margin" />
+
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -417,21 +430,6 @@
                     android:textSize="@dimen/app_text_size_large"
                     android:textColor="@color/colorTextPrimary"/>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_medium"
-                android:text="@string/save"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/app_text_size_large"
-                android:textAllCaps="false"
-                android:background="@drawable/button_main_style" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
