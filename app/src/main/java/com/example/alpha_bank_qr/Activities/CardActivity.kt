@@ -245,7 +245,7 @@ class CardActivity : AppCompatActivity() {
             mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
 
             mDialogView.share.setOnClickListener {
-                ProgramUtils.saveImage(this, bitmap)
+                ProgramUtils.saveImage(this, arrayListOf(bitmap))
             }
         }
         dbHelper.close()

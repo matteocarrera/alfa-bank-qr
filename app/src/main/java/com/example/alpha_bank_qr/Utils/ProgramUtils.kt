@@ -61,24 +61,28 @@ class ProgramUtils {
         }
 
         @SuppressLint("SetWorldReadable")
-        fun saveImage(context: Context, bitmap: Bitmap) {
+        fun saveImage(context: Context, bitmaps: ArrayList<Bitmap>) {
             try {
-                val file = File(context.externalCacheDir, "qr.png")
-                val fOut = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
-                fOut.flush()
-                fOut.close()
-                file.setReadable(true, false)
-                val photoURI = FileProvider.getUriForFile(
-                    context,
-                    context.applicationContext.packageName.toString() + ".provider",
-                    file
-                )
+                val imageUris = ArrayList<Uri>()
+                bitmaps.forEach {
+                    val file = File(context.externalCacheDir, "$it.png")
+                    val fOut = FileOutputStream(file)
+                    it.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+                    fOut.flush()
+                    fOut.close()
+                    file.setReadable(true, false)
+                    val photoURI = FileProvider.getUriForFile(
+                        context,
+                        context.applicationContext.packageName.toString() + ".provider",
+                        file
+                    )
+                    imageUris.add(photoURI)
+                }
                 val shareIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
+                    action = Intent.ACTION_SEND_MULTIPLE
                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    putExtra(Intent.EXTRA_STREAM, photoURI)
-                    type = "image/jpeg"
+                    putExtra(Intent.EXTRA_STREAM, imageUris)
+                    type = "image/*"
                 }
                 context.startActivity(Intent.createChooser(shareIntent, "Поделиться QR кодом с помощью"))
             } catch (e: Exception) {

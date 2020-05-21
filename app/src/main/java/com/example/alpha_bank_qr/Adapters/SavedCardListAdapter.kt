@@ -1,6 +1,5 @@
 package com.example.alpha_bank_qr.Adapters
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
@@ -9,19 +8,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.alpha_bank_qr.Entities.SavedCard
-import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.QRDatabaseHelper
+import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 
-class SavedCardListAdapter(private val context: Activity, private val savedCards: Array<SavedCard>)
+class SavedCardListAdapter(private val context: Activity, private val savedCards: Array<SavedCard>, private val layout: Int)
     : ArrayAdapter<SavedCard>(context,
     R.layout.saved_card_list_item, savedCards
 ) {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
-        val rowView = inflater.inflate(R.layout.saved_card_list_item, null, true)
+        val rowView = inflater.inflate(layout, null, true)
 
         val photo = rowView.findViewById(R.id.photo) as ImageView
         val letters = rowView.findViewById(R.id.letters) as TextView

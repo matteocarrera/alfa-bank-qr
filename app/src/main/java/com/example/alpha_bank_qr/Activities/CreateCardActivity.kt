@@ -119,7 +119,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
 
         mDialogView.share.setOnClickListener {
-            ProgramUtils.saveImage(this, bitmap)
+            ProgramUtils.saveImage(this, arrayListOf(bitmap))
         }
     }
 
