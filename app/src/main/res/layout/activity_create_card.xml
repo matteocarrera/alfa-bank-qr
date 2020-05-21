@@ -17,9 +17,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="1dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp" />
+        android:layout_marginTop="@dimen/app_margin_top_medium"
+        android:layout_marginLeft="@dimen/app_left_margin"
+        android:layout_marginStart="@dimen/app_left_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
         android:text="@string/create_card"
         android:textColor="@color/colorTextPrimary"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="@dimen/app_text_size_title"
         app:layout_constraintTop_toTopOf="@id/back"
         app:layout_constraintBottom_toBottomOf="@id/back"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/app_margin_top_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/back">
         <LinearLayout
@@ -55,18 +55,18 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="@dimen/app_left_margin"
+                    android:layout_marginStart="@dimen/app_left_margin"
                     android:background="@color/colorPrimary"/>
                 <EditText
                     android:id="@+id/card_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/app_left_margin"
+                    android:layout_marginStart="@dimen/app_left_margin"
+                    android:layout_marginRight="@dimen/app_right_margin"
+                    android:layout_marginEnd="@dimen/app_right_margin"
+                    android:textSize="@dimen/app_text_size_large"
                     android:hint="@string/card_name"/>
             </LinearLayout>
 
@@ -74,8 +74,8 @@
                 android:id="@+id/data_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="@dimen/app_margin_top_small"
+                android:layout_marginBottom="@dimen/app_margin_bottom_medium"
                 android:focusable="true" />
 
             <LinearLayout
@@ -86,14 +86,14 @@
                     android:id="@+id/generate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="@dimen/app_left_margin"
+                    android:layout_marginBottom="@dimen/app_margin_bottom_small"
+                    android:layout_marginStart="@dimen/app_left_margin"
+                    android:layout_marginRight="@dimen/app_right_margin"
+                    android:layout_marginEnd="@dimen/app_right_margin"
                     android:text="@string/qr_code"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/app_text_size_large"
                     android:textAllCaps="false"
                     android:layout_weight="1"
                     android:background="@drawable/button_main_style"/>
@@ -102,13 +102,13 @@
                     android:id="@+id/save"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="@dimen/app_margin_bottom_small"
+                    android:layout_marginRight="@dimen/app_right_margin"
+                    android:layout_marginEnd="@dimen/app_right_margin"
+                    android:layout_marginLeft="@dimen/app_left_margin"
+                    android:layout_marginStart="@dimen/app_left_margin"
                     android:text="@string/save"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/app_text_size_large"
                     android:textAllCaps="false"
                     android:layout_weight="1"
                     android:background="@drawable/button_style"/>
