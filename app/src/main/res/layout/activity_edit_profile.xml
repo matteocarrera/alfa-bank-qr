@@ -8,6 +8,19 @@
     android:background="@android:color/white"
     tools:context=".Activities.CreateCardActivity">
 
+    <LinearLayout
+        android:id="@+id/progressbar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:gravity="center"
+        android:translationZ="1dp">
+        <ProgressBar
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+    </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/back"
         android:layout_width="33dp"

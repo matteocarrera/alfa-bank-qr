@@ -8,10 +8,10 @@
         android:id="@+id/qr"
         android:title="QR код"
         android:icon="@drawable/ic_qr"/>
-    <item
+    <!--<item
         android:id="@+id/add_photo"
         android:title="Добавить фото"
-        android:icon="@drawable/ic_gallery"/>
+        android:icon="@drawable/ic_gallery"/>-->
     <item
         android:id="@+id/delete"
         android:title="Удалить"

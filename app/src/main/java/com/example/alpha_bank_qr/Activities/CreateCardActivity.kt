@@ -68,7 +68,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     val dbHelper = QRDatabaseHelper(this)
                     val cursor = dbHelper.getOwnerUser()
                     cursor!!.moveToFirst()
-                    val user = DataUtils.parseDataToUser(selectedItems, null)
+                    val user = DataUtils.parseDataToUser(selectedItems, cursor.getString(cursor.getColumnIndex("photo")))
 
                     val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
 
@@ -149,7 +149,7 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         else {
             cursor = dbHelper.getOwnerUser()
             cursor!!.moveToFirst()
-            val user = DataUtils.parseDataToUser(selectedItems, null)
+            val user = DataUtils.parseDataToUser(selectedItems, cursor.getString(cursor.getColumnIndex("photo")))
             val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
             user.qr = DataUtils.getImageInByteArray(bitmap)
             dbHelper.addUser(user)

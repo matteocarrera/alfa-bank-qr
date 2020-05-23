@@ -11,9 +11,7 @@ import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_profile.*
 
-
 class ProfileActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -57,15 +55,14 @@ class ProfileActivity : AppCompatActivity() {
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
 
-            val drawable = DataUtils.getImageInDrawable(cursor, "photo")
-            if (drawable != null) {
-                profile_photo.setImageDrawable(drawable)
+            val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
+            if (photoUUID != "") {
+                DataUtils.getImageFromFirebase(cursor.getString(cursor.getColumnIndex("photo")), profile_photo)
             } else {
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE
                 letters.text = cursor.getString(cursor.getColumnIndex("name")).take(1) + cursor.getString(cursor.getColumnIndex("surname")).take(1)
             }
-
             val data = DataUtils.setUserData(cursor)
 
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)

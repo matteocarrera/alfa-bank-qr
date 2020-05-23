@@ -1,5 +1,6 @@
 package com.example.alpha_bank_qr.Adapters
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
     R.layout.saved_card_list_item, savedCards
 ) {
 
+    @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(layout, null, true)
@@ -29,7 +31,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
         val jobTitle = rowView.findViewById(R.id.job_title) as TextView
         val company = rowView.findViewById(R.id.company) as TextView
 
-        if (savedCards[position].photo == null) {
+        if (savedCards[position].photo == "") {
             photo.visibility = View.GONE
             letters.visibility = View.VISIBLE
             circle.visibility = View.VISIBLE
@@ -38,7 +40,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
             photo.visibility = View.VISIBLE
             letters.visibility = View.GONE
             circle.visibility = View.GONE
-            photo.setImageDrawable(savedCards[position].photo)
+            DataUtils.getImageFromFirebase(savedCards[position].photo, photo)
         }
 
         id.text = savedCards[position].id.toString()
@@ -59,12 +61,14 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
                     val id = cursor.getInt(cursor.getColumnIndex("id"))
+                    val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
                     val name = cursor.getString(cursor.getColumnIndex("name"))
                     val surname = cursor.getString(cursor.getColumnIndex("surname"))
                     val jobTitle = cursor.getString(cursor.getColumnIndex("job_title"))
                     val company = cursor.getString(cursor.getColumnIndex("company"))
 
-                    cards.add(SavedCard(id, DataUtils.getImageInDrawable(cursor, "photo"), name, surname, jobTitle, company))
+                    cards.add(SavedCard(id, photoUUID, name, surname, jobTitle, company))
+
                     cursor.moveToNext()
                 }
             }

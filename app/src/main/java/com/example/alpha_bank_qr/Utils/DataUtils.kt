@@ -5,12 +5,17 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 
 class DataUtils {
     companion object {
+        private lateinit var mStorageRef: StorageReference
         private val data = ArrayList<DataItem>()
         private val titles = arrayOf(
             DataItem("фамилия", "surname"),
@@ -33,6 +38,19 @@ class DataUtils {
             DataItem("twitter", "twitter"),
             DataItem("заметки", "notes")
         )
+
+        fun getImageFromFirebase(child: String, imageView: ImageView) {
+            try {
+                mStorageRef = FirebaseStorage.getInstance().reference
+                mStorageRef.child(child).downloadUrl
+                    .addOnSuccessListener {
+                        val uri = it.toString().substring(0, it.toString().indexOf("&token"))
+                        Picasso.get().load(uri).into(imageView)
+                    }.addOnFailureListener { }
+            } catch (e : Exception) {
+                imageView.setImageDrawable(null)
+            }
+        }
 
         fun getImageInByteArray(drawable: Drawable?): ByteArray? {
             if (drawable != null) {
@@ -70,9 +88,9 @@ class DataUtils {
         }
 
         // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
-        fun parseDataToUser(data : ArrayList<DataItem>, drawable: Drawable?) : User {
+        fun parseDataToUser(data : ArrayList<DataItem>, photoUUID : String) : User {
             val user = User()
-            user.photo = getImageInByteArray(drawable)
+            user.photo = photoUUID
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description

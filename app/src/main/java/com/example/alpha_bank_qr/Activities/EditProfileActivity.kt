@@ -3,6 +3,7 @@ package com.example.alpha_bank_qr.Activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -16,10 +17,15 @@ import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_create_card.back
 import kotlinx.android.synthetic.main.activity_edit_profile.*
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -48,6 +54,10 @@ class EditProfileActivity : AppCompatActivity() {
         "VK", "Facebook", "Instagram", "Twitter")
     private var additionalFields = ArrayList<EditText>()
     private var availableFields = ArrayList<String>()
+
+    private lateinit var mStorageRef: StorageReference
+    private var uuid = ""
+    private var uri = ""
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +90,7 @@ class EditProfileActivity : AppCompatActivity() {
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
-                .start(this);
+                .start(this)
         }
 
         for (i in additionalFields.indices) {
@@ -92,7 +102,8 @@ class EditProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
-            if (result != null)photo.setImageURI(result.uri)
+            if (result != null) photo.setImageURI(result.uri)
+            uri = result.uri.toString()
         }
     }
 
@@ -154,7 +165,10 @@ class EditProfileActivity : AppCompatActivity() {
         val cursor = dbHelper.getOwnerUser()
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
-            photo.setImageDrawable(DataUtils.getImageInDrawable(cursor, "photo"))
+
+            uuid = cursor.getString(cursor.getColumnIndex("photo"))
+            DataUtils.getImageFromFirebase(uuid, photo)
+
             qr.setImageDrawable(DataUtils.getImageInDrawable(cursor, "qr"))
 
             for (i in 0 until QRDatabaseHelper.allUserColumns.size) {
@@ -166,7 +180,22 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Сначала загружаем фото на сервер, если успешно, то только потом сохраняем данные пользователя
     private fun saveUser() {
+        progressbar.visibility = View.VISIBLE
+        if (uri != "") {
+            uuid = UUID.randomUUID().toString()
+            mStorageRef = FirebaseStorage.getInstance().getReference(uuid)
+            mStorageRef.putFile(Uri.parse(uri)).addOnSuccessListener {
+                saveUserData()
+            }
+        } else {
+            saveUserData()
+        }
+    }
+
+    // Сохраняем текстовые данные в БД
+    private fun saveUserData() {
         val dbHelper = QRDatabaseHelper(this)
         val cursor = dbHelper.getOwnerUser()
 
@@ -194,7 +223,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun getUserData() : User {
         return User(0,
-            DataUtils.getImageInByteArray(photo.drawable),
+            uuid,
             DataUtils.getImageInByteArray(qr.drawable),
             1,
             0,

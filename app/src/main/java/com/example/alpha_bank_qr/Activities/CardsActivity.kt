@@ -65,14 +65,14 @@ class CardsActivity : AppCompatActivity(){
 
         select_cards.setOnClickListener {
             selectedItems.clear()
-            setStandardToolbar(View.INVISIBLE)
+            setStandardToolbar(View.INVISIBLE, false)
             setSelectionToolbar(View.VISIBLE)
             setSavedCardsAdapter(true, R.layout.selected_saved_card_list_item)
         }
 
         cancel_selection.setOnClickListener {
             selectedItems.clear()
-            setStandardToolbar(View.VISIBLE)
+            setStandardToolbar(View.VISIBLE, true)
             setSelectionToolbar(View.INVISIBLE)
             setSavedCardsAdapter(false, R.layout.saved_card_list_item)
         }
@@ -226,11 +226,14 @@ class CardsActivity : AppCompatActivity(){
         }
     }
 
-    private fun setStandardToolbar(visibility : Int) {
+    private fun setStandardToolbar(visibility : Int, isEnabled : Boolean) {
+        // ToolBar
         settings.visibility = visibility
         cards_title.visibility = visibility
         select_cards.visibility = visibility
         add_card.visibility = visibility
+        // Список наших визиток - блокируем, так как по нему выбор не идет
+        my_cards_list.isEnabled = isEnabled
     }
 
     private fun setSelectionToolbar(visibility: Int) {

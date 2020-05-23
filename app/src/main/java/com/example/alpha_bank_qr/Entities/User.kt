@@ -13,7 +13,7 @@ import android.graphics.drawable.Drawable
 
 class User(
     var id: Int = 0,
-    var photo : ByteArray? = null,
+    var photo : String = "",
     var qr : ByteArray? = null,
     var isOwner : Int = 0,
     var isScanned : Int = 0,
@@ -38,6 +38,6 @@ class User(
     var notes : String = ""
 ) {
     override fun toString(): String {
-        return "$name,$surname,$patronymic,$company,$jobTitle,$mobile,$mobileSecond,$email,$emailSecond,$address,$addressSecond,$sberbank,$vtb,$alfabank,$vk,$facebook,$instagram,$twitter,$notes"
+        return "$photo,$name,$surname,$patronymic,$company,$jobTitle,$mobile,$mobileSecond,$email,$emailSecond,$address,$addressSecond,$sberbank,$vtb,$alfabank,$vk,$facebook,$instagram,$twitter,$notes"
     }
 }

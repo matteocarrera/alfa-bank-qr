@@ -30,7 +30,6 @@ import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_card.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
 
@@ -88,15 +87,16 @@ class CardActivity : AppCompatActivity() {
                     }
                     R.id.export -> {
                         if (!contactExists(cursor!!.getString(cursor!!.getColumnIndex("mobile"))))
-                            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), null)))
+                            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), cursor!!.getString(
+                                cursor!!.getColumnIndex("photo")))))
                         dbHelper.close()
                     }
-                    R.id.add_photo -> {
+                    /*R.id.add_photo -> {
                         CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON)
                             .setAspectRatio(1, 1)
-                            .start(this);
-                    }
+                            .start(this)
+                    }*/
                 }
                 true
             }
@@ -141,9 +141,9 @@ class CardActivity : AppCompatActivity() {
                     PhoneLookup.DISPLAY_NAME)
                 val cur: Cursor? = contentResolver
                     .query(lookupUri, mPhoneNumberProjection, null, null, null)
-                cur.use { cur ->
-                    if (cur != null) {
-                        if (cur.moveToFirst()) {
+                cur.use {
+                    if (it != null) {
+                        if (it.moveToFirst()) {
                             Toast.makeText(this, "Контакт с таким мобильным номером уже существует!", Toast.LENGTH_LONG).show()
                             return true
                         }
@@ -157,7 +157,8 @@ class CardActivity : AppCompatActivity() {
     // Обрабатываем результат запроса на разрешение доступа к контактам телефона
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), null)))
+            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), cursor!!.getString(
+                cursor!!.getColumnIndex("photo")))))
         }
     }
 
@@ -175,8 +176,8 @@ class CardActivity : AppCompatActivity() {
                 dbHelper.updateUserPhoto(id, drawable)
                 dbHelper.close()
                 setDataToListView(id)
-                finish();
-                startActivity(intent);
+                finish()
+                startActivity(intent)
             }
         }
     }
@@ -188,9 +189,9 @@ class CardActivity : AppCompatActivity() {
         if (cursor!!.count != 0) {
             cursor.moveToFirst()
 
-            val drawable = DataUtils.getImageInDrawable(cursor, "photo")
-            if (drawable != null) {
-                profile_photo.setImageDrawable(drawable)
+            val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
+            if (photoUUID != "") {
+                DataUtils.getImageFromFirebase(photoUUID, profile_photo)
             } else {
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE

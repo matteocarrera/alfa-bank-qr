@@ -1,7 +1,5 @@
 package com.example.alpha_bank_qr.Entities
 
-import android.graphics.drawable.Drawable
-
 /*
     Класс для отображения сохраненных визиток в окне просмотра всех визиток, к БД отношения
     не имеет
@@ -9,7 +7,7 @@ import android.graphics.drawable.Drawable
 
 class SavedCard (
     val id : Int,
-    val photo : Drawable?,
+    val photo : String,
     val name : String,
     val surname : String,
     val jobTitle : String,

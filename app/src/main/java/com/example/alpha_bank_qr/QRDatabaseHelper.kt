@@ -188,7 +188,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         private const val SQL_CREATE_USERS_TABLE =
             "CREATE TABLE users(" +
                     "id INTEGER PRIMARY KEY, " +
-                    "photo BLOB," +
+                    "photo TEXT," +
                     "qr BLOB," +
                     "is_owner INTEGER," +
                     "is_scanned INTEGER," +
