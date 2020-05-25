@@ -12,10 +12,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.User
-import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.ImageUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -167,9 +168,7 @@ class EditProfileActivity : AppCompatActivity() {
             cursor.moveToFirst()
 
             uuid = cursor.getString(cursor.getColumnIndex("photo"))
-            DataUtils.getImageFromFirebase(uuid, photo)
-
-            qr.setImageDrawable(DataUtils.getImageInDrawable(cursor, "qr"))
+            ImageUtils.getImageFromFirebase(uuid, photo)
 
             for (i in 0 until QRDatabaseHelper.allUserColumns.size) {
                 allEditTexts[i].setText(cursor.getString(cursor.getColumnIndex(QRDatabaseHelper.allUserColumns[i])))
@@ -215,6 +214,7 @@ class EditProfileActivity : AppCompatActivity() {
                     val user = getUserData()
                     dbHelper.addUser(user)
                 }
+                DataUtils.updateMyCardsData(this, getUserData())
                 ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
                 finish()
             }
@@ -224,7 +224,6 @@ class EditProfileActivity : AppCompatActivity() {
     private fun getUserData() : User {
         return User(0,
             uuid,
-            DataUtils.getImageInByteArray(qr.drawable),
             1,
             0,
             name.text.toString(),

@@ -4,13 +4,10 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.Card
-import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.Utils.DataUtils
 
 class MyCardListAdapter(private val context: Activity, private val cards: Array<Card>)
     : ArrayAdapter<Card>(context, R.layout.my_card_list_item, cards) {
@@ -34,7 +31,8 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
 
     companion object {
         fun setMyCardsToView(context: Activity) : ArrayList<Card> {
-            val dbHelper = QRDatabaseHelper(context)
+            val dbHelper =
+                QRDatabaseHelper(context)
             val cursor = dbHelper.getAllCards()
             val cards = ArrayList<Card>()
             if (cursor!!.moveToFirst()) {

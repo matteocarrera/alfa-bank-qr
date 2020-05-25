@@ -2,7 +2,6 @@ package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
@@ -15,9 +14,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
 import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
+import com.example.alpha_bank_qr.Database.DBService
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.SavedCard
-import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.Json
@@ -28,6 +28,7 @@ import com.google.zxing.common.HybridBinarizer
 import kotlinx.android.synthetic.main.activity_cards.*
 import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
 import net.glxn.qrgen.android.QRCode
+
 
 class CardsActivity : AppCompatActivity(){
 
@@ -91,21 +92,15 @@ class CardsActivity : AppCompatActivity(){
     }
 
     private fun shareCards() {
-        val dbHelper = QRDatabaseHelper(this)
         val qrList = ArrayList<Bitmap>()
         if (selectedItems.count() == 0) Toast.makeText(this, "Вы не выбрали ни одной визитки!", Toast.LENGTH_SHORT).show()
         else {
             selectedItems.forEach {
-                val cursor = dbHelper.getQRFromUser(it)
-                if (cursor!!.count != 0) {
-                    cursor.moveToFirst()
-                    val dr = DataUtils.getImageInDrawable(cursor, "qr")
-                    var bitmap = (dr as BitmapDrawable).bitmap
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-                    qrList.add(bitmap)
-                }
+                val user = DBService.getUserById(this, it)
+                var bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
+                qrList.add(bitmap)
             }
-            dbHelper.close()
             ProgramUtils.saveImage(this, qrList)
             cancel_selection.performClick()
         }
@@ -119,8 +114,7 @@ class CardsActivity : AppCompatActivity(){
             builder.setMessage("Вы действительно хотите удалить выбранные визитки?")
             builder.setPositiveButton("Да"){ _, _ ->
                 selectedItems.forEach {
-                    val dbHelper = QRDatabaseHelper(this)
-                    dbHelper.deleteUser(it)
+                    DBService.deleteUser(this, it)
                 }
                 cancel_selection.performClick()
                 Toast.makeText(this, "Выбранные визитки успешно удалены!", Toast.LENGTH_SHORT).show()
@@ -194,10 +188,11 @@ class CardsActivity : AppCompatActivity(){
 
     // Получение данных с QR-визитки (фотография)
     private fun decodeQRFromImage(bitmap: Bitmap) {
-        val intArray = IntArray(bitmap.width * bitmap.height)
-        bitmap.getPixels(intArray, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+        val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true)
+        val intArray = IntArray(compressedBitmap.width * compressedBitmap.height)
+        compressedBitmap.getPixels(intArray, 0, compressedBitmap.width, 0, 0, compressedBitmap.width, compressedBitmap.height)
 
-        val source: LuminanceSource = RGBLuminanceSource(bitmap.width, bitmap.height, intArray)
+        val source: LuminanceSource = RGBLuminanceSource(compressedBitmap.width, compressedBitmap.height, intArray)
         val bMap = BinaryBitmap(HybridBinarizer(source))
 
         val reader: Reader = MultiFormatReader()
@@ -209,19 +204,16 @@ class CardsActivity : AppCompatActivity(){
     private fun addUserFromQR(result : String) {
         try {
             val user = Json.fromJson(result)
-            val bitmap = QRCode.from(result).withCharset("utf-8").withSize(1000, 1000).bitmap()
-            user.qr = DataUtils.getImageInByteArray(bitmap)
 
             // Проверяем по QR коду, есть ли такая визитка с человеком уже в списке или нет
-            val cardExists = QRDatabaseHelper.checkCardForExistence(this, user.qr!!)
+            val cardExists = DataUtils.checkCardForExistence(this, user)
             if (cardExists) Toast.makeText(this, "Такая визитная карточка уже существует!", Toast.LENGTH_LONG).show()
             else {
-                val dbHelper = QRDatabaseHelper(this)
-                dbHelper.addUser(user)
-                dbHelper.close()
+                DBService.addUser(this, user)
                 Toast.makeText(this, "QR успешно считан!", Toast.LENGTH_LONG).show()
             }
         } catch (e : Exception) {
+            e.printStackTrace()
             Toast.makeText(this, "Ошибка считывания QR", Toast.LENGTH_LONG).show()
         }
     }

@@ -1,21 +1,14 @@
 package com.example.alpha_bank_qr.Utils
 
+import android.content.Context
 import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.widget.ImageView
+import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.squareup.picasso.Picasso
-import java.io.ByteArrayOutputStream
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 
 class DataUtils {
     companion object {
-        private lateinit var mStorageRef: StorageReference
         private val data = ArrayList<DataItem>()
         private val titles = arrayOf(
             DataItem("фамилия", "surname"),
@@ -39,42 +32,6 @@ class DataUtils {
             DataItem("заметки", "notes")
         )
 
-        fun getImageFromFirebase(child: String, imageView: ImageView) {
-            try {
-                mStorageRef = FirebaseStorage.getInstance().reference
-                mStorageRef.child(child).downloadUrl
-                    .addOnSuccessListener {
-                        val uri = it.toString().substring(0, it.toString().indexOf("&token"))
-                        Picasso.get().load(uri).into(imageView)
-                    }.addOnFailureListener { }
-            } catch (e : Exception) {
-                imageView.setImageDrawable(null)
-            }
-        }
-
-        fun getImageInByteArray(drawable: Drawable?): ByteArray? {
-            if (drawable != null) {
-                val bitmap = (drawable as BitmapDrawable).bitmap
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                return stream.toByteArray()
-            }
-            return null
-        }
-
-        fun getImageInByteArray(bitmap: Bitmap): ByteArray {
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            return stream.toByteArray()
-        }
-
-        fun getImageInDrawable(cursor: Cursor, column : String): Drawable? {
-            val blob = cursor.getBlob(cursor.getColumnIndex(column))
-            if (blob != null)
-                return BitmapDrawable(BitmapFactory.decodeByteArray(blob, 0, blob.size))
-            return null
-        }
-
         // Для отображения в профиле
         fun setUserData(cursor: Cursor): ArrayList<DataItem> {
             data.clear()
@@ -85,6 +42,15 @@ class DataUtils {
                 )
             }
             return data
+        }
+
+        fun checkCardForExistence(context: Context, user : User) : Boolean {
+            DBService.getScannedUsers(context)?.forEach {
+                val userData = Json.toJson(user)
+                val scannedUserData = Json.toJson(it)
+                if (userData == scannedUserData) return true
+            }
+            return false
         }
 
         // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
@@ -120,6 +86,60 @@ class DataUtils {
         // Если какие-то данные пустые (отсутствуют), то мы не добавляем, иначе добавляем
         private fun addItem(title: String, description: String) {
             if (description.isNotEmpty()) data.add(DataItem(title, description))
+        }
+
+        // Методы для получения существующих пользователей в визитках и обновления их данных
+        fun updateMyCardsData(context: Context, user: User) {
+            getUsersFromMyCards(context).forEach {
+                it.name = checkForDifference(it.name, user.name)
+                it.surname = checkForDifference(it.surname, user.surname)
+                it.patronymic = checkForDifference(it.patronymic, user.patronymic)
+                it.company = checkForDifference(it.company, user.company)
+                it.jobTitle = checkForDifference(it.jobTitle, user.jobTitle)
+                it.mobile = checkForDifference(it.mobile, user.mobile)
+                it.mobileSecond = checkForDifference(it.mobileSecond, user.mobileSecond)
+                it.email = checkForDifference(it.email, user.email)
+                it.emailSecond = checkForDifference(it.emailSecond, user.emailSecond)
+                it.address = checkForDifference(it.address, user.address)
+                it.addressSecond = checkForDifference(it.addressSecond, user.addressSecond)
+                it.sberbank = checkForDifference(it.sberbank, user.sberbank)
+                it.vtb = checkForDifference(it.vtb, user.vtb)
+                it.alfabank = checkForDifference(it.alfabank, user.alfabank)
+                it.vk = checkForDifference(it.vk, user.vk)
+                it.facebook = checkForDifference(it.facebook, user.facebook)
+                it.instagram = checkForDifference(it.instagram, user.instagram)
+                it.twitter = checkForDifference(it.twitter, user.twitter)
+                it.notes = checkForDifference(it.notes, user.notes)
+                val dbHelper =
+                    QRDatabaseHelper(context)
+                dbHelper.updateUser(it)
+                dbHelper.close()
+            }
+        }
+
+        private fun getUsersFromMyCards(context: Context) : ArrayList<User> {
+            val dbHelper =
+                QRDatabaseHelper(context)
+            val cursor = dbHelper.getUsersFromMyCards()
+            val users = ArrayList<User>()
+            if (cursor!!.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    val user = parseDataToUser(setUserData(cursor), cursor.getString(cursor.getColumnIndex("photo")))
+                    user.id = cursor.getInt(cursor.getColumnIndex("id"))
+                    user.photo = cursor.getString(cursor.getColumnIndex("photo"))
+
+                    users.add(user)
+
+                    cursor.moveToNext()
+                }
+            }
+            dbHelper.close()
+            return users
+        }
+
+        private fun checkForDifference(oldUserData : String, newUserData : String) : String {
+            if (oldUserData != "" && oldUserData != newUserData) return newUserData
+            return oldUserData
         }
     }
 }

@@ -14,7 +14,6 @@ import android.graphics.drawable.Drawable
 class User(
     var id: Int = 0,
     var photo : String = "",
-    var qr : ByteArray? = null,
     var isOwner : Int = 0,
     var isScanned : Int = 0,
     var name: String = "",

@@ -16,9 +16,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.DataItem
-import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.Json
@@ -65,12 +65,14 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                 if (selectedItems.size == 0) {
                     Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
                 } else {
-                    val dbHelper = QRDatabaseHelper(this)
+                    val dbHelper =
+                        QRDatabaseHelper(this)
                     val cursor = dbHelper.getOwnerUser()
                     cursor!!.moveToFirst()
                     val user = DataUtils.parseDataToUser(selectedItems, cursor.getString(cursor.getColumnIndex("photo")))
 
-                    val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    var bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
 
                     dbHelper.close()
                     setQRWindow(bitmap)
@@ -150,8 +152,6 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
             cursor = dbHelper.getOwnerUser()
             cursor!!.moveToFirst()
             val user = DataUtils.parseDataToUser(selectedItems, cursor.getString(cursor.getColumnIndex("photo")))
-            val bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
-            user.qr = DataUtils.getImageInByteArray(bitmap)
             dbHelper.addUser(user)
             cursor = dbHelper.getLastUserFromDb()
             if (cursor!!.count != 0){

@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
-import com.example.alpha_bank_qr.QRDatabaseHelper
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.ImageUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_profile.*
 
@@ -57,7 +58,7 @@ class ProfileActivity : AppCompatActivity() {
 
             val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
             if (photoUUID != "") {
-                DataUtils.getImageFromFirebase(cursor.getString(cursor.getColumnIndex("photo")), profile_photo)
+                ImageUtils.getImageFromFirebase(cursor.getString(cursor.getColumnIndex("photo")), profile_photo)
             } else {
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE

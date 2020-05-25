@@ -9,8 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract.PhoneLookup
@@ -24,14 +22,18 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.Database.DBService
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
-import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.ImageUtils
+import com.example.alpha_bank_qr.Utils.Json
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_card.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
+import net.glxn.qrgen.android.QRCode
 
 class CardActivity : AppCompatActivity() {
 
@@ -58,7 +60,8 @@ class CardActivity : AppCompatActivity() {
         }
 
         more.setOnClickListener {
-            val dbHelper = QRDatabaseHelper(this)
+            val dbHelper =
+                QRDatabaseHelper(this)
             cursor = dbHelper.getUser(id)
             if (cursor!!.count != 0) { cursor!!.moveToFirst() }
 
@@ -171,7 +174,8 @@ class CardActivity : AppCompatActivity() {
                 profile_photo.setImageURI(result.uri)
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE
-                val dbHelper = QRDatabaseHelper(this)
+                val dbHelper =
+                    QRDatabaseHelper(this)
                 val drawable = profile_photo.drawable
                 dbHelper.updateUserPhoto(id, drawable)
                 dbHelper.close()
@@ -191,7 +195,7 @@ class CardActivity : AppCompatActivity() {
 
             val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
             if (photoUUID != "") {
-                DataUtils.getImageFromFirebase(photoUUID, profile_photo)
+                ImageUtils.getImageFromFirebase(photoUUID, profile_photo)
             } else {
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE
@@ -223,33 +227,25 @@ class CardActivity : AppCompatActivity() {
 
     @SuppressLint("InflateParams")
     private fun setQRWindow(id : Int) {
-        val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getQRFromUser(id)
-        if (cursor!!.count != 0) {
-            cursor.moveToFirst()
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_qr, null)
+        val user = DBService.getUserById(this, id)
 
-            val mBuilder = AlertDialog.Builder(this)
-                .setTitle("Покажите QR код")
-                .setView(mDialogView)
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_qr, null)
 
-            val dr = DataUtils.getImageInDrawable(cursor, "qr")
-            val bitmap = (dr as BitmapDrawable).bitmap
+        val mBuilder = AlertDialog.Builder(this)
+            .setTitle("Покажите QR код")
+            .setView(mDialogView)
 
-            val d: Drawable = BitmapDrawable(
-                resources,
-                Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-            )
-            mDialogView.qr_img.setImageDrawable(d)
-            val  mAlertDialog = mBuilder.show()
+        var bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+        bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
+        mDialogView.qr_img.setImageBitmap(bitmap)
 
-            mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
+        val  mAlertDialog = mBuilder.show()
 
-            mDialogView.share.setOnClickListener {
-                ProgramUtils.saveImage(this, arrayListOf(bitmap))
-            }
+        mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
+
+        mDialogView.share.setOnClickListener {
+            ProgramUtils.saveImage(this, arrayListOf(bitmap))
         }
-        dbHelper.close()
     }
 
     private fun goToActivity(cls : Class<*>) {

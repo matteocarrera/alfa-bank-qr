@@ -3,7 +3,6 @@ package com.example.alpha_bank_qr.Activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_about_app.*
 
 class AboutAppActivity : AppCompatActivity() {

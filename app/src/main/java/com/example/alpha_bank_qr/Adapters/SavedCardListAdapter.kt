@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.SavedCard
-import com.example.alpha_bank_qr.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.ImageUtils
 
 class SavedCardListAdapter(private val context: Activity, private val savedCards: Array<SavedCard>, private val layout: Int)
     : ArrayAdapter<SavedCard>(context,
@@ -40,7 +40,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
             photo.visibility = View.VISIBLE
             letters.visibility = View.GONE
             circle.visibility = View.GONE
-            DataUtils.getImageFromFirebase(savedCards[position].photo, photo)
+            ImageUtils.getImageFromFirebase(savedCards[position].photo, photo)
         }
 
         id.text = savedCards[position].id.toString()
@@ -55,7 +55,8 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
 
     companion object {
         fun setSavedCardsToView(context: Activity) : ArrayList<SavedCard> {
-            val dbHelper = QRDatabaseHelper(context)
+            val dbHelper =
+                QRDatabaseHelper(context)
             val cursor = dbHelper.getScannedUsers()
             val cards = ArrayList<SavedCard>()
             if (cursor!!.moveToFirst()) {

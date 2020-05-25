@@ -1,4 +1,4 @@
-package com.example.alpha_bank_qr
+package com.example.alpha_bank_qr.Database
 
 import android.content.ContentValues
 import android.content.Context
@@ -8,9 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.drawable.Drawable
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.User
-import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.ImageUtils
 
-class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null,
+    DATABASE_VERSION
+) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_USERS_TABLE)
         db.execSQL(SQL_CREATE_CARDS_TABLE)
@@ -28,7 +31,7 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     fun updateUserPhoto(id: Int, drawable: Drawable) {
         val cv = ContentValues()
-        cv.put("photo", DataUtils.getImageInByteArray(drawable))
+        cv.put("photo", ImageUtils.getImageInByteArray(drawable))
         val db = this.writableDatabase
         db.update("users", cv, "id = $id", null)
         db.close()
@@ -37,7 +40,6 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     fun updateUser(user: User) {
         val values = ContentValues()
         values.put("photo", user.photo)
-        values.put("qr", user.qr)
         values.put("is_owner", user.isOwner)
         values.put("is_scanned", user.isScanned)
         values.put("name", user.name)
@@ -67,7 +69,6 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     fun addUser(user: User) {
         val values = ContentValues()
         values.put("photo", user.photo)
-        values.put("qr", user.qr)
         values.put("is_owner", user.isOwner)
         values.put("is_scanned", user.isScanned)
         values.put("name", user.name)
@@ -121,19 +122,14 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         return db.rawQuery("SELECT * FROM users WHERE is_owner = 1", null)
     }
 
-    fun getQRFromUser(id : Int) : Cursor? {
+    fun getUsersFromMyCards() : Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT qr FROM users WHERE id = $id", null)
+        return db.rawQuery("SELECT * FROM users WHERE is_owner = 0 AND is_scanned = 0", null)
     }
 
     fun getScannedUsers(): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM users WHERE is_scanned = 1", null)
-    }
-
-    fun getScannedUsersQR(): Cursor? {
-        val db = this.readableDatabase
-        return db.rawQuery("SELECT qr FROM users WHERE is_scanned = 1", null)
     }
 
     fun getUser(id : Int): Cursor? {
@@ -163,24 +159,6 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             "vk", "facebook", "instagram", "twitter", "notes"
         )
 
-        // Функция для проверки по QR коду, существует ли такая визитка уже или еще нет
-        fun checkCardForExistence(context: Context, qr : ByteArray) : Boolean {
-            val dbHelper = QRDatabaseHelper(context)
-            val cursor = dbHelper.getScannedUsersQR()
-            if (cursor!!.moveToFirst()) {
-                while (!cursor.isAfterLast) {
-                    val qrFromDB = cursor.getBlob(cursor.getColumnIndex("qr"))
-                    if (qrFromDB != null && qr.contentEquals(qrFromDB)) {
-                        dbHelper.close()
-                        return true
-                    }
-                    cursor.moveToNext()
-                }
-            }
-            dbHelper.close()
-            return false
-        }
-
         // If you change the database schema, you must increment the database version.
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "QRDatabase.db"
@@ -189,7 +167,6 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             "CREATE TABLE users(" +
                     "id INTEGER PRIMARY KEY, " +
                     "photo TEXT," +
-                    "qr BLOB," +
                     "is_owner INTEGER," +
                     "is_scanned INTEGER," +
                     "name TEXT," +
