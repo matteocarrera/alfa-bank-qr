@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ImageUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_profile.*
+import java.lang.Exception
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,24 +53,21 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setDataToListView() {
-        val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getOwnerUser()
-        if (cursor!!.count != 0) {
-            cursor.moveToFirst()
-
-            val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
+        try {
+            val user = DBService.getOwnerUser(this)
+            val photoUUID = user.photo
             if (photoUUID != "") {
-                ImageUtils.getImageFromFirebase(cursor.getString(cursor.getColumnIndex("photo")), profile_photo)
+                ImageUtils.getImageFromFirebase(photoUUID, profile_photo)
             } else {
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE
-                letters.text = cursor.getString(cursor.getColumnIndex("name")).take(1) + cursor.getString(cursor.getColumnIndex("surname")).take(1)
+                letters.text = user.name.take(1) + user.surname.take(1)
             }
-            val data = DataUtils.setUserData(cursor)
+            val data = DataUtils.setUserData(user)
 
             val adapter = DataListAdapter(this, data, R.layout.data_list_item)
             data_list.adapter = adapter
-        } else {
+        } catch (e : Exception) {
             add_profile.visibility = View.VISIBLE
         }
     }

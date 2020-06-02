@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Database.QRDatabaseHelper
@@ -24,9 +25,9 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_create_card.back
 import kotlinx.android.synthetic.main.activity_edit_profile.*
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -104,7 +105,11 @@ class EditProfileActivity : AppCompatActivity() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (result != null) photo.setImageURI(result.uri)
-            uri = result.uri.toString()
+            uri = try {
+                result.uri.toString()
+            } catch (e : Exception) {
+                ""
+            }
         }
     }
 
@@ -209,14 +214,29 @@ class EditProfileActivity : AppCompatActivity() {
                     val user = getUserData()
                     user.id = cursor.getInt(cursor.getColumnIndex("id"))
                     dbHelper.updateUser(user)
+
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Обновление данных")
+                    builder.setMessage("Обновить данные в существующих визитках?\nВНИМАНИЕ!\nДанные, которые Вы удалили, будут также удалены в визитках!")
+                    builder.setPositiveButton("Да"){dialog, which ->
+                        Toast.makeText(applicationContext,"Данные в Ваших визитках успешно обновлены!",Toast.LENGTH_SHORT).show()
+                        DataUtils.updateMyCardsData(this, getUserData())
+                        ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
+                        finish()
+                    }
+                    builder.setNegativeButton("Нет"){dialog,which ->
+                        ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
+                        finish()
+                    }
+                    val dialog: AlertDialog = builder.create()
+                    dialog.show()
                 } else {
                     // Создаем новый профиль для основного пользователя
                     val user = getUserData()
                     dbHelper.addUser(user)
+                    ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
+                    finish()
                 }
-                DataUtils.updateMyCardsData(this, getUserData())
-                ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
-                finish()
             }
         }
     }

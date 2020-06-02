@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.DataItem
@@ -65,16 +66,12 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                 if (selectedItems.size == 0) {
                     Toast.makeText(this, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
                 } else {
-                    val dbHelper =
-                        QRDatabaseHelper(this)
-                    val cursor = dbHelper.getOwnerUser()
-                    cursor!!.moveToFirst()
-                    val user = DataUtils.parseDataToUser(selectedItems, cursor.getString(cursor.getColumnIndex("photo")))
+                    val ownerUser = DBService.getOwnerUser(this)
+                    val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
 
-                    var bitmap = QRCode.from(Json.toJson(user)).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    var bitmap = QRCode.from(Json.toJson(newUser)).withCharset("utf-8").withSize(1000, 1000).bitmap()
                     bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
 
-                    dbHelper.close()
                     setQRWindow(bitmap)
                 }
             } catch (e : Exception) {
@@ -126,53 +123,30 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
     }
 
     private fun setDataToListView() {
-        val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getOwnerUser()
-        if (cursor!!.count != 0) {
-            cursor.moveToFirst()
+        val user = DBService.getOwnerUser(this)
+        val data = DataUtils.setUserData(user)
 
-            val data = DataUtils.setUserData(cursor)
+        val adapter = DataListAdapter(this, data, R.layout.data_list_checkbox_item)
+        data_list.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+        data_list.onItemClickListener = this
+        data_list.adapter = adapter
 
-            val adapter = DataListAdapter(this, data, R.layout.data_list_checkbox_item)
-            data_list.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-            data_list.onItemClickListener = this
-            data_list.adapter = adapter
-
-            ListUtils.setDynamicHeight(data_list)
-        }
-        dbHelper.close()
+        ListUtils.setDynamicHeight(data_list)
     }
 
     private fun saveCardToDatabase() {
-        val dbHelper = QRDatabaseHelper(this)
-        var cursor = dbHelper.getAllCardsNames()
-        if (titleExists(cursor!!, card_title.text.toString().trimStart().trimEnd()))
+        val cardsNames = DBService.getAllCardsNames(this)
+        if (cardsNames.contains(card_title.text.toString().trimStart().trimEnd()))
             Toast.makeText(this, "Визитка с таким именем уже существует!", Toast.LENGTH_SHORT).show()
         else {
-            cursor = dbHelper.getOwnerUser()
-            cursor!!.moveToFirst()
-            val user = DataUtils.parseDataToUser(selectedItems, cursor.getString(cursor.getColumnIndex("photo")))
-            dbHelper.addUser(user)
-            cursor = dbHelper.getLastUserFromDb()
-            if (cursor!!.count != 0){
-                cursor.moveToFirst()
-                val userId = cursor.getInt(cursor.getColumnIndex("id"))
-                dbHelper.addCard(Card(0, cardColor, card_title.text.toString().trimStart().trimEnd(), userId))
-            }
+            val ownerUser = DBService.getOwnerUser(this)
+            var user = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
+            DBService.addUser(this, user)
+            user = DBService.getLastUserFromDB(this)
+            val userCard = Card(0, cardColor, card_title.text.toString().trimStart().trimEnd(), user.id)
+            DBService.addCard(this, userCard)
             goToActivity(CardsActivity::class.java)
         }
-    }
-
-    // Проверяем, существует ли уже визитка с таким названием или нет
-    private fun titleExists(cursor : Cursor, currentTitle : String) : Boolean {
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast) {
-                val title = cursor.getString(cursor.getColumnIndex("title"))
-                if (title == currentTitle) return true
-                cursor.moveToNext()
-            }
-        }
-        return false
     }
 
     private fun goToActivity(cls : Class<*>) {

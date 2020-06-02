@@ -29,9 +29,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         onUpgrade(db, oldVersion, newVersion)
     }
 
-    fun updateUserPhoto(id: Int, drawable: Drawable) {
+    fun updateUserPhoto(id: Int, photoUUID : String) {
         val cv = ContentValues()
-        cv.put("photo", ImageUtils.getImageInByteArray(drawable))
+        cv.put("photo", photoUUID)
         val db = this.writableDatabase
         db.update("users", cv, "id = $id", null)
         db.close()
@@ -117,14 +117,19 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         db.close()
     }
 
+    fun getOwnerUserID(): Cursor? {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT id FROM users WHERE is_owner = 1", null)
+    }
+
     fun getOwnerUser(): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM users WHERE is_owner = 1", null)
     }
 
-    fun getUsersFromMyCards() : Cursor? {
+    fun getUsersIDsFromMyCards() : Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM users WHERE is_owner = 0 AND is_scanned = 0", null)
+        return db.rawQuery("SELECT id FROM users WHERE is_owner = 0 AND is_scanned = 0", null)
     }
 
     fun getScannedUsers(): Cursor? {
@@ -137,9 +142,9 @@ class QRDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         return db.rawQuery("SELECT * FROM users WHERE id = $id", null)
     }
 
-    fun getLastUserFromDb() : Cursor? {
+    fun getLastUserID() : Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM users WHERE id = (SELECT MAX(id) FROM users)", null)
+        return db.rawQuery("SELECT id FROM users WHERE id = (SELECT MAX(id) FROM users)", null)
     }
 
     fun getAllCards(): Cursor? {

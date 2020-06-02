@@ -1,11 +1,8 @@
 package com.example.alpha_bank_qr.Database
 
 import android.content.Context
-import android.graphics.Bitmap
+import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.User
-import com.example.alpha_bank_qr.Utils.ImageUtils
-import com.example.alpha_bank_qr.Utils.Json
-import net.glxn.qrgen.android.QRCode
 
 class DBService {
     companion object {
@@ -13,6 +10,32 @@ class DBService {
             val dbHelper = QRDatabaseHelper(context)
             dbHelper.addUser(user)
             dbHelper.close()
+        }
+
+        fun addCard(context: Context, card : Card) {
+            val dbHelper = QRDatabaseHelper(context)
+            dbHelper.addCard(card)
+            dbHelper.close()
+        }
+
+        fun updateUser(context: Context, user: User) {
+            val dbHelper = QRDatabaseHelper(context)
+            dbHelper.updateUser(user)
+            dbHelper.close()
+        }
+
+        fun updateUserPhoto(context: Context, id : Int, photoUUID : String) {
+            val dbHelper = QRDatabaseHelper(context)
+            dbHelper.updateUserPhoto(id, photoUUID)
+            dbHelper.close()
+        }
+
+        fun getOwnerUser(context: Context) : User {
+            val dbHelper = QRDatabaseHelper(context)
+            val cursor = dbHelper.getOwnerUserID()
+            if (cursor!!.count != 0) { cursor.moveToFirst() }
+            dbHelper.close()
+            return getUserById(context, cursor.getInt(cursor.getColumnIndex("id")))
         }
 
         fun getUserById(context: Context, id : Int) : User {
@@ -47,6 +70,28 @@ class DBService {
             return user
         }
 
+        fun getLastUserFromDB(context: Context) : User {
+            val dbHelper = QRDatabaseHelper(context)
+            val cursor = dbHelper.getLastUserID()
+            if (cursor!!.count != 0) { cursor.moveToFirst() }
+            dbHelper.close()
+            return getUserById(context, cursor.getInt(cursor.getColumnIndex("id")))
+        }
+
+        fun getAllCardsNames(context: Context) : ArrayList<String> {
+            val dbHelper = QRDatabaseHelper(context)
+            val cursor = dbHelper.getAllCardsNames()
+            val cardsNames = ArrayList<String>()
+            if (cursor!!.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    cardsNames.add(cursor.getString(cursor.getColumnIndex("title")))
+                    cursor.moveToNext()
+                }
+            }
+            dbHelper.close()
+            return cardsNames
+        }
+
         fun getScannedUsers(context: Context) : ArrayList<User>? {
             val qrList = ArrayList<User>()
             val dbHelper = QRDatabaseHelper(context)
@@ -62,9 +107,31 @@ class DBService {
             return qrList
         }
 
+        fun getUsersFromMyCards(context: Context) : ArrayList<User> {
+            val dbHelper =
+                QRDatabaseHelper(context)
+            val cursor = dbHelper.getUsersIDsFromMyCards()
+            val users = ArrayList<User>()
+            if (cursor!!.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    val user = getUserById(context, cursor.getInt(cursor.getColumnIndex("id")))
+                    users.add(user)
+                    cursor.moveToNext()
+                }
+            }
+            dbHelper.close()
+            return users
+        }
+
         fun deleteUser(context: Context, id : Int) {
             val dbHelper = QRDatabaseHelper(context)
             dbHelper.deleteUser(id)
+            dbHelper.close()
+        }
+
+        fun deleteCard(context: Context, id : Int) {
+            val dbHelper = QRDatabaseHelper(context)
+            dbHelper.deleteCard(id)
             dbHelper.close()
         }
     }

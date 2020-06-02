@@ -25,20 +25,26 @@ import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
+import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.ImageUtils
 import com.example.alpha_bank_qr.Utils.Json
 import com.example.alpha_bank_qr.Utils.ProgramUtils
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_card.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
 import net.glxn.qrgen.android.QRCode
+import java.util.*
 
 class CardActivity : AppCompatActivity() {
 
     private var id : Int = 0
-    private var cursor : Cursor? = null
+    private var user = User()
+    private lateinit var mStorageRef: StorageReference
     private var READ_CONTACTS_PERMISSION = 0
     private var WRITE_CONTACTS_PERMISSION = 0
 
@@ -60,12 +66,9 @@ class CardActivity : AppCompatActivity() {
         }
 
         more.setOnClickListener {
-            val dbHelper =
-                QRDatabaseHelper(this)
-            cursor = dbHelper.getUser(id)
-            if (cursor!!.count != 0) { cursor!!.moveToFirst() }
+            user = DBService.getUserById(this, id)
 
-            val flag = (cursor!!.getInt(cursor!!.getColumnIndex("is_scanned")) == 1)
+            val flag = (user.isScanned == 1)
 
             val popupMenu = PopupMenu(this, more)
 
@@ -78,9 +81,8 @@ class CardActivity : AppCompatActivity() {
                         builder.setTitle("Удаление визитки")
                         builder.setMessage("Вы действительно хотите удалить данную визитку?")
                         builder.setPositiveButton("Да"){ _, _ ->
-                            dbHelper.deleteUser(id)
-                            if (!flag) dbHelper.deleteCard(cardId)
-                            dbHelper.close()
+                            DBService.deleteUser(this, id)
+                            if (!flag) DBService.deleteCard(this, cardId)
                             goToActivity(CardsActivity::class.java)
                             Toast.makeText(this,"Визитка успешно удалена!",Toast.LENGTH_SHORT).show()
                         }
@@ -89,17 +91,15 @@ class CardActivity : AppCompatActivity() {
                         dialog.show()
                     }
                     R.id.export -> {
-                        if (!contactExists(cursor!!.getString(cursor!!.getColumnIndex("mobile"))))
-                            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), cursor!!.getString(
-                                cursor!!.getColumnIndex("photo")))))
-                        dbHelper.close()
+                        if (!contactExists(user.mobile))
+                            startActivity(ProgramUtils.exportContact(user))
                     }
-                    /*R.id.add_photo -> {
+                    R.id.add_photo -> {
                         CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON)
                             .setAspectRatio(1, 1)
                             .start(this)
-                    }*/
+                    }
                 }
                 true
             }
@@ -160,8 +160,7 @@ class CardActivity : AppCompatActivity() {
     // Обрабатываем результат запроса на разрешение доступа к контактам телефона
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startActivity(ProgramUtils.exportContact(DataUtils.parseDataToUser(DataUtils.setUserData(cursor!!), cursor!!.getString(
-                cursor!!.getColumnIndex("photo")))))
+            startActivity(ProgramUtils.exportContact(user))
         }
     }
 
@@ -174,55 +173,50 @@ class CardActivity : AppCompatActivity() {
                 profile_photo.setImageURI(result.uri)
                 profile_photo.visibility = View.GONE
                 circle.visibility = View.VISIBLE
-                val dbHelper =
-                    QRDatabaseHelper(this)
-                val drawable = profile_photo.drawable
-                dbHelper.updateUserPhoto(id, drawable)
-                dbHelper.close()
-                setDataToListView(id)
-                finish()
-                startActivity(intent)
+
+                val uuid = UUID.randomUUID().toString()
+                mStorageRef = FirebaseStorage.getInstance().getReference(uuid)
+                mStorageRef.putFile(Uri.parse(result.uri.toString())).addOnSuccessListener {
+                    DBService.updateUserPhoto(this, id, uuid)
+                    setDataToListView(id)
+                    finish()
+                    startActivity(intent)
+                }
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setDataToListView(id : Int) {
-        val dbHelper = QRDatabaseHelper(this)
-        val cursor = dbHelper.getUser(id)
-        if (cursor!!.count != 0) {
-            cursor.moveToFirst()
+        val user = DBService.getUserById(this, id)
+        val photoUUID = user.photo
+        if (photoUUID != "") {
+            ImageUtils.getImageFromFirebase(photoUUID, profile_photo)
+        } else {
+            profile_photo.visibility = View.GONE
+            circle.visibility = View.VISIBLE
+            letters.text = user.name.take(1) + user.surname.take(1)
+        }
 
-            val photoUUID = cursor.getString(cursor.getColumnIndex("photo"))
-            if (photoUUID != "") {
-                ImageUtils.getImageFromFirebase(photoUUID, profile_photo)
-            } else {
-                profile_photo.visibility = View.GONE
-                circle.visibility = View.VISIBLE
-                letters.text = cursor.getString(cursor.getColumnIndex("name")).take(1) + cursor.getString(cursor.getColumnIndex("surname")).take(1)
-            }
+        val data = DataUtils.setUserData(user)
 
-            val data = DataUtils.setUserData(cursor)
-
-            val adapter = DataListAdapter(this, data, R.layout.data_list_item)
-            data_list.adapter = adapter
-            data_list.setOnItemClickListener { adapterView, _, i, _ ->
-                val item = adapterView?.getItemAtPosition(i) as DataItem
-                when (item.title) {
-                    "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.description)
-                    "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.description)
-                    "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.description)
-                    "vk", "facebook", "instagram", "twitter" -> ProgramUtils.openWebsite(this, item)
-                    else -> {
-                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("text", item.description)
-                        clipboard.setPrimaryClip(clip)
-                        Toast.makeText(this, "Данные скопированы", Toast.LENGTH_SHORT).show()
-                    }
+        val adapter = DataListAdapter(this, data, R.layout.data_list_item)
+        data_list.adapter = adapter
+        data_list.setOnItemClickListener { adapterView, _, i, _ ->
+            val item = adapterView?.getItemAtPosition(i) as DataItem
+            when (item.title) {
+                "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.description)
+                "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.description)
+                "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.description)
+                "vk", "facebook", "instagram", "twitter" -> ProgramUtils.openWebsite(this, item)
+                else -> {
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText("text", item.description)
+                    clipboard.setPrimaryClip(clip)
+                    Toast.makeText(this, "Данные скопированы", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-        dbHelper.close()
     }
 
     @SuppressLint("InflateParams")

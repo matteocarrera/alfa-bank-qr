@@ -1,46 +1,37 @@
 package com.example.alpha_bank_qr.Utils
 
 import android.content.Context
-import android.database.Cursor
 import com.example.alpha_bank_qr.Database.DBService
+import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 
 class DataUtils {
     companion object {
         private val data = ArrayList<DataItem>()
-        private val titles = arrayOf(
-            DataItem("фамилия", "surname"),
-            DataItem("имя", "name"),
-            DataItem("отчество", "patronymic"),
-            DataItem("компания", "company"),
-            DataItem("должность", "job_title"),
-            DataItem("мобильный номер", "mobile"),
-            DataItem("мобильный номер (другой)", "mobile_second"),
-            DataItem("email", "email"),
-            DataItem("email (другой)", "email_second"),
-            DataItem("адрес", "address"),
-            DataItem("адрес (другой)", "address_second"),
-            DataItem("Сбербанк (расчетный счет)", "sberbank"),
-            DataItem("ВТБ (расчетный счет)", "vtb"),
-            DataItem("Альфа-Банк (расчетный счет)", "alfabank"),
-            DataItem("vk", "vk"),
-            DataItem("facebook", "facebook"),
-            DataItem("instagram", "instagram"),
-            DataItem("twitter", "twitter"),
-            DataItem("заметки", "notes")
-        )
 
         // Для отображения в профиле
-        fun setUserData(cursor: Cursor): ArrayList<DataItem> {
+        fun setUserData(user: User): ArrayList<DataItem> {
             data.clear()
-            for (i in titles.indices) {
-                addItem(
-                    titles[i].title,
-                    cursor.getString(cursor.getColumnIndex(titles[i].description))
-                )
-            }
+            addItem("фамилия", user.surname)
+            addItem("имя", user.name)
+            addItem("отчество", user.patronymic)
+            addItem("компания", user.company)
+            addItem("должность", user.jobTitle)
+            addItem("мобильный номер", user.mobile)
+            addItem("мобильный номер (другой)", user.mobileSecond)
+            addItem("email", user.email)
+            addItem("email (другой)", user.emailSecond)
+            addItem("адрес", user.address)
+            addItem("адрес (другой)", user.addressSecond)
+            addItem("Сбербанк (расчетный счет)", user.sberbank)
+            addItem("ВТБ (расчетный счет)", user.vtb)
+            addItem("Альфа-Банк (расчетный счет)", user.alfabank)
+            addItem("vk", user.vk)
+            addItem("facebook", user.facebook)
+            addItem("instagram", user.instagram)
+            addItem("twitter", user.twitter)
+            addItem("заметки", user.notes)
             return data
         }
 
@@ -90,7 +81,7 @@ class DataUtils {
 
         // Методы для получения существующих пользователей в визитках и обновления их данных
         fun updateMyCardsData(context: Context, user: User) {
-            getUsersFromMyCards(context).forEach {
+            DBService.getUsersFromMyCards(context).forEach {
                 it.name = checkForDifference(it.name, user.name)
                 it.surname = checkForDifference(it.surname, user.surname)
                 it.patronymic = checkForDifference(it.patronymic, user.patronymic)
@@ -110,31 +101,8 @@ class DataUtils {
                 it.instagram = checkForDifference(it.instagram, user.instagram)
                 it.twitter = checkForDifference(it.twitter, user.twitter)
                 it.notes = checkForDifference(it.notes, user.notes)
-                val dbHelper =
-                    QRDatabaseHelper(context)
-                dbHelper.updateUser(it)
-                dbHelper.close()
+                DBService.updateUser(context, it)
             }
-        }
-
-        private fun getUsersFromMyCards(context: Context) : ArrayList<User> {
-            val dbHelper =
-                QRDatabaseHelper(context)
-            val cursor = dbHelper.getUsersFromMyCards()
-            val users = ArrayList<User>()
-            if (cursor!!.moveToFirst()) {
-                while (!cursor.isAfterLast) {
-                    val user = parseDataToUser(setUserData(cursor), cursor.getString(cursor.getColumnIndex("photo")))
-                    user.id = cursor.getInt(cursor.getColumnIndex("id"))
-                    user.photo = cursor.getString(cursor.getColumnIndex("photo"))
-
-                    users.add(user)
-
-                    cursor.moveToNext()
-                }
-            }
-            dbHelper.close()
-            return users
         }
 
         private fun checkForDifference(oldUserData : String, newUserData : String) : String {
