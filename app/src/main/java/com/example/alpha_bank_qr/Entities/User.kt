@@ -37,6 +37,6 @@ class User(
     var notes : String = ""
 ) {
     override fun toString(): String {
-        return "$photo,$name,$surname,$patronymic,$company,$jobTitle,$mobile,$mobileSecond,$email,$emailSecond,$address,$addressSecond,$sberbank,$vtb,$alfabank,$vk,$facebook,$instagram,$twitter,$notes"
+        return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$sberbank|$vtb|$alfabank|$vk|$facebook|$instagram|$twitter|$notes"
     }
 }

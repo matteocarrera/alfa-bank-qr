@@ -9,7 +9,7 @@ class Json {
         }
 
         fun fromJson(json : String) : User {
-            val userData = json.split(',')
+            val userData = json.split('|')
             val user = User()
             user.isScanned = 1
             user.photo = userData[0]
