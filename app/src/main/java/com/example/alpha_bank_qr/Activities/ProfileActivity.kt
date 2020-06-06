@@ -22,8 +22,8 @@ class ProfileActivity : AppCompatActivity() {
         bottom_bar.menu.getItem(2).isChecked = true
         bottom_bar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.cards -> goToActivity(CardsActivity::class.java)
-                R.id.scan -> goToActivity(ScanActivity::class.java)
+                //R.id.cards -> goToActivity(CardsActivity::class.java)
+                //R.id.scan -> goToActivity(ScanActivity::class.java)
                 else -> goToActivity(ProfileActivity::class.java)
             }
             true

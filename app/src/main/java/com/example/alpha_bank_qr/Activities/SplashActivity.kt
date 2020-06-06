@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.alpha_bank_qr.MainActivity
 import com.example.alpha_bank_qr.R
 
 class SplashActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
         actionBar?.hide()
         setContentView(R.layout.activity_splash)
         Handler().postDelayed({
-            startActivity(Intent(this, CardsActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, SPLASH_TIME_OUT)
     }

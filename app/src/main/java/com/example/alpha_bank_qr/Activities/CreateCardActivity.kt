@@ -115,11 +115,11 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         mDialogView.qr_img.setImageDrawable(d)
         val  mAlertDialog = mBuilder.show()
 
-        mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
+        //mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
 
-        mDialogView.share.setOnClickListener {
-            ProgramUtils.saveImage(this, arrayListOf(bitmap))
-        }
+        //mDialogView.share.setOnClickListener {
+         //   ProgramUtils.saveImage(this, arrayListOf(bitmap))
+        //}
     }
 
     private fun setDataToListView() {

@@ -58,4 +58,9 @@
     <string name="cards">Визитки</string>
     <string name="scan_card">Камера</string>
     <string name="profile">Профиль</string>
+    <string name="title_activity_cards">Cards</string>
+
+    <string name="tab_templates">ШАБЛОНЫ</string>
+    <string name="tab_contacts">КОНТАКТЫ</string>
+
 </resources>

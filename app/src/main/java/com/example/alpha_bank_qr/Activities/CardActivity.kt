@@ -235,11 +235,11 @@ class CardActivity : AppCompatActivity() {
 
         val  mAlertDialog = mBuilder.show()
 
-        mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
+        //mDialogView.ok.setOnClickListener { mAlertDialog.dismiss() }
 
-        mDialogView.share.setOnClickListener {
-            ProgramUtils.saveImage(this, arrayListOf(bitmap))
-        }
+        //mDialogView.share.setOnClickListener {
+        //    ProgramUtils.saveImage(this, arrayListOf(bitmap))
+        //}
     }
 
     private fun goToActivity(cls : Class<*>) {

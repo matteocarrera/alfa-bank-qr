@@ -1,8 +1,5 @@
 package com.example.alpha_bank_qr.Entities
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-
 /*
     Пользователь будет иметь возможность добавить дополнительный мобильный номер, дополнительный
     email и дополнительный адрес

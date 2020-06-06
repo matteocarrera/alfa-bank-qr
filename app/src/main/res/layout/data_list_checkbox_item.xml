@@ -23,7 +23,7 @@
                 android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:textSize="@dimen/app_text_size_medium"
+                android:textSize="@dimen/app_text_size_small"
                 android:textColor="#6D7986"/>
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
+                android:textSize="@dimen/app_text_size_medium"
                 android:textColor="@color/colorTextPrimary"/>
         </LinearLayout>
         <CheckBox

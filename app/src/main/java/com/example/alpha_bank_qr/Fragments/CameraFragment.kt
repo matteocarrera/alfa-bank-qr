@@ -1,10 +1,14 @@
-package com.example.alpha_bank_qr.Activities
+package com.example.alpha_bank_qr.Fragments
 
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.alpha_bank_qr.Activities.CardsActivity
 import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
@@ -19,23 +23,21 @@ import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_scan.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
-class ScanActivity : AppCompatActivity() {
+class CameraFragment : Fragment() {
 
-    public override fun onCreate(state: Bundle?) {
-        super.onCreate(state)
-        setContentView(R.layout.activity_scan)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val root = inflater.inflate(R.layout.fragment_camera, container, false)
+        return root
+    }
 
-        bottom_bar.menu.getItem(1).isChecked = true
-        bottom_bar.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                //R.id.cards -> goToActivity(CardsActivity::class.java)
-                //R.id.scan -> goToActivity(ScanActivity::class.java)
-                else -> goToActivity(ProfileActivity::class.java)
-            }
-            true
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        Dexter.withActivity(this)
+        Dexter.withContext(view.context)
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object: PermissionListener, ZXingScannerView.ResultHandler {
                 override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
@@ -51,17 +53,17 @@ class ScanActivity : AppCompatActivity() {
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                    Toast.makeText(this@ScanActivity, "Необходим доступ к камере!", Toast.LENGTH_SHORT).show()
-                    goToActivity(CardsActivity::class.java)
+                    Toast.makeText(view.context, "Необходим доступ к камере!", Toast.LENGTH_SHORT).show()
+                    //goToActivity(CardsActivity::class.java)
                 }
 
                 // Обрабатываем результат сканирования QR
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
-                        val user = Json.fromJson(rawResult.text)
+                        /*val user = Json.fromJson(rawResult.text)
 
                         // Проверяем по QR, существует ли уже такая визитка или нет
-                        val flag = DataUtils.checkCardForExistence(this@ScanActivity, user)
+                        val flag = DataUtils.checkCardForExistence(view.context, user)
                         val dbHelper =
                             QRDatabaseHelper(
                                 this@ScanActivity
@@ -75,22 +77,24 @@ class ScanActivity : AppCompatActivity() {
                         }
                         onBackPressed()
                         dbHelper.close()
-                        startActivity(intent)
+                        startActivity(intent)*/
                     }
                 }
             }).check()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
+        super.onDestroyView()
         scanner.stopCamera()
-        super.onDestroy()
     }
 
-    private fun goToActivity(cls : Class<*>) {
-        val intent = Intent(this, cls)
-        intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-        startActivity(intent)
-        overridePendingTransition(0, 0)
-        finish()
+    override fun onPause() {
+        super.onPause()
+        scanner.stopCamera()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        scanner.stopCamera()
     }
 }
