@@ -1,7 +1,6 @@
 package com.example.alpha_bank_qr.Activities
 
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -17,14 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Database.DBService
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
-import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.Json
 import com.example.alpha_bank_qr.Utils.ListUtils
-import com.example.alpha_bank_qr.Utils.ProgramUtils
 import kotlinx.android.synthetic.main.activity_create_card.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
@@ -143,8 +139,8 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
             var user = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
             DBService.addUser(this, user)
             user = DBService.getLastUserFromDB(this)
-            val userCard = Card(0, cardColor, card_title.text.toString().trimStart().trimEnd(), user.id)
-            DBService.addCard(this, userCard)
+            //val userCard = Card(cardColor, card_title.text.toString().trimStart().trimEnd(), user.id)
+            //DBService.addCard(this, userCard)
             goToActivity(CardsActivity::class.java)
         }
     }

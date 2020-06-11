@@ -1,18 +1,20 @@
 package com.example.alpha_bank_qr.Fragments
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.alpha_bank_qr.Activities.CardsActivity
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
+import com.example.alpha_bank_qr.Database.AppDatabase
+import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
-import com.example.alpha_bank_qr.Utils.DataUtils
-import com.example.alpha_bank_qr.Utils.Json
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 import com.google.zxing.Result
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -23,7 +25,10 @@ import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_scan.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
+
 class CameraFragment : Fragment() {
+
+    private lateinit var db : AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +41,7 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        db = AppDatabase.getInstance(requireContext())
         Dexter.withContext(view.context)
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object: PermissionListener, ZXingScannerView.ResultHandler {
@@ -54,12 +59,40 @@ class CameraFragment : Fragment() {
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
                     Toast.makeText(view.context, "Необходим доступ к камере!", Toast.LENGTH_SHORT).show()
-                    //goToActivity(CardsActivity::class.java)
+                    requireActivity().onBackPressed()
                 }
 
                 // Обрабатываем результат сканирования QR
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
+                        val databaseRef = FirebaseDatabase.getInstance().getReference(rawResult.toString())
+                        databaseRef.addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                val jsonUser = dataSnapshot.value.toString()
+                                val user = Gson().fromJson(jsonUser, User::class.java)
+                                val scannedUsers = db.userDao().getScannedUsers()
+                                var userExists = false
+                                scannedUsers.forEach {
+                                    if (it.id == user.id) userExists = true
+                                }
+                                if (userExists) {
+                                    Toast.makeText(view.context, "Такая визитка уже существует!", Toast.LENGTH_SHORT).show()
+                                    requireActivity().onBackPressed()
+                                } else {
+                                    user.isScanned = true
+                                    user.isOwner = false
+                                    db.userDao().updateUser(user)
+                                    Toast.makeText(view.context, "Визитка успешно считана!", Toast.LENGTH_SHORT).show()
+                                    requireActivity().onBackPressed()
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                println("Ошибка считывания: " + databaseError.code)
+                            }
+                        })
+
+
                         /*val user = Json.fromJson(rawResult.text)
 
                         // Проверяем по QR, существует ли уже такая визитка или нет

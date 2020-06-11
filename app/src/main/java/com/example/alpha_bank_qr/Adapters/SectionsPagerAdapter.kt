@@ -22,8 +22,8 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment {
         if (position == 1)
-            return ContactsFragment.newInstance("", "")
-        return TemplatesFragment.newInstance("", "")
+            return ContactsFragment.newInstance()
+        return TemplatesFragment.newInstance()
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

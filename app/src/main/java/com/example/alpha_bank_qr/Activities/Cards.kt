@@ -1,10 +1,11 @@
-package com.example.alpha_bank_qr
+package com.example.alpha_bank_qr.Activities
 
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.SectionsPagerAdapter
+import com.example.alpha_bank_qr.R
 
 class Cards : AppCompatActivity() {
 

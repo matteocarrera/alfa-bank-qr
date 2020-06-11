@@ -6,9 +6,9 @@
     android:background="@color/colorBackground"
     tools:context=".Fragments.ContactsFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Контакты" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

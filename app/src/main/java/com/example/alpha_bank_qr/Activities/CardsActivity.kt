@@ -14,12 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
 import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
-import com.example.alpha_bank_qr.Cards
 import com.example.alpha_bank_qr.Database.DBService
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.SavedCard
-import com.example.alpha_bank_qr.MainActivity
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.Json

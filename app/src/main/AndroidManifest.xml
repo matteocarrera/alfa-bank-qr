@@ -22,10 +22,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="ГЛАВНАЯ"></activity>
         <activity
-            android:name=".Cards"
+            android:name=".Activities.Cards"
             android:label="@string/title_activity_cards"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.SettingsActivity" />

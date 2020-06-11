@@ -41,8 +41,8 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
                     val color = cursor.getInt(cursor.getColumnIndex("color"))
                     val title = cursor.getString(cursor.getColumnIndex("title"))
                     val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
-
-                    cards.add(Card(id, color, title, userId))
+                    TODO("Переделать вызов Card")
+                    cards.add(Card(color, title, userId))
                     cursor.moveToNext()
                 }
             }

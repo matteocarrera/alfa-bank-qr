@@ -23,7 +23,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Database.DBService
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
@@ -68,7 +67,7 @@ class CardActivity : AppCompatActivity() {
         more.setOnClickListener {
             user = DBService.getUserById(this, id)
 
-            val flag = (user.isScanned == 1)
+            val flag = (user.isScanned)
 
             val popupMenu = PopupMenu(this, more)
 

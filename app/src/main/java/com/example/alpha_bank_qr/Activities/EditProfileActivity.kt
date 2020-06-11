@@ -212,7 +212,7 @@ class EditProfileActivity : AppCompatActivity() {
                     // Сохраняем уже в существующий профиль с обновлением данных
                     cursor.moveToFirst()
                     val user = getUserData()
-                    user.id = cursor.getInt(cursor.getColumnIndex("id"))
+                    //user.id = cursor.getInt(cursor.getColumnIndex("id"))
                     dbHelper.updateUser(user)
 
                     val builder = AlertDialog.Builder(this)
@@ -242,10 +242,10 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getUserData() : User {
-        return User(0,
+        return User(
             uuid,
-            1,
-            0,
+            true,
+            false,
             name.text.toString(),
             surname.text.toString(),
             patronymic.text.toString(),

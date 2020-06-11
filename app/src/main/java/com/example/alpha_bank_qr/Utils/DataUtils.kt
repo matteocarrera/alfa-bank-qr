@@ -24,10 +24,11 @@ class DataUtils {
             addItem("email (другой)", user.emailSecond)
             addItem("адрес", user.address)
             addItem("адрес (другой)", user.addressSecond)
-            addItem("Сбербанк (расчетный счет)", user.sberbank)
-            addItem("ВТБ (расчетный счет)", user.vtb)
-            addItem("Альфа-Банк (расчетный счет)", user.alfabank)
+            addItem("Номер карты 1", user.cardNumber)
+            addItem("Номер карты 2", user.cardNumberSecond)
+            addItem("Сайт", user.website)
             addItem("vk", user.vk)
+            addItem("telegram", user.telegram)
             addItem("facebook", user.facebook)
             addItem("instagram", user.instagram)
             addItem("twitter", user.twitter)
@@ -61,10 +62,11 @@ class DataUtils {
                     "email (другой)" -> user.emailSecond = it.description
                     "адрес" -> user.address = it.description
                     "адрес (другой)" -> user.addressSecond = it.description
-                    "Сбербанк (расчетный счет)" -> user.sberbank = it.description
-                    "ВТБ (расчетный счет)" -> user.vtb = it.description
-                    "Альфа-Банк (расчетный счет)" -> user.alfabank = it.description
+                    "Номер карты 1" -> user.cardNumber = it.description
+                    "Номер карты 2" -> user.cardNumberSecond = it.description
+                    "Сайт" -> user.website = it.description
                     "vk" -> user.vk = it.description
+                    "telegram" -> user.telegram = it.description
                     "facebook" -> user.facebook = it.description
                     "instagram" -> user.instagram = it.description
                     "twitter" -> user.twitter = it.description
@@ -93,9 +95,9 @@ class DataUtils {
                 it.emailSecond = checkForDifference(it.emailSecond, user.emailSecond)
                 it.address = checkForDifference(it.address, user.address)
                 it.addressSecond = checkForDifference(it.addressSecond, user.addressSecond)
-                it.sberbank = checkForDifference(it.sberbank, user.sberbank)
-                it.vtb = checkForDifference(it.vtb, user.vtb)
-                it.alfabank = checkForDifference(it.alfabank, user.alfabank)
+                //it.sberbank = checkForDifference(it.sberbank, user.sberbank)
+                //it.vtb = checkForDifference(it.vtb, user.vtb)
+                //it.alfabank = checkForDifference(it.alfabank, user.alfabank)
                 it.vk = checkForDifference(it.vk, user.vk)
                 it.facebook = checkForDifference(it.facebook, user.facebook)
                 it.instagram = checkForDifference(it.instagram, user.instagram)
