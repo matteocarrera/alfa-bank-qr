@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 data class Card (
     var color : Int,
     var title : String,
-    var userId: Int
+    var userId: String
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

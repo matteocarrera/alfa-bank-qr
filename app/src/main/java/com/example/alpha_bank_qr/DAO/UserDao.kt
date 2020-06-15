@@ -8,6 +8,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE isOwner = 1")
     fun getOwnerUser() : User
 
+    @Query("SELECT * FROM users")
+    fun getAllUsers() : List<User>
+
     @Query("SELECT * FROM users WHERE isOwner = 0 AND isScanned = 0")
     fun getUsersFromMyCards() : List<User>
 
@@ -15,10 +18,10 @@ interface UserDao {
     fun getScannedUsers() : List<User>
 
     @Query("SELECT * FROM users WHERE id = :id")
-    fun getUserById(id : Int) : User
+    fun getUserById(id : String) : User
 
     @Query("SELECT id FROM users WHERE id = (SELECT MAX(id) FROM users)")
-    fun getLastUserId() : Int
+    fun getLastUserId() : String
 
     @Update(entity = User::class)
     fun updateUser(user: User)

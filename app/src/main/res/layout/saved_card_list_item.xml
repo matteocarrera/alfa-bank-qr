@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <com.google.android.material.card.MaterialCardView
@@ -121,12 +121,11 @@
                 app:layout_constraintBottom_toBottomOf="@id/photo_box"/>
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
                 app:srcCompat="@drawable/ic_more_horiz"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
                 app:layout_constraintTop_toTopOf="@id/name"
                 app:layout_constraintBottom_toBottomOf="@id/name"
                 app:layout_constraintEnd_toEndOf="parent"/>

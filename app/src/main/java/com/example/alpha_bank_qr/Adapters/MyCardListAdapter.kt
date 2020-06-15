@@ -16,7 +16,7 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.my_card_list_item, null, true)
 
-        val id = rowView.findViewById(R.id.id) as TextView
+        val id = rowView.findViewById(R.id.card_id) as TextView
         val color = rowView.findViewById(R.id.color_tag) as TextView
         val userId = rowView.findViewById(R.id.user_id) as TextView
         val title = rowView.findViewById(R.id.title) as TextView
@@ -42,7 +42,7 @@ class MyCardListAdapter(private val context: Activity, private val cards: Array<
                     val title = cursor.getString(cursor.getColumnIndex("title"))
                     val userId = cursor.getInt(cursor.getColumnIndex("user_id"))
                     TODO("Переделать вызов Card")
-                    cards.add(Card(color, title, userId))
+                    //cards.add(Card(color, title, userId))
                     cursor.moveToNext()
                 }
             }

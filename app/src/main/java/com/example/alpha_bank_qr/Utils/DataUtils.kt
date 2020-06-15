@@ -49,6 +49,8 @@ class DataUtils {
         fun parseDataToUser(data : ArrayList<DataItem>, photoUUID : String) : User {
             val user = User()
             user.photo = photoUUID
+            user.isOwner = false
+            user.isScanned = false
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description

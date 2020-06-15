@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.Database.DBService
+import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.DataItem
+import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
 import com.example.alpha_bank_qr.Utils.Json
@@ -100,12 +102,22 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
             .show()
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         positiveButton.setOnClickListener {
-            val cardTitle = layout.card_title.text.toString()
-            if (cardTitle.length > MAX_CARD_TITLE_LENGTH) {
-                Toast.makeText(view.context, "Название слишком длинное!", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                TODO("Реализовать функцию сохранения карточки в БД")
+            val title = layout.card_title.text.toString()
+            val cardTitles = db.cardDao().getAllCardsNames()
+            when {
+                title.length > MAX_CARD_TITLE_LENGTH -> {
+                    Toast.makeText(view.context, "Название слишком длинное!", Toast.LENGTH_SHORT).show()
+                }
+                cardTitles.contains(title.trimStart().trimEnd()) -> {
+                    Toast.makeText(view.context, "Шаблон с таким названием уже существует!", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    val user = createUser()
+                    val card = Card(cardColor, title.trimStart().trimEnd(), user.id)
+                    db.cardDao().insertCard(card)
+                    Toast.makeText(view.context, "Шаблон успешно создан!", Toast.LENGTH_SHORT).show()
+                    dialog.cancel()
+                }
             }
         }
     }
@@ -133,30 +145,9 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
             if (selectedItems.size == 0) {
                 Toast.makeText(view.context, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
             } else {
-                val ownerUser = db.userDao().getOwnerUser()
-                val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
-                var uuid = UUID.randomUUID().toString()
-                newUser.id = uuid
+                val user = createUser()
 
-                val myCardsUsers = db.userDao().getUsersFromMyCards()
-                var userExists = false
-                if (myCardsUsers != null && myCardsUsers.isNotEmpty()) {
-                    myCardsUsers.forEach {
-                        if (it.toString() == newUser.toString()) {
-                            userExists = true
-                            newUser.id = it.id
-                            uuid = it.id
-                        }
-                    }
-                }
-                if (!userExists) {
-                    val databaseRef = FirebaseDatabase.getInstance().getReference(uuid)
-                    databaseRef.setValue(Gson().toJson(newUser))
-
-                    db.userDao().insertUser(newUser)
-                }
-
-                var bitmap = QRCode.from(uuid).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
                 bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
 
                 setShowQRDialog(view, bitmap)
@@ -164,6 +155,32 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
         } catch (e : Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun createUser() : User {
+        val ownerUser = db.userDao().getOwnerUser()
+        val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
+        var uuid = UUID.randomUUID().toString()
+        newUser.id = uuid
+
+        val myCardsUsers = db.userDao().getUsersFromMyCards()
+        var userExists = false
+        if (myCardsUsers != null && myCardsUsers.isNotEmpty()) {
+            myCardsUsers.forEach {
+                if (it.toString() == newUser.toString()) {
+                    userExists = true
+                    newUser.id = it.id
+                    uuid = it.id
+                }
+            }
+        }
+        if (!userExists) {
+            val databaseRef = FirebaseDatabase.getInstance().getReference(uuid)
+            databaseRef.setValue(Gson().toJson(newUser))
+
+            db.userDao().insertUser(newUser)
+        }
+        return newUser
     }
 
     // https://androidexample365.com/a-simple-color-picker-library-for-android/

@@ -26,7 +26,7 @@ class SavedCardListAdapter(private val context: Activity, private val savedCards
         val photo = rowView.findViewById(R.id.photo) as ImageView
         val letters = rowView.findViewById(R.id.letters) as TextView
         val circle = rowView.findViewById(R.id.circle) as LinearLayout
-        val id = rowView.findViewById(R.id.id) as TextView
+        val id = rowView.findViewById(R.id.contact_id) as TextView
         val name = rowView.findViewById(R.id.name) as TextView
         val jobTitle = rowView.findViewById(R.id.job_title) as TextView
         val company = rowView.findViewById(R.id.company) as TextView

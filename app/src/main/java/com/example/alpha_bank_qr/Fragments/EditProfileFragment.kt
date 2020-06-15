@@ -245,6 +245,15 @@ class EditProfileFragment : Fragment() {
 
             val databaseRef = FirebaseDatabase.getInstance().getReference(user.id)
             databaseRef.setValue(Gson().toJson(user))
+
+            val myCardsUsers = db.userDao().getUsersFromMyCards()
+            println(myCardsUsers.size)
+            myCardsUsers.forEach {
+                it.photo = uuid
+                db.userDao().updateUser(it)
+                val databaseReference = FirebaseDatabase.getInstance().getReference(it.id)
+                databaseReference.setValue(Gson().toJson(it))
+            }
         }
         parentFragmentManager.popBackStack()
     }
