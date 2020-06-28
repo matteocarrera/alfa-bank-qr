@@ -81,7 +81,7 @@ class CameraFragment : Fragment() {
                                 } else {
                                     user.isScanned = true
                                     user.isOwner = false
-                                    db.userDao().updateUser(user)
+                                    db.userDao().insertUser(user)
                                     Toast.makeText(view.context, "Визитка успешно считана!", Toast.LENGTH_SHORT).show()
                                     requireActivity().onBackPressed()
                                 }
@@ -91,26 +91,6 @@ class CameraFragment : Fragment() {
                                 println("Ошибка считывания: " + databaseError.code)
                             }
                         })
-
-
-                        /*val user = Json.fromJson(rawResult.text)
-
-                        // Проверяем по QR, существует ли уже такая визитка или нет
-                        val flag = DataUtils.checkCardForExistence(view.context, user)
-                        val dbHelper =
-                            QRDatabaseHelper(
-                                this@ScanActivity
-                            )
-                        val intent = Intent(this@ScanActivity, CardsActivity::class.java)
-                        if (flag) {
-                            intent.putExtra("fail", true)
-                        } else {
-                            dbHelper.addUser(user)
-                            intent.putExtra("success", true)
-                        }
-                        onBackPressed()
-                        dbHelper.close()
-                        startActivity(intent)*/
                     }
                 }
             }).check()

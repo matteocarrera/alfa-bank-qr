@@ -221,11 +221,11 @@ class EditProfileActivity : AppCompatActivity() {
                     builder.setPositiveButton("Да"){dialog, which ->
                         Toast.makeText(applicationContext,"Данные в Ваших визитках успешно обновлены!",Toast.LENGTH_SHORT).show()
                         DataUtils.updateMyCardsData(this, getUserData())
-                        ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
+                        //ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
                         finish()
                     }
                     builder.setNegativeButton("Нет"){dialog,which ->
-                        ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
+                        //ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
                         finish()
                     }
                     val dialog: AlertDialog = builder.create()
@@ -234,7 +234,7 @@ class EditProfileActivity : AppCompatActivity() {
                     // Создаем новый профиль для основного пользователя
                     val user = getUserData()
                     dbHelper.addUser(user)
-                    ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
+                    //ProgramUtils.goToActivityAnimated(this, ProfileActivity::class.java)
                     finish()
                 }
             }

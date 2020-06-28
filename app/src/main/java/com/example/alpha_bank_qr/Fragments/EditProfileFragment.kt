@@ -17,13 +17,35 @@ import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
+import com.example.alpha_bank_qr.Utils.ImageUtils
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.android.synthetic.main.activity_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.add_field
+import kotlinx.android.synthetic.main.fragment_edit_profile.address
+import kotlinx.android.synthetic.main.fragment_edit_profile.address_second
+import kotlinx.android.synthetic.main.fragment_edit_profile.change_photo
+import kotlinx.android.synthetic.main.fragment_edit_profile.company
+import kotlinx.android.synthetic.main.fragment_edit_profile.email
+import kotlinx.android.synthetic.main.fragment_edit_profile.email_second
+import kotlinx.android.synthetic.main.fragment_edit_profile.facebook
+import kotlinx.android.synthetic.main.fragment_edit_profile.instagram
+import kotlinx.android.synthetic.main.fragment_edit_profile.job_title
+import kotlinx.android.synthetic.main.fragment_edit_profile.mobile
+import kotlinx.android.synthetic.main.fragment_edit_profile.mobile_second
+import kotlinx.android.synthetic.main.fragment_edit_profile.name
+import kotlinx.android.synthetic.main.fragment_edit_profile.notes
+import kotlinx.android.synthetic.main.fragment_edit_profile.patronymic
+import kotlinx.android.synthetic.main.fragment_edit_profile.photo
+import kotlinx.android.synthetic.main.fragment_edit_profile.progressbar
+import kotlinx.android.synthetic.main.fragment_edit_profile.surname
+import kotlinx.android.synthetic.main.fragment_edit_profile.twitter
+import kotlinx.android.synthetic.main.fragment_edit_profile.vk
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -157,6 +179,7 @@ class EditProfileFragment : Fragment() {
 
     private fun setUserData() {
         val user = db.userDao().getOwnerUser()
+        ImageUtils.getImageFromFirebase(user.photo, photo)
         if (user != null) {
             surname.setText(user.surname)
             name.setText(user.name)

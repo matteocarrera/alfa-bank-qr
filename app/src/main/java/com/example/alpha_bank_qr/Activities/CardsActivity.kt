@@ -12,8 +12,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.alpha_bank_qr.Adapters.MyCardListAdapter
-import com.example.alpha_bank_qr.Adapters.SavedCardListAdapter
 import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.SavedCard
@@ -44,16 +42,6 @@ class CardsActivity : AppCompatActivity(){
             if (success) Toast.makeText(this, "Визитная карточка успешно добавлена!", Toast.LENGTH_LONG).show()
             if (fail) Toast.makeText(this, "Такая визитная карточка уже существует!", Toast.LENGTH_LONG).show()
         } catch (e : Exception) {}
-
-        bottom_bar.menu.getItem(0).isChecked = true
-        bottom_bar.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                //R.id.cards -> goToActivity(CardsActivity::class.java)
-                //R.id.scan -> goToActivity(MainActivity::class.java)
-                else -> goToActivity(ProfileActivity::class.java)
-            }
-            true
-        }
 
         selected_cards_share.setOnClickListener { shareCards() }
 
@@ -125,9 +113,9 @@ class CardsActivity : AppCompatActivity(){
     }
 
     private fun setMyCardsAdapter() {
-        val cards = MyCardListAdapter.setMyCardsToView(this)
-        val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
-        my_cards_list.adapter = myCardsAdapter
+        //val cards = MyCardListAdapter.setMyCardsToView(this)
+        //val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
+        //my_cards_list.adapter = myCardsAdapter
         countCheck(my_cards_list, my_cards_notification)
         my_cards_list.setOnItemClickListener { adapterView, _, i, _ ->
             val item = adapterView?.getItemAtPosition(i) as Card
@@ -140,8 +128,8 @@ class CardsActivity : AppCompatActivity(){
 
     // Устанавливаем адаптер относительно того, какое действие происходит
     private fun setSavedCardsAdapter(selection : Boolean, layout: Int) {
-        val savedCards = SavedCardListAdapter.setSavedCardsToView(this)
-        val savedCardsAdapter = SavedCardListAdapter(this, savedCards.toTypedArray(), layout)
+       // val savedCards = SavedCardListAdapter.setSavedCardsToView(this)
+        //val savedCardsAdapter = SavedCardListAdapter(this, savedCards.toTypedArray(), layout)
         if (selection) {
             saved_cards_list.choiceMode = ListView.CHOICE_MODE_MULTIPLE
             saved_cards_list.setOnItemClickListener { adapterView, view, i, _ ->
@@ -160,7 +148,7 @@ class CardsActivity : AppCompatActivity(){
                 startActivity(intent)
             }
         }
-        saved_cards_list.adapter = savedCardsAdapter
+        //saved_cards_list.adapter = savedCardsAdapter
         countCheck(saved_cards_list, saved_cards_notification)
     }
 

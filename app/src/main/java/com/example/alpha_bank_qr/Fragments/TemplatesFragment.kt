@@ -2,9 +2,7 @@ package com.example.alpha_bank_qr.Fragments
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -33,6 +31,7 @@ class TemplatesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_templates, container, false)
     }
 
@@ -108,6 +107,17 @@ class TemplatesFragment : Fragment() {
                 }
             })
         )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        menu.findItem(R.id.sort).isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
+            .show()
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

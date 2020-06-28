@@ -39,10 +39,7 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.Cards"
-            android:label="@string/title_activity_cards"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".Activities.SettingsActivity" />
 
         <provider
@@ -81,10 +78,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Activities.ScanActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activities.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
@@ -94,10 +87,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.ProfileActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:configChanges="orientation"
