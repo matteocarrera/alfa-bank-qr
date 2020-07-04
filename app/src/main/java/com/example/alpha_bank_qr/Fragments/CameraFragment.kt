@@ -70,9 +70,9 @@ class CameraFragment : Fragment() {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 val jsonUser = dataSnapshot.value.toString()
                                 val user = Gson().fromJson(jsonUser, User::class.java)
-                                val scannedUsers = db.userDao().getScannedUsers()
+                                val allUsers = db.userDao().getAllUsers()
                                 var userExists = false
-                                scannedUsers.forEach {
+                                allUsers.forEach {
                                     if (it.id == user.id) userExists = true
                                 }
                                 if (userExists) {

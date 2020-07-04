@@ -179,8 +179,8 @@ class EditProfileFragment : Fragment() {
 
     private fun setUserData() {
         val user = db.userDao().getOwnerUser()
-        ImageUtils.getImageFromFirebase(user.photo, photo)
         if (user != null) {
+            ImageUtils.getImageFromFirebase(user.photo, photo)
             surname.setText(user.surname)
             name.setText(user.name)
             patronymic.setText(user.patronymic)
