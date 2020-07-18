@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alpha_bank_qr.Activities.MainActivity
 import com.example.alpha_bank_qr.Adapters.ContactsAdapter
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
+import kotlinx.android.synthetic.main.my_card_list_item.view.*
 import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
 import net.glxn.qrgen.android.QRCode
 
@@ -65,6 +67,10 @@ class ContactsFragment : Fragment() {
                         val contactId = view.contact_id.text.toString()
                         if (selectedItems.contains(contactId)) selectedItems.remove(contactId)
                         else selectedItems.add(contactId)
+                    } else {
+                        val cardViewFragment = CardViewFragment.newInstance(view.contact_id.text.toString())
+                        val tx: FragmentTransaction = requireParentFragment().parentFragmentManager.beginTransaction()
+                        tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null).commit()
                     }
                 }
 

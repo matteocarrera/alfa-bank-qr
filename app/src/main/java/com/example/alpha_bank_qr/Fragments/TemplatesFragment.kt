@@ -8,6 +8,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alpha_bank_qr.Activities.CardsActivity
 import com.example.alpha_bank_qr.Adapters.RecyclerItemClickListener
@@ -19,6 +20,7 @@ import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_card.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_templates.*
 import kotlinx.android.synthetic.main.my_card_list_item.view.*
 import kotlinx.android.synthetic.main.my_card_list_item.view.more
@@ -69,7 +71,9 @@ class TemplatesFragment : Fragment() {
 
                         when(item.itemId) {
                             R.id.more -> {
-                                Toast.makeText(requireContext(), "Подробно", Toast.LENGTH_SHORT).show()
+                                val cardViewFragment = CardViewFragment.newInstance(view.user_id.text.toString())
+                                val tx: FragmentTransaction = requireParentFragment().parentFragmentManager.beginTransaction()
+                                tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null).commit()
                             }
                             R.id.share -> {
                                 val user = db.userDao().getUserById(view.user_id.text.toString())
@@ -102,7 +106,7 @@ class TemplatesFragment : Fragment() {
                     }
 
                     popupMenu.menuInflater.inflate(R.menu.my_card_menu, popupMenu.menu)
-                    
+
                     popupMenu.show()
                 }
             })
