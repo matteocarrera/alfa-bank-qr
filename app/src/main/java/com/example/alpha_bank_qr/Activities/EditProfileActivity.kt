@@ -242,7 +242,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getUserData() : User {
-        return User(
+        /* return User(
             uuid,
             true,
             false,
@@ -264,6 +264,6 @@ class EditProfileActivity : AppCompatActivity() {
             facebook.text.toString(),
             instagram.text.toString(),
             twitter.text.toString(),
-            notes.text.toString())
+            notes.text.toString()) */
     }
 }

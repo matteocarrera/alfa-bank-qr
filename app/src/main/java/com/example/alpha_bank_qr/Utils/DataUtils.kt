@@ -5,6 +5,7 @@ import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Entities.UserBoolean
 
 class DataUtils {
     companion object {
@@ -36,6 +37,58 @@ class DataUtils {
             return data
         }
 
+        fun parseDataToUser(data: ArrayList<DataItem>): UserBoolean {
+            val user = UserBoolean()
+            data.forEach {
+                when (it.title) {
+                    "фамилия" -> user.surname = true
+                    "имя" -> user.name = true
+                    "отчество" -> user.patronymic = true
+                    "компания" -> user.company = true
+                    "должность" -> user.jobTitle = true
+                    "мобильный номер" -> user.mobile = true
+                    "мобильный номер (другой)" -> user.mobileSecond = true
+                    "email" -> user.email = true
+                    "email (другой)" -> user.emailSecond = true
+                    "адрес" -> user.address = true
+                    "адрес (другой)" -> user.addressSecond = true
+                    "Номер карты 1" -> user.cardNumber = true
+                    "Номер карты 2" -> user.cardNumberSecond = true
+                    "Сайт" -> user.website = true
+                    "vk" -> user.vk = true
+                    "telegram" -> user.telegram = true
+                    "facebook" -> user.facebook = true
+                    "instagram" -> user.instagram = true
+                    "twitter" -> user.twitter = true
+                    "заметки" -> user.notes = true
+                }
+            }
+            return user
+        }
+
+        fun generatedUsersEqual(firstUser: UserBoolean, secondUser: UserBoolean): Boolean {
+            return firstUser.name == secondUser.name &&
+                    firstUser.surname == secondUser.surname &&
+                    firstUser.patronymic == secondUser.patronymic &&
+                    firstUser.company == secondUser.company &&
+                    firstUser.jobTitle == secondUser.jobTitle &&
+                    firstUser.mobile == secondUser.mobile &&
+                    firstUser.mobileSecond == secondUser.mobileSecond &&
+                    firstUser.email == secondUser.email &&
+                    firstUser.emailSecond == secondUser.emailSecond &&
+                    firstUser.address == secondUser.address &&
+                    firstUser.addressSecond == secondUser.addressSecond &&
+                    firstUser.cardNumber == secondUser.cardNumber &&
+                    firstUser.cardNumberSecond == secondUser.cardNumberSecond &&
+                    firstUser.website == secondUser.website &&
+                    firstUser.vk == secondUser.vk &&
+                    firstUser.telegram == secondUser.telegram &&
+                    firstUser.facebook == secondUser.facebook &&
+                    firstUser.instagram == secondUser.instagram &&
+                    firstUser.twitter == secondUser.twitter &&
+                    firstUser.notes == secondUser.notes
+        }
+
         fun checkCardForExistence(context: Context, user : User) : Boolean {
             DBService.getScannedUsers(context)?.forEach {
                 val userData = Json.toJson(user)
@@ -48,9 +101,6 @@ class DataUtils {
         // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
         fun parseDataToUser(data : ArrayList<DataItem>, photoUUID : String) : User {
             val user = User()
-            user.photo = photoUUID
-            user.isOwner = false
-            user.isScanned = false
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description

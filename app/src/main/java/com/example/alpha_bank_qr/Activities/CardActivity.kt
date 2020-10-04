@@ -67,7 +67,7 @@ class CardActivity : AppCompatActivity() {
         more.setOnClickListener {
             user = DBService.getUserById(this, id)
 
-            val flag = (user.isScanned)
+            //val flag = (user.isScanned)
 
             val popupMenu = PopupMenu(this, more)
 

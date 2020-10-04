@@ -4,18 +4,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /*
-    Пользователь будет иметь возможность добавить дополнительный мобильный номер, дополнительный
-    email и дополнительный адрес
-
-    Для каждой отдельной визитки будет создаваться новый пользователь с выборкой данных из
-    основного пользователя, уже существующего в базе данных
+    Основной класс Пользователя
  */
 
 @Entity(tableName = "users")
 data class User(
+    // UUID родительского пользователя
+    var parentId : String = "",
     var photo : String = "",
-    var isOwner : Boolean = false,
-    var isScanned : Boolean = false,
     var name: String = "",
     var surname: String = "",
     var patronymic: String = "",
@@ -37,7 +33,8 @@ data class User(
     var twitter: String = "",
     var notes : String = ""
 ) {
-    @PrimaryKey var id: String = ""
+    // UUID, присвоенный конкретному пользователю
+    @PrimaryKey var uuid: String = ""
 
     override fun toString(): String {
         return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$cardNumber|$cardNumberSecond|$website|$vk|$telegram|$facebook|$instagram|$twitter|$notes"

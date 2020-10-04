@@ -3,25 +3,16 @@ package com.example.alpha_bank_qr.DAO
 import androidx.room.*
 import com.example.alpha_bank_qr.Entities.User
 
-@Dao
+@Dao //add userBooleanDAO (findById, insert, delete)
 interface UserDao {
-    @Query("SELECT * FROM users WHERE isOwner = 1")
+    @Query("SELECT * FROM users WHERE parentId = uuid")
     fun getOwnerUser() : User
 
     @Query("SELECT * FROM users")
     fun getAllUsers() : List<User>
 
-    @Query("SELECT * FROM users WHERE isOwner = 0 AND isScanned = 0")
-    fun getUsersFromMyCards() : List<User>
-
-    @Query("SELECT * FROM users WHERE isScanned = 1")
-    fun getScannedUsers() : List<User>
-
-    @Query("SELECT * FROM users WHERE id = :id")
-    fun getUserById(id : String) : User
-
-    @Query("SELECT id FROM users WHERE id = (SELECT MAX(id) FROM users)")
-    fun getLastUserId() : String
+    @Query("SELECT * FROM users WHERE uuid = :uuid")
+    fun getUserById(uuid : String) : User
 
     @Update(entity = User::class)
     fun updateUser(user: User)
