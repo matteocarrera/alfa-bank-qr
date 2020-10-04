@@ -4,14 +4,13 @@ import com.example.alpha_bank_qr.Entities.User
 
 class Json {
     companion object {
-        fun toJson(user : User) : String {
+        fun toJson(user: User): String {
             return user.toString()
         }
 
-        fun fromJson(json : String) : User {
+        fun fromJson(json: String): User {
             val userData = json.split('|')
             val user = User()
-            user.isScanned = true
             user.photo = userData[0]
             user.name = userData[1]
             user.surname = userData[2]

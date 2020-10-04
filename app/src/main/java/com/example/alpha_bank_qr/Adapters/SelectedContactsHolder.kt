@@ -40,7 +40,7 @@ class SelectedContactsHolder (inflater : LayoutInflater, parent: ViewGroup):
             itemView.circle.visibility = View.GONE
             ImageUtils.getImageFromFirebase(user.photo, photo)
         }
-        id.text = user.id
+        id.text = user.uuid
         name.text = user.name + " " + user.surname
         if (user.jobTitle.isNotEmpty()) jobTitle.text = user.jobTitle
         else jobTitle.text = "Должность не указана"

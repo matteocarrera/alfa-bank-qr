@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Entities.UserBoolean
 
 class SelectedContactsAdapter(private val list: List<User>)
     : RecyclerView.Adapter<SelectedContactsHolder>() {

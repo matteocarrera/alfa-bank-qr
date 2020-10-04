@@ -28,7 +28,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class CameraFragment : Fragment() {
 
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +44,7 @@ class CameraFragment : Fragment() {
         db = AppDatabase.getInstance(requireContext())
         Dexter.withContext(view.context)
             .withPermission(Manifest.permission.CAMERA)
-            .withListener(object: PermissionListener, ZXingScannerView.ResultHandler {
+            .withListener(object : PermissionListener, ZXingScannerView.ResultHandler {
                 override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
                     scanner.setResultHandler(this)
                     scanner.startCamera()
@@ -58,14 +58,16 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                    Toast.makeText(view.context, "Необходим доступ к камере!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(view.context, "Необходим доступ к камере!", Toast.LENGTH_SHORT)
+                        .show()
                     requireActivity().onBackPressed()
                 }
 
                 // Обрабатываем результат сканирования QR
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
-                        val databaseRef = FirebaseDatabase.getInstance().getReference(rawResult.toString())
+                        val databaseRef =
+                            FirebaseDatabase.getInstance().getReference(rawResult.toString())
                         databaseRef.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 val jsonUser = dataSnapshot.value.toString()
@@ -73,16 +75,22 @@ class CameraFragment : Fragment() {
                                 val allUsers = db.userDao().getAllUsers()
                                 var userExists = false
                                 allUsers.forEach {
-                                    if (it.id == user.id) userExists = true
+                                    if (it.uuid == user.uuid) userExists = true
                                 }
                                 if (userExists) {
-                                    Toast.makeText(view.context, "Такая визитка уже существует!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        view.context,
+                                        "Такая визитка уже существует!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     requireActivity().onBackPressed()
                                 } else {
-                                    user.isScanned = true
-                                    user.isOwner = false
                                     db.userDao().insertUser(user)
-                                    Toast.makeText(view.context, "Визитка успешно считана!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        view.context,
+                                        "Визитка успешно считана!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     requireActivity().onBackPressed()
                                 }
                             }

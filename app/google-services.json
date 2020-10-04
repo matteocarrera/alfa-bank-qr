@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "136060758739",
+    "firebase_url": "https://alfa-bank-qr.firebaseio.com",
+    "project_id": "alfa-bank-qr",
+    "storage_bucket": "alfa-bank-qr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136060758739:android:2d07d3a1cb92d72cb04226",
+        "android_client_info": {
+          "package_name": "com.example.alpha_bank_qr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136060758739-pa50lel9bt9ncpuds2t23493j3h93ko3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alpha_bank_qr",
+            "certificate_hash": "572e336d1a7e521442a865b91ea34a901b3dea79"
+          }
+        },
+        {
+          "client_id": "136060758739-fbmablahtplg2874icbb2bn9tshovu8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alpha_bank_qr",
+            "certificate_hash": "7048ddcd8a018a00e02d2dff30175b7029e802d3"
+          }
+        },
+        {
+          "client_id": "136060758739-i5ujltn79n3nv3orteetf962q80o1h56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXWjaeTldGUUmi2S1HJmRBxQtoI3cJpTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136060758739-i5ujltn79n3nv3orteetf962q80o1h56.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "136060758739-eiep8ta5p9majndpu2v6foel2f0421tn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "urfusoftware.Alfa-Bank-QR"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

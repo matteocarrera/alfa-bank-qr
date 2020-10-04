@@ -17,8 +17,10 @@ import com.example.alpha_bank_qr.Adapters.RecyclerItemClickListener
 import com.example.alpha_bank_qr.Adapters.SelectedContactsAdapter
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ProgramUtils
+import com.example.alpha_bank_qr.Utils.DataUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -26,17 +28,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
-import kotlinx.android.synthetic.main.my_card_list_item.view.*
 import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
 import net.glxn.qrgen.android.QRCode
 
 class ContactsFragment : Fragment() {
 
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
     private var multipleSelectionMode = false
     private val selectedItems = ArrayList<String>()
-    private var actionMode : ActionMode? = null
-    private var users = ArrayList<User>()
+    private var actionMode: ActionMode? = null
+    private var users = ArrayList<UserBoolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,9 +69,12 @@ class ContactsFragment : Fragment() {
                         if (selectedItems.contains(contactId)) selectedItems.remove(contactId)
                         else selectedItems.add(contactId)
                     } else {
-                        val cardViewFragment = CardViewFragment.newInstance(view.contact_id.text.toString())
-                        val tx: FragmentTransaction = requireParentFragment().parentFragmentManager.beginTransaction()
-                        tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null).commit()
+                        val cardViewFragment =
+                            CardViewFragment.newInstance(view.contact_id.text.toString())
+                        val tx: FragmentTransaction =
+                            requireParentFragment().parentFragmentManager.beginTransaction()
+                        tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null)
+                            .commit()
                     }
                 }
 
@@ -85,7 +89,10 @@ class ContactsFragment : Fragment() {
 
                         setStandardToolbarVisibility(View.GONE)
 
-                        actionMode = (parentFragment?.requireActivity() as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                        actionMode =
+                            (parentFragment?.requireActivity() as AppCompatActivity).startSupportActionMode(
+                                actionModeCallback
+                            )
                     }
                 }
             })
@@ -97,27 +104,38 @@ class ContactsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
+        if (item.itemId == R.id.search) Toast.makeText(
+            requireContext(),
+            "SEARCH",
+            Toast.LENGTH_SHORT
+        )
             .show()
-        else if (item.itemId == R.id.sort) Toast.makeText(requireContext(), "SORT", Toast.LENGTH_SHORT)
+        else if (item.itemId == R.id.sort) Toast.makeText(
+            requireContext(),
+            "SORT",
+            Toast.LENGTH_SHORT
+        )
             .show()
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setUsersToList(callback: (list: List<User>) -> Unit){
-        users.clear()
-        users = ArrayList(db.userDao().getScannedUsers())
 
-        val list : MutableList<User> = mutableListOf()
+    //Полльзовате
+    private fun setUsersToList(callback: (list: List<User>) -> Unit) {
+        val currentUser = db.userDao().getOwnerUser()
+        users.clear()
+        users = ArrayList(db.userBooleanDao().getContactUsers(currentUser.uuid))
+
+        val list: MutableList<UserBoolean> = mutableListOf()
 
         users.forEach {
-            val databaseRef = FirebaseDatabase.getInstance().getReference(it.id)
+            val databaseRef = FirebaseDatabase.getInstance().getReference(it.uuid)
             databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val jsonUser = dataSnapshot.value.toString()
-                    val userFromDB = Gson().fromJson(jsonUser, User::class.java)
+                    val userFromDB = Gson().fromJson(jsonUser, UserBoolean::class.java)
                     list.add(userFromDB)
-                    callback(list)
+                    callback(list.map { DataUtils.getUserFromTemplate(currentUser, it) })
                     //if (userFromDB.toString() != it.toString()) db.userDao().updateUser(userFromDB)
                 }
 
@@ -137,8 +155,7 @@ class ContactsFragment : Fragment() {
                 if (item.itemId == R.id.share) {
                     shareCards()
                     onDestroyActionMode(mode)
-                }
-                else if (item.itemId == R.id.delete) {
+                } else if (item.itemId == R.id.delete) {
                     deleteCards()
                     onDestroyActionMode(mode)
                 }
@@ -179,12 +196,12 @@ class ContactsFragment : Fragment() {
         }
     }
 
-    private fun setStandardToolbarVisibility(visibility : Int) {
+    private fun setStandardToolbarVisibility(visibility: Int) {
         val navHostFragment = parentFragment as CardsFragment
         navHostFragment.requireView().findViewById<View>(R.id.toolbar).visibility = visibility
     }
 
-    private fun setNavEnabled(visibility : Boolean) {
+    private fun setNavEnabled(visibility: Boolean) {
         val cardsFragment = parentFragment as CardsFragment
         val mainActivity = cardsFragment.requireActivity() as MainActivity
         mainActivity.nav_view.isVisible = visibility
@@ -192,7 +209,11 @@ class ContactsFragment : Fragment() {
 
     private fun shareCards() {
         val qrList = ArrayList<Bitmap>()
-        if (selectedItems.count() == 0) Toast.makeText(requireContext(), "Вы не выбрали ни одной визитки!", Toast.LENGTH_SHORT).show()
+        if (selectedItems.count() == 0) Toast.makeText(
+            requireContext(),
+            "Вы не выбрали ни одной визитки!",
+            Toast.LENGTH_SHORT
+        ).show()
         else {
             selectedItems.forEach {
                 var bitmap = QRCode.from(it).withCharset("utf-8").withSize(1000, 1000).bitmap()
@@ -204,24 +225,32 @@ class ContactsFragment : Fragment() {
     }
 
     private fun deleteCards() {
-        if (selectedItems.count() == 0) Toast.makeText(requireContext(), "Вы не выбрали ни одной визитки!", Toast.LENGTH_SHORT).show()
+        if (selectedItems.count() == 0) Toast.makeText(
+            requireContext(),
+            "Вы не выбрали ни одной визитки!",
+            Toast.LENGTH_SHORT
+        ).show()
         else {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Удаление визиток")
             builder.setMessage("Вы действительно хотите удалить выбранные визитки?")
-            builder.setPositiveButton("Да"){ _, _ ->
+            builder.setPositiveButton("Да") { _, _ ->
                 selectedItems.forEach {
                     val user = db.userDao().getUserById(it)
                     db.userDao().deleteUser(user)
                 }
-                Toast.makeText(requireContext(), "Выбранные визитки успешно удалены!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Выбранные визитки успешно удалены!",
+                    Toast.LENGTH_SHORT
+                ).show()
                 selectedItems.clear()
                 contact_list.adapter = null
                 setUsersToList {
                     contact_list.adapter = ContactsAdapter(it)
                 }
             }
-            builder.setNegativeButton("Нет"){ _, _ -> }
+            builder.setNegativeButton("Нет") { _, _ -> }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }

@@ -3,32 +3,24 @@ package com.example.alpha_bank_qr.Fragments
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.alpha_bank_qr.Activities.CardsActivity
 import com.example.alpha_bank_qr.Adapters.RecyclerItemClickListener
 import com.example.alpha_bank_qr.Adapters.TemplatesAdapter
 import com.example.alpha_bank_qr.Database.AppDatabase
-import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ProgramUtils
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.activity_card.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_templates.*
 import kotlinx.android.synthetic.main.my_card_list_item.view.*
-import kotlinx.android.synthetic.main.my_card_list_item.view.more
 import net.glxn.qrgen.android.QRCode
 
 class TemplatesFragment : Fragment() {
 
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +47,9 @@ class TemplatesFragment : Fragment() {
                 override fun onItemClick(view: View, position: Int) {
                     if (view.card_qr.visibility == View.GONE) {
                         val user = db.userDao().getUserById(view.user_id.text.toString())
-                        var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                        var bitmap =
+                            QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000)
+                                .bitmap()
                         bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
                         view.card_qr.visibility = View.VISIBLE
                         view.card_qr.setImageBitmap(bitmap)
@@ -69,15 +63,20 @@ class TemplatesFragment : Fragment() {
 
                     popupMenu.setOnMenuItemClickListener { item ->
 
-                        when(item.itemId) {
+                        when (item.itemId) {
                             R.id.more -> {
-                                val cardViewFragment = CardViewFragment.newInstance(view.user_id.text.toString())
-                                val tx: FragmentTransaction = requireParentFragment().parentFragmentManager.beginTransaction()
-                                tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null).commit()
+                                val cardViewFragment =
+                                    CardViewFragment.newInstance(view.user_id.text.toString())
+                                val tx: FragmentTransaction =
+                                    requireParentFragment().parentFragmentManager.beginTransaction()
+                                tx.replace(R.id.nav_host_fragment, cardViewFragment)
+                                    .addToBackStack(null).commit()
                             }
                             R.id.share -> {
                                 val user = db.userDao().getUserById(view.user_id.text.toString())
-                                var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                                var bitmap =
+                                    QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000)
+                                        .bitmap()
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
                                 ProgramUtils.saveImage(view.context, arrayListOf(bitmap))
                             }
@@ -85,10 +84,15 @@ class TemplatesFragment : Fragment() {
                                 val builder = AlertDialog.Builder(requireContext())
                                 builder.setTitle("Удаление визитки")
                                 builder.setMessage("Вы действительно хотите удалить данную визитку?")
-                                builder.setPositiveButton("Да"){ _, _ ->
-                                    val card = db.cardDao().getCardById(view.card_id.text.toString().toInt())
+                                builder.setPositiveButton("Да") { _, _ ->
+                                    val card = db.cardDao()
+                                        .getCardById(view.card_id.text.toString().toInt())
                                     db.cardDao().deleteCard(card)
-                                    Toast.makeText(requireContext(),"Визитка успешно удалена!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Визитка успешно удалена!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
                                     val updatedCards = db.cardDao().getAllCards()
                                     templates_list.adapter = null
@@ -97,7 +101,7 @@ class TemplatesFragment : Fragment() {
                                         adapter = TemplatesAdapter(updatedCards)
                                     }
                                 }
-                                builder.setNegativeButton("Нет"){ _, _ -> }
+                                builder.setNegativeButton("Нет") { _, _ -> }
                                 val dialog: AlertDialog = builder.create()
                                 dialog.show()
                             }
@@ -119,7 +123,11 @@ class TemplatesFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
+        if (item.itemId == R.id.search) Toast.makeText(
+            requireContext(),
+            "SEARCH",
+            Toast.LENGTH_SHORT
+        )
             .show()
         return super.onOptionsItemSelected(item)
     }

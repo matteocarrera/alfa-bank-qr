@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.alpha_bank_qr.Database.AppDatabase
@@ -26,7 +25,7 @@ import com.google.zxing.common.HybridBinarizer
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +70,18 @@ class MainActivity : AppCompatActivity() {
     private fun decodeQRFromImage(bitmap: Bitmap) {
         val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true)
         val intArray = IntArray(compressedBitmap.width * compressedBitmap.height)
-        compressedBitmap.getPixels(intArray, 0, compressedBitmap.width, 0, 0, compressedBitmap.width, compressedBitmap.height)
+        compressedBitmap.getPixels(
+            intArray,
+            0,
+            compressedBitmap.width,
+            0,
+            0,
+            compressedBitmap.width,
+            compressedBitmap.height
+        )
 
-        val source: LuminanceSource = RGBLuminanceSource(compressedBitmap.width, compressedBitmap.height, intArray)
+        val source: LuminanceSource =
+            RGBLuminanceSource(compressedBitmap.width, compressedBitmap.height, intArray)
         val bMap = BinaryBitmap(HybridBinarizer(source))
 
         val reader: Reader = MultiFormatReader()
@@ -81,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         getUserFromQR(result)
     }
 
-    private fun getUserFromQR(rawResult : Result) {
+    private fun getUserFromQR(rawResult: Result) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(rawResult.toString())
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -90,15 +98,21 @@ class MainActivity : AppCompatActivity() {
                 val scannedUsers = db.userDao().getAllUsers()
                 var userExists = false
                 scannedUsers.forEach {
-                    if (it.id == user.id) userExists = true
+                    if (it.uuid == user.uuid) userExists = true
                 }
                 if (userExists) {
-                    Toast.makeText(applicationContext, "Ошибка считывания визитки!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Ошибка считывания визитки!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    user.isScanned = true
-                    user.isOwner = false
                     db.userDao().insertUser(user)
-                    Toast.makeText(applicationContext, "Визитка успешно считана!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Визитка успешно считана!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 

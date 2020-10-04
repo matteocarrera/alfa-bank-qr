@@ -11,13 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Database.AppDatabase
-import com.example.alpha_bank_qr.Database.DBService
 import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
-import com.example.alpha_bank_qr.Utils.Json
 import com.example.alpha_bank_qr.Utils.ListUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.google.firebase.database.FirebaseDatabase
@@ -33,12 +31,12 @@ import petrov.kristiyan.colorpicker.ColorPicker.OnChooseColorListener
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddFragment : Fragment(), AdapterView.OnItemClickListener{
+class AddFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private val MAX_CARD_TITLE_LENGTH = 30
     private val selectedItems = ArrayList<DataItem>()
-    private var cardColor : Int = 0
-    private lateinit var db : AppDatabase
+    private var cardColor: Int = 0
+    private lateinit var db: AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,22 +104,28 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
             val cardTitles = db.cardDao().getAllCardsNames()
             when {
                 title.length > MAX_CARD_TITLE_LENGTH -> {
-                    Toast.makeText(view.context, "Название слишком длинное!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(view.context, "Название слишком длинное!", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 cardTitles.contains(title.trimStart().trimEnd()) -> {
-                    Toast.makeText(view.context, "Шаблон с таким названием уже существует!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        view.context,
+                        "Шаблон с таким названием уже существует!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 else -> {
                     val user = createUser()
-                    val card = Card(cardColor, title.trimStart().trimEnd(), user.id)
+                    val card = Card(cardColor, title.trimStart().trimEnd(), user.uuid)
                     db.cardDao().insertCard(card)
-                    Toast.makeText(view.context, "Шаблон успешно создан!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(view.context, "Шаблон успешно создан!", Toast.LENGTH_SHORT)
+                        .show()
                     dialog.cancel()
                 }
             }
         }
     }
-    
+
     private fun setShowQRDialog(view: View, bitmap: Bitmap) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
         val inflater = requireActivity().layoutInflater
@@ -147,30 +151,31 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
             } else {
                 val user = createUser()
 
-                var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                var bitmap =
+                    QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000).bitmap()
                 bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
 
                 setShowQRDialog(view, bitmap)
             }
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun createUser() : User {
+    private fun createUser(): User {
         val ownerUser = db.userDao().getOwnerUser()
         val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
         var uuid = UUID.randomUUID().toString()
-        newUser.id = uuid
+        newUser.uuid = uuid
 
-        val myCardsUsers = db.userDao().getUsersFromMyCards()
+        val myCardsUsers = db.userBooleanDao().getTemplateUsers(uuid)
         var userExists = false
-        if (myCardsUsers != null && myCardsUsers.isNotEmpty()) {
+        if (myCardsUsers.isNotEmpty()) {
             myCardsUsers.forEach {
                 if (it.toString() == newUser.toString()) {
                     userExists = true
-                    newUser.id = it.id
-                    uuid = it.id
+                    newUser.uuid = it.uuid
+                    uuid = it.uuid
                 }
             }
         }
@@ -184,7 +189,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
     }
 
     // https://androidexample365.com/a-simple-color-picker-library-for-android/
-    private fun setColorPicker(view : View) {
+    private fun setColorPicker(view: View) {
         val colorPicker = ColorPicker(activity)
         colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
             override fun onChooseColor(position: Int, color: Int) {}
@@ -206,15 +211,13 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
 
     private fun setDataToListView() {
         val user = db.userDao().getOwnerUser()
-        if (user != null) {
-            val data = DataUtils.setUserData(user)
+        val data = DataUtils.setUserData(user)
 
-            val adapter = DataListAdapter(requireActivity(), data, R.layout.data_list_checkbox_item)
-            data_list.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-            data_list.onItemClickListener = this
-            data_list.adapter = adapter
+        val adapter = DataListAdapter(requireActivity(), data, R.layout.data_list_checkbox_item)
+        data_list.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+        data_list.onItemClickListener = this
+        data_list.adapter = adapter
 
-            ListUtils.setDynamicHeight(data_list)
-        }
+        ListUtils.setDynamicHeight(data_list)
     }
 }
