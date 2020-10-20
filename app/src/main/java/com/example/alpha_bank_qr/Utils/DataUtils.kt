@@ -1,6 +1,5 @@
 package com.example.alpha_bank_qr.Utils
 
-import android.content.Context
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
@@ -131,7 +130,7 @@ class DataUtils {
         }
 
         // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
-        fun parseDataToUser(data: ArrayList<DataItem>, photoUUID: String): User {
+        fun parseDataToUserCard(data: ArrayList<DataItem>): User {
             val user = User()
             data.forEach {
                 when (it.title) {

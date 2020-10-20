@@ -21,28 +21,36 @@ import java.io.FileOutputStream
 
 class ProgramUtils {
     companion object {
-        fun goToActivityAnimated(context: Context, cls : Class<*>) {
+        fun goToActivityAnimated(context: Context, cls: Class<*>) {
             val intent = Intent(context, cls)
             context.startActivity(intent)
         }
 
-        fun setError(context: Context, text : String) {
+        fun setError(context: Context, text: String) {
             Toast.makeText(context, text, Toast.LENGTH_LONG).show()
         }
 
-        fun makeCall(activity: Activity, context: Context, number : String) {
+        fun makeCall(activity: Activity, context: Context, number: String) {
             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    1
+                )
             } else context.startActivity(intent)
         }
 
-        fun makeEmail(context: Context, email : String) {
+        fun makeEmail(context: Context, email: String) {
             val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
             context.startActivity(intent)
         }
 
-        fun openMap(context : Context, location : String) {
+        fun openMap(context: Context, location: String) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=$location"))
             context.startActivity(intent)
         }
@@ -54,9 +62,11 @@ class ProgramUtils {
                 "facebook" -> website = "facebook.com/"
                 "instagram" -> website = "instagram.com/"
                 "twitter" -> website = "twitter.com/"
-                else -> {}
+                else -> {
+                }
             }
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + website + item.description))
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + website + item.description))
             context.startActivity(intent)
         }
 
@@ -84,31 +94,54 @@ class ProgramUtils {
                     putExtra(Intent.EXTRA_STREAM, imageUris)
                     type = "image/*"
                 }
-                context.startActivity(Intent.createChooser(shareIntent, "Поделиться QR кодом с помощью"))
+                context.startActivity(
+                    Intent.createChooser(
+                        shareIntent,
+                        "Поделиться QR кодом с помощью"
+                    )
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
 
-        fun exportContact(user: User) : Intent {
+        fun exportContact(user: User): Intent {
             val intent = Intent(ContactsContract.Intents.Insert.ACTION)
             intent.type = ContactsContract.RawContacts.CONTENT_TYPE
 
             // Не считан второй адрес и фото
             intent
-                .putExtra(ContactsContract.Intents.Insert.NAME, user.name + " " + user.patronymic + " " + user.surname)
+                .putExtra(
+                    ContactsContract.Intents.Insert.NAME,
+                    user.name + " " + user.patronymic + " " + user.surname
+                )
                 .putExtra(ContactsContract.Intents.Insert.COMPANY, user.company)
                 .putExtra(ContactsContract.Intents.Insert.JOB_TITLE, user.jobTitle)
                 .putExtra(ContactsContract.Intents.Insert.PHONE, user.mobile)
-                .putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE)
+                .putExtra(
+                    ContactsContract.Intents.Insert.PHONE_TYPE,
+                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
+                )
                 .putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, user.mobileSecond)
-                .putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_OTHER)
+                .putExtra(
+                    ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE,
+                    ContactsContract.CommonDataKinds.Phone.TYPE_OTHER
+                )
                 .putExtra(ContactsContract.Intents.Insert.EMAIL, user.email)
-                .putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                .putExtra(
+                    ContactsContract.Intents.Insert.EMAIL_TYPE,
+                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                )
                 .putExtra(ContactsContract.Intents.Insert.SECONDARY_EMAIL, user.emailSecond)
-                .putExtra(ContactsContract.Intents.Insert.SECONDARY_EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_OTHER)
+                .putExtra(
+                    ContactsContract.Intents.Insert.SECONDARY_EMAIL_TYPE,
+                    ContactsContract.CommonDataKinds.Email.TYPE_OTHER
+                )
                 .putExtra(ContactsContract.Intents.Insert.POSTAL, user.address)
-                .putExtra(ContactsContract.Intents.Insert.POSTAL_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK)
+                .putExtra(
+                    ContactsContract.Intents.Insert.POSTAL_TYPE,
+                    ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK
+                )
                 .putExtra(ContactsContract.Intents.Insert.NOTES, user.notes)
 
             val fields = arrayOf(
@@ -127,8 +160,14 @@ class ProgramUtils {
                         ContactsContract.Data.MIMETYPE,
                         ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE
                     )
-                    row.put(ContactsContract.CommonDataKinds.Website.URL, fields[i].title + fields[i].description)
-                    row.put(ContactsContract.CommonDataKinds.Website.TYPE, ContactsContract.CommonDataKinds.Website.TYPE_PROFILE)
+                    row.put(
+                        ContactsContract.CommonDataKinds.Website.URL,
+                        fields[i].title + fields[i].description
+                    )
+                    row.put(
+                        ContactsContract.CommonDataKinds.Website.TYPE,
+                        ContactsContract.CommonDataKinds.Website.TYPE_PROFILE
+                    )
                     data.add(row)
                 }
             }

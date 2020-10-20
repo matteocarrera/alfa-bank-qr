@@ -9,7 +9,7 @@ import com.example.alpha_bank_qr.R
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT : Long = 3000
+    private val SPLASH_TIME_OUT: Long = 3000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN

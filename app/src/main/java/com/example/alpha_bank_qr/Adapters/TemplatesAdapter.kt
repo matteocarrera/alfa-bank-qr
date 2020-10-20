@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alpha_bank_qr.Entities.Card
-import kotlinx.android.synthetic.main.my_card_list_item.view.*
 
-class TemplatesAdapter(private val list: List<Card>)
-    : RecyclerView.Adapter<TemplatesHolder>() {
+class TemplatesAdapter(private val list: List<Card>) : RecyclerView.Adapter<TemplatesHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplatesHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -15,7 +13,7 @@ class TemplatesAdapter(private val list: List<Card>)
     }
 
     override fun onBindViewHolder(holder: TemplatesHolder, position: Int) {
-        val card : Card = list[position]
+        val card: Card = list[position]
         holder.bind(card)
     }
 

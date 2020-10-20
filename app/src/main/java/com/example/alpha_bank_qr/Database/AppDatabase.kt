@@ -13,19 +13,22 @@ import com.example.alpha_bank_qr.Entities.UserBoolean
 
 @Database(entities = [User::class, Card::class, UserBoolean::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao() : UserDao
-    abstract fun cardDao() : CardDao
-    abstract fun userBooleanDao() : UserBooleanDao
+    abstract fun userDao(): UserDao
+    abstract fun cardDao(): CardDao
+    abstract fun userBooleanDao(): UserBooleanDao
 
     companion object {
-        @Volatile private var INSTANCE : AppDatabase? = null
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context) : AppDatabase {
+        fun getInstance(context: Context): AppDatabase {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class.java) {
                     if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(context,
-                            AppDatabase::class.java, "qr-database.db")
+                        INSTANCE = Room.databaseBuilder(
+                            context,
+                            AppDatabase::class.java, "qr-database.db"
+                        )
                             .allowMainThreadQueries()
                             .build()
 

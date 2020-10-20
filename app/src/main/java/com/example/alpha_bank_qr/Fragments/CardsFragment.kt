@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.alpha_bank_qr.Adapters.SectionsPagerAdapter
 import com.example.alpha_bank_qr.R
@@ -19,8 +18,7 @@ class CardsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_cards, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_cards, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,7 +31,7 @@ class CardsFragment : Fragment() {
             )
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
-        val tabs : TabLayout = view.findViewById(R.id.tabs)
+        val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
     }
 }

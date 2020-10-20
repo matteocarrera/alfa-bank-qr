@@ -1,5 +1,6 @@
 package com.example.alpha_bank_qr.Fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,7 @@ class CardViewFragment : Fragment() {
 
         val databaseRef = FirebaseDatabase.getInstance().getReference(userId)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("SetTextI18n")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val jsonUser = dataSnapshot.value.toString()
                 val userFromDB = Gson().fromJson(jsonUser, User::class.java)
@@ -51,7 +53,7 @@ class CardViewFragment : Fragment() {
                 } else {
                     profile_photo.visibility = View.GONE
                     circle.visibility = View.VISIBLE
-                    letters.text = userFromDB.name.take(1) + userFromDB.surname.take(1)
+                    letters.text = """${userFromDB.name.take(1)}${userFromDB.surname.take(1)}"""
                 }
                 val data = DataUtils.setUserData(userFromDB)
 
@@ -73,7 +75,7 @@ class CardViewFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(userId : String) : CardViewFragment {
+        fun newInstance(userId: String): CardViewFragment {
             val args = Bundle()
             args.putString("ID", userId)
             val fragment = CardViewFragment()

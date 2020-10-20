@@ -8,20 +8,13 @@ import com.example.alpha_bank_qr.Entities.Card
 import com.example.alpha_bank_qr.R
 import com.google.android.material.card.MaterialCardView
 
-class TemplatesHolder (inflater : LayoutInflater, parent: ViewGroup):
+class TemplatesHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.my_card_list_item, parent, false)) {
 
-    private var colorTag : MaterialCardView
-    private var id : TextView
-    private var title : TextView
-    private var userId : TextView
-
-    init {
-        colorTag = itemView.findViewById(R.id.color_tag)
-        id = itemView.findViewById(R.id.card_id)
-        title = itemView.findViewById(R.id.title)
-        userId = itemView.findViewById(R.id.user_id)
-    }
+    private val colorTag: MaterialCardView = itemView.findViewById(R.id.color_tag)
+    private val id: TextView = itemView.findViewById(R.id.card_id)
+    private val title: TextView = itemView.findViewById(R.id.title)
+    private val userId: TextView = itemView.findViewById(R.id.user_id)
 
     fun bind(card: Card) {
         colorTag.setBackgroundColor(card.color)

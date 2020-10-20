@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "users")
 data class User(
     // UUID родительского пользователя
-    var parentId : String = "",
-    var photo : String = "",
+    var parentId: String = "",
+    var photo: String = "",
     var name: String = "",
     var surname: String = "",
     var patronymic: String = "",
@@ -25,16 +25,17 @@ data class User(
     var addressSecond: String = "",
     var cardNumber: String = "",
     var cardNumberSecond: String = "",
-    var website : String = "",
+    var website: String = "",
     var vk: String = "",
     var telegram: String = "",
     var facebook: String = "",
     var instagram: String = "",
     var twitter: String = "",
-    var notes : String = ""
+    var notes: String = ""
 ) {
     // UUID, присвоенный конкретному пользователю
-    @PrimaryKey var uuid: String = ""
+    @PrimaryKey
+    var uuid: String = ""
 
     override fun toString(): String {
         return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$cardNumber|$cardNumberSecond|$website|$vk|$telegram|$facebook|$instagram|$twitter|$notes"

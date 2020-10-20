@@ -13,10 +13,10 @@ interface CardDao {
     fun getAllCards(): List<Card>
 
     @Query("SELECT title FROM cards")
-    fun getAllCardsNames() : List<String>
+    fun getAllCardsNames(): List<String>
 
     @Query("SELECT * FROM cards WHERE id = :id")
-    fun getCardById(id : Int): Card
+    fun getCardById(id: Int): Card
 
     @Insert
     fun insertCard(card: Card)

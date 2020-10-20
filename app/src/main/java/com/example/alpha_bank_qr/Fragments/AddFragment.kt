@@ -35,7 +35,6 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private val MAX_CARD_TITLE_LENGTH = 30
     private val selectedItems = ArrayList<DataItem>()
-    private var cardColor: Int = 0
     private lateinit var db: AppDatabase
 
     override fun onCreateView(
@@ -43,8 +42,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_add, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_add, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,8 +84,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
         val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
         val inflater = requireActivity().layoutInflater
         val layout = inflater.inflate(R.layout.dialog_save_card, null)
-
-        cardColor = ContextCompat.getColor(layout.context, R.color.colorPrimary)
+        val cardColor = ContextCompat.getColor(layout.context, R.color.colorPrimary)
         layout.card_color.setOnClickListener {
             setColorPicker(layout)
         }
@@ -163,8 +160,8 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     private fun createUser(): User {
-        val ownerUser = db.userDao().getOwnerUser()
-        val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
+        db.userDao().getOwnerUser()
+        val newUser = DataUtils.parseDataToUserCard(selectedItems)
         var uuid = UUID.randomUUID().toString()
         newUser.uuid = uuid
 
@@ -199,8 +196,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
                 colorPicker.dismissDialog()
             }
             .addListenerButton("СОХРАНИТЬ") { _: View, _: Int, color: Int ->
-                cardColor = color
-                view.card_color.setBackgroundColor(cardColor)
+                view.card_color.setBackgroundColor(color)
                 colorPicker.dismissDialog()
             }
             .disableDefaultButtons(true)

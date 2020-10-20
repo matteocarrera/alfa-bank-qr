@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "usersBoolean")
 data class UserBoolean(
-    var parentId : String = "",
+    var parentId: String = "",
     var name: Boolean = false,
     var surname: Boolean = false,
     var patronymic: Boolean = false,
@@ -23,13 +23,14 @@ data class UserBoolean(
     var addressSecond: Boolean = false,
     var cardNumber: Boolean = false,
     var cardNumberSecond: Boolean = false,
-    var website : Boolean = false,
+    var website: Boolean = false,
     var vk: Boolean = false,
     var telegram: Boolean = false,
     var facebook: Boolean = false,
     var instagram: Boolean = false,
     var twitter: Boolean = false,
-    var notes : Boolean = false
+    var notes: Boolean = false
 ) {
-    @PrimaryKey var uuid: String = ""
+    @PrimaryKey
+    var uuid: String = ""
 }
