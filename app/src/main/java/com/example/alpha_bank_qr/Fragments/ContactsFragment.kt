@@ -120,7 +120,7 @@ class ContactsFragment : Fragment() {
     }
 
 
-    //Полльзовате
+    //Полльзователь
     private fun setUsersToList(callback: (list: List<User>) -> Unit) {
         val currentUser = db.userDao().getOwnerUser()
         users.clear()
