@@ -2,11 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/qr"
-        android:title="QR код"
-        android:icon="@drawable/ic_qr" />
+        android:id="@+id/more"
+        android:title="Подробно" />
+    <item
+        android:id="@+id/share"
+        android:title="Поделиться"/>
     <item
         android:id="@+id/delete"
-        android:title="Удалить"
-        android:icon="@drawable/ic_delete"/>
+        android:title="Удалить"/>
 </menu>

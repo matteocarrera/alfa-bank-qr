@@ -23,7 +23,7 @@ class ImageUtils {
                         val uri = it.toString().substring(0, it.toString().indexOf("&token"))
                         Picasso.get().load(uri).into(imageView)
                     }.addOnFailureListener { }
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 imageView.setImageDrawable(null)
             }
         }
@@ -44,7 +44,7 @@ class ImageUtils {
             return stream.toByteArray()
         }
 
-        fun getImageInDrawable(cursor: Cursor, column : String): Drawable? {
+        fun getImageInDrawable(cursor: Cursor, column: String): Drawable? {
             val blob = cursor.getBlob(cursor.getColumnIndex(column))
             if (blob != null)
                 return BitmapDrawable(BitmapFactory.decodeByteArray(blob, 0, blob.size))

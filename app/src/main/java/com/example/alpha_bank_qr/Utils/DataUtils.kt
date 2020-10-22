@@ -1,10 +1,8 @@
 package com.example.alpha_bank_qr.Utils
 
-import android.content.Context
-import com.example.alpha_bank_qr.Database.DBService
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Entities.UserBoolean
 
 class DataUtils {
     companion object {
@@ -24,10 +22,11 @@ class DataUtils {
             addItem("email (другой)", user.emailSecond)
             addItem("адрес", user.address)
             addItem("адрес (другой)", user.addressSecond)
-            addItem("Сбербанк (расчетный счет)", user.sberbank)
-            addItem("ВТБ (расчетный счет)", user.vtb)
-            addItem("Альфа-Банк (расчетный счет)", user.alfabank)
+            addItem("Номер карты 1", user.cardNumber)
+            addItem("Номер карты 2", user.cardNumberSecond)
+            addItem("Сайт", user.website)
             addItem("vk", user.vk)
+            addItem("telegram", user.telegram)
             addItem("facebook", user.facebook)
             addItem("instagram", user.instagram)
             addItem("twitter", user.twitter)
@@ -35,19 +34,104 @@ class DataUtils {
             return data
         }
 
-        fun checkCardForExistence(context: Context, user : User) : Boolean {
-            DBService.getScannedUsers(context)?.forEach {
-                val userData = Json.toJson(user)
-                val scannedUserData = Json.toJson(it)
-                if (userData == scannedUserData) return true
+        fun parseDataToUser(data: ArrayList<DataItem>): UserBoolean {
+            val user = UserBoolean()
+            data.forEach {
+                when (it.title) {
+                    "фамилия" -> user.surname = true
+                    "имя" -> user.name = true
+                    "отчество" -> user.patronymic = true
+                    "компания" -> user.company = true
+                    "должность" -> user.jobTitle = true
+                    "мобильный номер" -> user.mobile = true
+                    "мобильный номер (другой)" -> user.mobileSecond = true
+                    "email" -> user.email = true
+                    "email (другой)" -> user.emailSecond = true
+                    "адрес" -> user.address = true
+                    "адрес (другой)" -> user.addressSecond = true
+                    "Номер карты 1" -> user.cardNumber = true
+                    "Номер карты 2" -> user.cardNumberSecond = true
+                    "Сайт" -> user.website = true
+                    "vk" -> user.vk = true
+                    "telegram" -> user.telegram = true
+                    "facebook" -> user.facebook = true
+                    "instagram" -> user.instagram = true
+                    "twitter" -> user.twitter = true
+                    "заметки" -> user.notes = true
+                }
             }
-            return false
+            return user
+        }
+
+        fun generatedUsersEqual(firstUser: UserBoolean, secondUser: UserBoolean): Boolean {
+            return firstUser.name == secondUser.name &&
+                    firstUser.surname == secondUser.surname &&
+                    firstUser.patronymic == secondUser.patronymic &&
+                    firstUser.company == secondUser.company &&
+                    firstUser.jobTitle == secondUser.jobTitle &&
+                    firstUser.mobile == secondUser.mobile &&
+                    firstUser.mobileSecond == secondUser.mobileSecond &&
+                    firstUser.email == secondUser.email &&
+                    firstUser.emailSecond == secondUser.emailSecond &&
+                    firstUser.address == secondUser.address &&
+                    firstUser.addressSecond == secondUser.addressSecond &&
+                    firstUser.cardNumber == secondUser.cardNumber &&
+                    firstUser.cardNumberSecond == secondUser.cardNumberSecond &&
+                    firstUser.website == secondUser.website &&
+                    firstUser.vk == secondUser.vk &&
+                    firstUser.telegram == secondUser.telegram &&
+                    firstUser.facebook == secondUser.facebook &&
+                    firstUser.instagram == secondUser.instagram &&
+                    firstUser.twitter == secondUser.twitter &&
+                    firstUser.notes == secondUser.notes
+        }
+
+        fun getUserFromTemplate(user: User, userBoolean: UserBoolean): User {
+            val currentUser = User()
+            currentUser.parentId = userBoolean.parentId
+            currentUser.uuid = userBoolean.uuid
+            currentUser.name = checkField(user.name, userBoolean.name)
+            currentUser.surname = checkField(user.surname, userBoolean.surname)
+            currentUser.patronymic =
+                checkField(user.patronymic, userBoolean.patronymic)
+            currentUser.company = checkField(user.company, userBoolean.company)
+            currentUser.jobTitle =
+                checkField(user.jobTitle, userBoolean.jobTitle)
+            currentUser.mobile = checkField(user.mobile, userBoolean.mobile)
+            currentUser.mobileSecond =
+                checkField(user.mobileSecond, userBoolean.mobileSecond)
+            currentUser.email = checkField(user.email, userBoolean.email)
+            currentUser.emailSecond =
+                checkField(user.emailSecond, userBoolean.emailSecond)
+            currentUser.address = checkField(user.address, userBoolean.address)
+            currentUser.addressSecond =
+                checkField(user.addressSecond, userBoolean.addressSecond)
+            currentUser.cardNumber =
+                checkField(user.cardNumber, userBoolean.cardNumber)
+            currentUser.cardNumberSecond =
+                checkField(user.cardNumberSecond, userBoolean.cardNumberSecond)
+            currentUser.website = checkField(user.website, userBoolean.website)
+            currentUser.vk = checkField(user.vk, userBoolean.vk)
+            currentUser.telegram =
+                checkField(user.telegram, userBoolean.telegram)
+            currentUser.facebook =
+                checkField(user.facebook, userBoolean.facebook)
+            currentUser.instagram =
+                checkField(user.instagram, userBoolean.instagram)
+            currentUser.twitter = checkField(user.twitter, userBoolean.twitter)
+            currentUser.notes = checkField(user.notes, userBoolean.notes)
+            return currentUser
+        }
+
+        private fun checkField(field: String, isSelected: Boolean): String {
+            if (isSelected)
+                return field
+            return ""
         }
 
         // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
-        fun parseDataToUser(data : ArrayList<DataItem>, photoUUID : String) : User {
+        fun parseDataToUserCard(data: ArrayList<DataItem>): User {
             val user = User()
-            user.photo = photoUUID
             data.forEach {
                 when (it.title) {
                     "имя" -> user.name = it.description
@@ -61,10 +145,11 @@ class DataUtils {
                     "email (другой)" -> user.emailSecond = it.description
                     "адрес" -> user.address = it.description
                     "адрес (другой)" -> user.addressSecond = it.description
-                    "Сбербанк (расчетный счет)" -> user.sberbank = it.description
-                    "ВТБ (расчетный счет)" -> user.vtb = it.description
-                    "Альфа-Банк (расчетный счет)" -> user.alfabank = it.description
+                    "Номер карты 1" -> user.cardNumber = it.description
+                    "Номер карты 2" -> user.cardNumberSecond = it.description
+                    "Сайт" -> user.website = it.description
                     "vk" -> user.vk = it.description
+                    "telegram" -> user.telegram = it.description
                     "facebook" -> user.facebook = it.description
                     "instagram" -> user.instagram = it.description
                     "twitter" -> user.twitter = it.description
@@ -79,33 +164,7 @@ class DataUtils {
             if (description.isNotEmpty()) data.add(DataItem(title, description))
         }
 
-        // Методы для получения существующих пользователей в визитках и обновления их данных
-        fun updateMyCardsData(context: Context, user: User) {
-            DBService.getUsersFromMyCards(context).forEach {
-                it.name = checkForDifference(it.name, user.name)
-                it.surname = checkForDifference(it.surname, user.surname)
-                it.patronymic = checkForDifference(it.patronymic, user.patronymic)
-                it.company = checkForDifference(it.company, user.company)
-                it.jobTitle = checkForDifference(it.jobTitle, user.jobTitle)
-                it.mobile = checkForDifference(it.mobile, user.mobile)
-                it.mobileSecond = checkForDifference(it.mobileSecond, user.mobileSecond)
-                it.email = checkForDifference(it.email, user.email)
-                it.emailSecond = checkForDifference(it.emailSecond, user.emailSecond)
-                it.address = checkForDifference(it.address, user.address)
-                it.addressSecond = checkForDifference(it.addressSecond, user.addressSecond)
-                it.sberbank = checkForDifference(it.sberbank, user.sberbank)
-                it.vtb = checkForDifference(it.vtb, user.vtb)
-                it.alfabank = checkForDifference(it.alfabank, user.alfabank)
-                it.vk = checkForDifference(it.vk, user.vk)
-                it.facebook = checkForDifference(it.facebook, user.facebook)
-                it.instagram = checkForDifference(it.instagram, user.instagram)
-                it.twitter = checkForDifference(it.twitter, user.twitter)
-                it.notes = checkForDifference(it.notes, user.notes)
-                DBService.updateUser(context, it)
-            }
-        }
-
-        private fun checkForDifference(oldUserData : String, newUserData : String) : String {
+        private fun checkForDifference(oldUserData: String, newUserData: String): String {
             if (oldUserData != "" && oldUserData != newUserData) return newUserData
             return oldUserData
         }

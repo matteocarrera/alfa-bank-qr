@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_cards">
+
+    <fragment
+        android:id="@+id/navigation_cards"
+        android:name="com.example.alpha_bank_qr.Fragments.CardsFragment"
+        android:label="Карты"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/navigation_camera"
+        android:name="com.example.alpha_bank_qr.Fragments.CameraFragment"
+        android:label="Камера"
+        tools:layout="@layout/fragment_camera" />
+
+    <fragment
+        android:id="@+id/navigation_add"
+        android:name="com.example.alpha_bank_qr.Fragments.AddFragment"
+        android:label="Создание визитки"
+        tools:layout="@layout/fragment_add" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.alpha_bank_qr.Fragments.ProfileFragment"
+        android:label="Профиль"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.alpha_bank_qr.Fragments.SettingsFragment"
+        android:label="Настройки"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

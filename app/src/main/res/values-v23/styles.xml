@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorOnSurface">@color/colorPrimary</item>
+        <item name="actionModeBackground">@color/colorPrimary</item>
     </style>
 
-
+    <style name="CustomTabTheme" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/colorBrand</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabSelectedTextColor">@android:color/white</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="tabTextColor">@color/colorTextTetriaty</item>
+    </style>
+    
     <style name="AppThemeRed" parent="AppTheme">
         <item name="android:windowLightStatusBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>

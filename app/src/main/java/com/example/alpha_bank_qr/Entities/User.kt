@@ -1,21 +1,17 @@
 package com.example.alpha_bank_qr.Entities
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /*
-    Пользователь будет иметь возможность добавить дополнительный мобильный номер, дополнительный
-    email и дополнительный адрес
-
-    Для каждой отдельной визитки будет создаваться новый пользователь с выборкой данных из
-    основного пользователя, уже существующего в базе данных
+    Основной класс Пользователя
  */
 
-class User(
-    var id: Int = 0,
-    var photo : String = "",
-    var isOwner : Int = 0,
-    var isScanned : Int = 0,
+@Entity(tableName = "users")
+data class User(
+    // UUID родительского пользователя
+    var parentId: String = "",
+    var photo: String = "",
     var name: String = "",
     var surname: String = "",
     var patronymic: String = "",
@@ -27,16 +23,21 @@ class User(
     var emailSecond: String = "",
     var address: String = "",
     var addressSecond: String = "",
-    var sberbank: String = "",
-    var vtb: String = "",
-    var alfabank: String = "",
+    var cardNumber: String = "",
+    var cardNumberSecond: String = "",
+    var website: String = "",
     var vk: String = "",
+    var telegram: String = "",
     var facebook: String = "",
     var instagram: String = "",
     var twitter: String = "",
-    var notes : String = ""
+    var notes: String = ""
 ) {
+    // UUID, присвоенный конкретному пользователю
+    @PrimaryKey
+    var uuid: String = ""
+
     override fun toString(): String {
-        return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$sberbank|$vtb|$alfabank|$vk|$facebook|$instagram|$twitter|$notes"
+        return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$cardNumber|$cardNumberSecond|$website|$vk|$telegram|$facebook|$instagram|$twitter|$notes"
     }
 }
