@@ -5,7 +5,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 abstract class FirestoreInstance {
 
     companion object {
-        @Volatile
         private var INSTANCE: FirebaseFirestore? = null
 
         fun getInstance(): FirebaseFirestore {
