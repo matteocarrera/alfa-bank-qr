@@ -24,40 +24,44 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = AppDatabase.getInstance(requireContext())
-        setToolbar()
-        setDataToListView()
+        setToolbar(this)
+        setDataToListView(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.profile_menu, menu)
     }
 
-    private fun setToolbar() {
-        toolbar_profile.setOnMenuItemClickListener {
-            if (it.itemId == R.id.edit) {
-                val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null)
-                    .commit()
+    companion object {
+        private fun setToolbar(profileFragment: ProfileFragment) {
+            profileFragment.toolbar_profile.setOnMenuItemClickListener {
+                if (it.itemId == R.id.edit) {
+                    val tx: FragmentTransaction =
+                        profileFragment.parentFragmentManager.beginTransaction()
+                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null)
+                        .commit()
+                }
+                true
             }
-            true
         }
-    }
 
-    private fun setDataToListView() {
-        val user = db.userDao().getOwnerUser()
-        val photoUUID = user.photo
-        if (photoUUID != "") {
-            ImageUtils.getImageFromFirebase(photoUUID, profile_photo)
-        } else {
-            profile_photo.visibility = View.GONE
-            circle.visibility = View.VISIBLE
-            letters.text = user.name.take(1) + user.surname.take(1)
+        private fun setDataToListView(profileFragment: ProfileFragment) {
+            val user = profileFragment.db.userDao().getOwnerUser()
+            val photoUUID = user.photo
+            if (photoUUID != "") {
+                ImageUtils.getImageFromFirebase(photoUUID, profileFragment.profile_photo)
+            } else {
+                profileFragment.profile_photo.visibility = View.GONE
+                profileFragment.circle.visibility = View.VISIBLE
+                profileFragment.letters.text = user.name.take(1) + user.surname.take(1)
+            }
+            val data = DataUtils.setUserData(user)
+
+            val adapter =
+                DataListAdapter(profileFragment.requireActivity(), data, R.layout.data_list_item)
+            profileFragment.data_list.adapter = adapter
+
         }
-        val data = DataUtils.setUserData(user)
-
-        val adapter = DataListAdapter(requireActivity(), data, R.layout.data_list_item)
-        data_list.adapter = adapter
-
     }
 
 }

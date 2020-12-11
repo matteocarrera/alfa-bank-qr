@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Database.AppDatabase
-import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.zxing.Result
 import com.karumi.dexter.Dexter
@@ -65,39 +62,57 @@ class CameraFragment : Fragment() {
                 // Обрабатываем результат сканирования QR
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
-                        val databaseRef =
-                            FirebaseDatabase.getInstance().getReference(rawResult.toString())
-                        databaseRef.addValueEventListener(object : ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val jsonUser = dataSnapshot.value.toString()
-                                val user = Gson().fromJson(jsonUser, User::class.java)
-                                val allUsers = db.userDao().getAllUsers()
-                                var userExists = false
-                                allUsers.forEach {
-                                    if (it.uuid == user.uuid) userExists = true
+                        val databaseRef = FirebaseFirestore.getInstance()
+                        val splitLink = rawResult.toString().split("|")
+                        databaseRef.collection("users").document(splitLink[0]).collection("cards")
+                            .document(splitLink[1]).addSnapshotListener { snapshot, e ->
+                                if (e != null) {
+                                    println("Ошибка считывания: " + e.code)
                                 }
-                                if (userExists) {
-                                    Toast.makeText(
-                                        view.context,
-                                        "Такая визитка уже существует!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    requireActivity().onBackPressed()
-                                } else {
-                                    db.userDao().insertUser(user)
-                                    Toast.makeText(
-                                        view.context,
-                                        "Визитка успешно считана!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    requireActivity().onBackPressed()
-                                }
-                            }
 
-                            override fun onCancelled(databaseError: DatabaseError) {
-                                println("Ошибка считывания: " + databaseError.code)
+                                if (snapshot != null && snapshot.exists()) {
+                                    val jsonCard = snapshot.data.toString()
+                                    val userBoolean =
+                                        Gson().fromJson(jsonCard, UserBoolean::class.java)
+                                    val scannedCards = db.userBooleanDao().getAllUsersBoolean()
+
+                                    var cardExists = false
+
+                                    scannedCards.forEach {
+                                        if (it.uuid == userBoolean.uuid) {
+                                            cardExists = true
+                                        }
+                                    }
+
+                                    when (cardExists) {
+                                        true -> {
+                                            Toast.makeText(
+                                                view.context,
+                                                "Визитка уже сущетвует!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            requireActivity().onBackPressed()
+                                        }
+
+                                        false -> {
+                                            db.userBooleanDao().insertUserBoolean(userBoolean)
+                                            Toast.makeText(
+                                                view.context,
+                                                "Визитка успешно считана!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            requireActivity().onBackPressed()
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(
+                                        view.context,
+                                        "Ошибка считывания визитки!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    requireActivity().onBackPressed()
+                                }
                             }
-                        })
                     }
                 }
             }).check()

@@ -21,10 +21,7 @@ import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.example.alpha_bank_qr.Utils.DataUtils
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
@@ -37,7 +34,7 @@ class ContactsFragment : Fragment() {
     private var multipleSelectionMode = false
     private val selectedItems = ArrayList<String>()
     private var actionMode: ActionMode? = null
-    private var users = ArrayList<UserBoolean>()
+    private var userContacts = ArrayList<UserBoolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +49,7 @@ class ContactsFragment : Fragment() {
 
         db = AppDatabase.getInstance(requireContext())
 
-        setUsersToList {
+        setUsersToList(this) {
             contact_list.apply {
                 layoutManager = LinearLayoutManager(requireActivity())
                 adapter = ContactsAdapter(it)
@@ -65,12 +62,12 @@ class ContactsFragment : Fragment() {
                 override fun onItemClick(view: View, position: Int) {
                     if (multipleSelectionMode) {
                         view.checkbox.isChecked = !view.checkbox.isChecked
-                        val contactId = view.contact_id.text.toString()
+                        val contactId = view.contactLink.text.toString()
                         if (selectedItems.contains(contactId)) selectedItems.remove(contactId)
                         else selectedItems.add(contactId)
                     } else {
                         val cardViewFragment =
-                            CardViewFragment.newInstance(view.contact_id.text.toString())
+                            CardViewFragment.newInstance(view.contactLink.text.toString())
                         val tx: FragmentTransaction =
                             requireParentFragment().parentFragmentManager.beginTransaction()
                         tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null)
@@ -80,14 +77,14 @@ class ContactsFragment : Fragment() {
 
                 override fun onLongItemClick(view: View, position: Int) {
                     if (!multipleSelectionMode) {
-                        setUsersToList {
+                        setUsersToList(this@ContactsFragment) {
                             contact_list.adapter = null
                             contact_list.adapter = SelectedContactsAdapter(it)
                         }
                         multipleSelectionMode = true
                         selectedItems.clear()
 
-                        setStandardToolbarVisibility(View.GONE)
+                        setStandardToolbarVisibility(this@ContactsFragment, View.GONE)
 
                         actionMode =
                             (parentFragment?.requireActivity() as AppCompatActivity).startSupportActionMode(
@@ -120,32 +117,6 @@ class ContactsFragment : Fragment() {
     }
 
 
-    //Полльзователь
-    private fun setUsersToList(callback: (list: List<User>) -> Unit) {
-        val currentUser = db.userDao().getOwnerUser()
-        users.clear()
-        users = ArrayList(db.userBooleanDao().getContactUsers(currentUser.uuid))
-
-        val list: MutableList<UserBoolean> = mutableListOf()
-
-        users.forEach {
-            val databaseRef = FirebaseDatabase.getInstance().getReference(it.uuid)
-            databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val jsonUser = dataSnapshot.value.toString()
-                    val userFromDB = Gson().fromJson(jsonUser, UserBoolean::class.java)
-                    list.add(userFromDB)
-                    callback(list.map { DataUtils.getUserFromTemplate(currentUser, it) })
-                    //if (userFromDB.toString() != it.toString()) db.userDao().updateUser(userFromDB)
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    println("Ошибка считывания: " + databaseError.code)
-                }
-            })
-        }
-    }
-
     private val actionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
         override fun onActionItemClicked(
             mode: ActionMode?,
@@ -153,10 +124,10 @@ class ContactsFragment : Fragment() {
         ): Boolean {
             if (item != null) {
                 if (item.itemId == R.id.share) {
-                    shareCards()
+                    shareCards(this@ContactsFragment)
                     onDestroyActionMode(mode)
                 } else if (item.itemId == R.id.delete) {
-                    deleteCards()
+                    deleteCards(this@ContactsFragment)
                     onDestroyActionMode(mode)
                 }
                 return true
@@ -170,7 +141,7 @@ class ContactsFragment : Fragment() {
         ): Boolean {
             mode?.menuInflater?.inflate(R.menu.selection_menu, menu)
             mode?.title = "Выберите визитки"
-            setNavEnabled(false)
+            setNavEnabled(this@ContactsFragment, false)
             return true
         }
 
@@ -184,75 +155,15 @@ class ContactsFragment : Fragment() {
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             mode?.finish()
-            setStandardToolbarVisibility(View.VISIBLE)
+            setStandardToolbarVisibility(this@ContactsFragment, View.VISIBLE)
 
             contact_list.adapter = null
-            setUsersToList {
+            setUsersToList(this@ContactsFragment) {
                 contact_list.adapter = ContactsAdapter(it)
             }
 
-            setNavEnabled(true)
+            setNavEnabled(this@ContactsFragment, true)
             multipleSelectionMode = false
-        }
-    }
-
-    private fun setStandardToolbarVisibility(visibility: Int) {
-        val navHostFragment = parentFragment as CardsFragment
-        navHostFragment.requireView().findViewById<View>(R.id.toolbar).visibility = visibility
-    }
-
-    private fun setNavEnabled(visibility: Boolean) {
-        val cardsFragment = parentFragment as CardsFragment
-        val mainActivity = cardsFragment.requireActivity() as MainActivity
-        mainActivity.nav_view.isVisible = visibility
-    }
-
-    private fun shareCards() {
-        val qrList = ArrayList<Bitmap>()
-        if (selectedItems.count() == 0) Toast.makeText(
-            requireContext(),
-            "Вы не выбрали ни одной визитки!",
-            Toast.LENGTH_SHORT
-        ).show()
-        else {
-            selectedItems.forEach {
-                var bitmap = QRCode.from(it).withCharset("utf-8").withSize(1000, 1000).bitmap()
-                bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-                qrList.add(bitmap)
-            }
-            ProgramUtils.saveImage(requireContext(), qrList)
-        }
-    }
-
-    private fun deleteCards() {
-        if (selectedItems.count() == 0) Toast.makeText(
-            requireContext(),
-            "Вы не выбрали ни одной визитки!",
-            Toast.LENGTH_SHORT
-        ).show()
-        else {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Удаление визиток")
-            builder.setMessage("Вы действительно хотите удалить выбранные визитки?")
-            builder.setPositiveButton("Да") { _, _ ->
-                selectedItems.forEach {
-                    val user = db.userDao().getUserById(it)
-                    db.userDao().deleteUser(user)
-                }
-                Toast.makeText(
-                    requireContext(),
-                    "Выбранные визитки успешно удалены!",
-                    Toast.LENGTH_SHORT
-                ).show()
-                selectedItems.clear()
-                contact_list.adapter = null
-                setUsersToList {
-                    contact_list.adapter = ContactsAdapter(it)
-                }
-            }
-            builder.setNegativeButton("Нет") { _, _ -> }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
         }
     }
 
@@ -260,5 +171,98 @@ class ContactsFragment : Fragment() {
         @JvmStatic
         fun newInstance() =
             ContactsFragment()
+
+        //Полльзователь
+        private fun setUsersToList(
+            contactsFragment: ContactsFragment,
+            callback: (lists: List<User>) -> Unit
+        ) {
+            val currentUserId = contactsFragment.db.userDao().getOwnerUser().uuid
+            contactsFragment.userContacts.clear()
+            contactsFragment.userContacts =
+                ArrayList(contactsFragment.db.userBooleanDao().getContactUsers(currentUserId))
+
+            val list: MutableList<UserBoolean> = mutableListOf()
+
+            contactsFragment.userContacts.forEach { userBoolean ->
+                val databaseRef =
+                    FirebaseFirestore.getInstance().collection("users")
+                        .document(userBoolean.parentId)
+                        .collection("data")
+                        .document(userBoolean.parentId)
+                databaseRef.get().addOnSuccessListener { document ->
+                    val jsonUser = document.data.toString()
+                    val userFromDB = Gson().fromJson(jsonUser, User::class.java)
+                    list.add(userBoolean)
+                    callback(list.map { DataUtils.getUserFromTemplate(userFromDB, it) })
+                }.addOnFailureListener { e ->
+                    println("Ошибка считывания: " + e.localizedMessage)
+                }
+            }
+        }
+
+        private fun deleteCards(contactsFragment: ContactsFragment) {
+            if (contactsFragment.selectedItems.count() == 0) Toast.makeText(
+                contactsFragment.requireContext(),
+                "Вы не выбрали ни одной визитки!",
+                Toast.LENGTH_SHORT
+            ).show()
+            else {
+                val builder = AlertDialog.Builder(contactsFragment.requireContext())
+                builder.setTitle("Удаление визиток")
+                builder.setMessage("Вы действительно хотите удалить выбранные визитки?")
+                builder.setPositiveButton("Да") { _, _ ->
+                    contactsFragment.selectedItems.forEach {
+                        val contactCard = contactsFragment.db.userBooleanDao()
+                            .getUserBooleanById(it.split("|")[1])
+                        contactsFragment.db.userBooleanDao().deleteUserBoolean(contactCard)
+                    }
+                    Toast.makeText(
+                        contactsFragment.requireContext(),
+                        "Выбранные визитки успешно удалены!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    contactsFragment.selectedItems.clear()
+                    contactsFragment.contact_list.adapter = null
+                    setUsersToList(contactsFragment) {
+                        contactsFragment.contact_list.adapter = ContactsAdapter(it)
+                    }
+                }
+                builder.setNegativeButton("Нет") { _, _ -> }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+        }
+
+        private fun setStandardToolbarVisibility(
+            contactsFragment: ContactsFragment,
+            visibility: Int
+        ) {
+            val navHostFragment = contactsFragment.parentFragment as CardsFragment
+            navHostFragment.requireView().findViewById<View>(R.id.toolbar).visibility = visibility
+        }
+
+        private fun shareCards(contactsFragment: ContactsFragment) {
+            val qrList = ArrayList<Bitmap>()
+            if (contactsFragment.selectedItems.count() == 0) Toast.makeText(
+                contactsFragment.requireContext(),
+                "Вы не выбрали ни одной визитки!",
+                Toast.LENGTH_SHORT
+            ).show()
+            else {
+                contactsFragment.selectedItems.forEach {
+                    var bitmap = QRCode.from(it).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
+                    qrList.add(bitmap)
+                }
+                ProgramUtils.saveImage(contactsFragment.requireContext(), qrList)
+            }
+        }
+
+        private fun setNavEnabled(contactsFragment: ContactsFragment, visibility: Boolean) {
+            val cardsFragment = contactsFragment.parentFragment as CardsFragment
+            val mainActivity = cardsFragment.requireActivity() as MainActivity
+            mainActivity.nav_view.isVisible = visibility
+        }
     }
 }

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.alpha_bank_qr.Entities.Card
+import com.example.alpha_bank_qr.Entities.CardInfo
 import com.example.alpha_bank_qr.R
 import com.google.android.material.card.MaterialCardView
 
@@ -16,11 +16,11 @@ class TemplatesHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private val title: TextView = itemView.findViewById(R.id.title)
     private val userId: TextView = itemView.findViewById(R.id.user_id)
 
-    fun bind(card: Card) {
-        colorTag.setBackgroundColor(card.color)
-        id.text = card.id.toString()
-        title.text = card.title
-        userId.text = card.userId
+    fun bind(cardInfo: CardInfo) {
+        colorTag.setBackgroundColor(cardInfo.color)
+        id.text = cardInfo.id
+        title.text = cardInfo.title
+        userId.text = cardInfo.cardId
     }
 
 }

@@ -9,32 +9,32 @@ class DataUtils {
         private val data = ArrayList<DataItem>()
 
         // Для отображения в профиле
-        fun setUserData(user: User): ArrayList<DataItem> {
-            data.clear()
-            addItem("фамилия", user.surname)
-            addItem("имя", user.name)
-            addItem("отчество", user.patronymic)
-            addItem("компания", user.company)
-            addItem("должность", user.jobTitle)
-            addItem("мобильный номер", user.mobile)
-            addItem("мобильный номер (другой)", user.mobileSecond)
-            addItem("email", user.email)
-            addItem("email (другой)", user.emailSecond)
-            addItem("адрес", user.address)
-            addItem("адрес (другой)", user.addressSecond)
-            addItem("Номер карты 1", user.cardNumber)
-            addItem("Номер карты 2", user.cardNumberSecond)
-            addItem("Сайт", user.website)
-            addItem("vk", user.vk)
-            addItem("telegram", user.telegram)
-            addItem("facebook", user.facebook)
-            addItem("instagram", user.instagram)
-            addItem("twitter", user.twitter)
-            addItem("заметки", user.notes)
-            return data
+        fun setUserData(data: User): ArrayList<DataItem> {
+            this.data.clear()
+            addItem("фамилия", data.surname)
+            addItem("имя", data.name)
+            addItem("отчество", data.patronymic)
+            addItem("компания", data.company)
+            addItem("должность", data.jobTitle)
+            addItem("мобильный номер", data.mobile)
+            addItem("мобильный номер (другой)", data.mobileSecond)
+            addItem("email", data.email)
+            addItem("email (другой)", data.emailSecond)
+            addItem("адрес", data.address)
+            addItem("адрес (другой)", data.addressSecond)
+            addItem("Номер карты 1", data.cardNumber)
+            addItem("Номер карты 2", data.cardNumberSecond)
+            addItem("Сайт", data.website)
+            addItem("vk", data.vk)
+            addItem("telegram", data.telegram)
+            addItem("facebook", data.facebook)
+            addItem("instagram", data.instagram)
+            addItem("twitter", data.twitter)
+            addItem("заметки", data.notes)
+            return this.data
         }
 
-        fun parseDataToUser(data: ArrayList<DataItem>): UserBoolean {
+        fun parseDataToUserCard(data: ArrayList<DataItem>): UserBoolean {
             val user = UserBoolean()
             data.forEach {
                 when (it.title) {
@@ -63,63 +63,40 @@ class DataUtils {
             return user
         }
 
-        fun generatedUsersEqual(firstUser: UserBoolean, secondUser: UserBoolean): Boolean {
-            return firstUser.name == secondUser.name &&
-                    firstUser.surname == secondUser.surname &&
-                    firstUser.patronymic == secondUser.patronymic &&
-                    firstUser.company == secondUser.company &&
-                    firstUser.jobTitle == secondUser.jobTitle &&
-                    firstUser.mobile == secondUser.mobile &&
-                    firstUser.mobileSecond == secondUser.mobileSecond &&
-                    firstUser.email == secondUser.email &&
-                    firstUser.emailSecond == secondUser.emailSecond &&
-                    firstUser.address == secondUser.address &&
-                    firstUser.addressSecond == secondUser.addressSecond &&
-                    firstUser.cardNumber == secondUser.cardNumber &&
-                    firstUser.cardNumberSecond == secondUser.cardNumberSecond &&
-                    firstUser.website == secondUser.website &&
-                    firstUser.vk == secondUser.vk &&
-                    firstUser.telegram == secondUser.telegram &&
-                    firstUser.facebook == secondUser.facebook &&
-                    firstUser.instagram == secondUser.instagram &&
-                    firstUser.twitter == secondUser.twitter &&
-                    firstUser.notes == secondUser.notes
-        }
-
-        fun getUserFromTemplate(user: User, userBoolean: UserBoolean): User {
+        fun getUserFromTemplate(data: User, userBoolean: UserBoolean): User {
             val currentUser = User()
             currentUser.parentId = userBoolean.parentId
             currentUser.uuid = userBoolean.uuid
-            currentUser.name = checkField(user.name, userBoolean.name)
-            currentUser.surname = checkField(user.surname, userBoolean.surname)
+            currentUser.name = checkField(data.name, userBoolean.name)
+            currentUser.surname = checkField(data.surname, userBoolean.surname)
             currentUser.patronymic =
-                checkField(user.patronymic, userBoolean.patronymic)
-            currentUser.company = checkField(user.company, userBoolean.company)
+                checkField(data.patronymic, userBoolean.patronymic)
+            currentUser.company = checkField(data.company, userBoolean.company)
             currentUser.jobTitle =
-                checkField(user.jobTitle, userBoolean.jobTitle)
-            currentUser.mobile = checkField(user.mobile, userBoolean.mobile)
+                checkField(data.jobTitle, userBoolean.jobTitle)
+            currentUser.mobile = checkField(data.mobile, userBoolean.mobile)
             currentUser.mobileSecond =
-                checkField(user.mobileSecond, userBoolean.mobileSecond)
-            currentUser.email = checkField(user.email, userBoolean.email)
+                checkField(data.mobileSecond, userBoolean.mobileSecond)
+            currentUser.email = checkField(data.email, userBoolean.email)
             currentUser.emailSecond =
-                checkField(user.emailSecond, userBoolean.emailSecond)
-            currentUser.address = checkField(user.address, userBoolean.address)
+                checkField(data.emailSecond, userBoolean.emailSecond)
+            currentUser.address = checkField(data.address, userBoolean.address)
             currentUser.addressSecond =
-                checkField(user.addressSecond, userBoolean.addressSecond)
+                checkField(data.addressSecond, userBoolean.addressSecond)
             currentUser.cardNumber =
-                checkField(user.cardNumber, userBoolean.cardNumber)
+                checkField(data.cardNumber, userBoolean.cardNumber)
             currentUser.cardNumberSecond =
-                checkField(user.cardNumberSecond, userBoolean.cardNumberSecond)
-            currentUser.website = checkField(user.website, userBoolean.website)
-            currentUser.vk = checkField(user.vk, userBoolean.vk)
+                checkField(data.cardNumberSecond, userBoolean.cardNumberSecond)
+            currentUser.website = checkField(data.website, userBoolean.website)
+            currentUser.vk = checkField(data.vk, userBoolean.vk)
             currentUser.telegram =
-                checkField(user.telegram, userBoolean.telegram)
+                checkField(data.telegram, userBoolean.telegram)
             currentUser.facebook =
-                checkField(user.facebook, userBoolean.facebook)
+                checkField(data.facebook, userBoolean.facebook)
             currentUser.instagram =
-                checkField(user.instagram, userBoolean.instagram)
-            currentUser.twitter = checkField(user.twitter, userBoolean.twitter)
-            currentUser.notes = checkField(user.notes, userBoolean.notes)
+                checkField(data.instagram, userBoolean.instagram)
+            currentUser.twitter = checkField(data.twitter, userBoolean.twitter)
+            currentUser.notes = checkField(data.notes, userBoolean.notes)
             return currentUser
         }
 
@@ -127,36 +104,6 @@ class DataUtils {
             if (isSelected)
                 return field
             return ""
-        }
-
-        // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
-        fun parseDataToUserCard(data: ArrayList<DataItem>): User {
-            val user = User()
-            data.forEach {
-                when (it.title) {
-                    "имя" -> user.name = it.description
-                    "фамилия" -> user.surname = it.description
-                    "отчество" -> user.patronymic = it.description
-                    "компания" -> user.company = it.description
-                    "должность" -> user.jobTitle = it.description
-                    "мобильный номер" -> user.mobile = it.description
-                    "мобильный номер (другой)" -> user.mobileSecond = it.description
-                    "email" -> user.email = it.description
-                    "email (другой)" -> user.emailSecond = it.description
-                    "адрес" -> user.address = it.description
-                    "адрес (другой)" -> user.addressSecond = it.description
-                    "Номер карты 1" -> user.cardNumber = it.description
-                    "Номер карты 2" -> user.cardNumberSecond = it.description
-                    "Сайт" -> user.website = it.description
-                    "vk" -> user.vk = it.description
-                    "telegram" -> user.telegram = it.description
-                    "facebook" -> user.facebook = it.description
-                    "instagram" -> user.instagram = it.description
-                    "twitter" -> user.twitter = it.description
-                    "заметки" -> user.notes = it.description
-                }
-            }
-            return user
         }
 
         // Если какие-то данные пустые (отсутствуют), то мы не добавляем, иначе добавляем

@@ -13,12 +13,10 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.Entities.User
+import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
@@ -90,35 +88,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserFromQR(rawResult: Result) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference(rawResult.toString())
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val jsonUser = dataSnapshot.value.toString()
-                val user = Gson().fromJson(jsonUser, User::class.java)
-                val scannedUsers = db.userDao().getAllUsers()
-                var userExists = false
-                scannedUsers.forEach {
-                    if (it.uuid == user.uuid) userExists = true
+        val databaseRef = FirebaseFirestore.getInstance()
+        val splitLink = rawResult.toString().split("|")
+
+        databaseRef.collection("users").document(splitLink[0]).collection("cards")
+            .document(splitLink[1]).addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    println("Ошибка считывания: " + e.code)
                 }
-                if (userExists) {
+
+                if (snapshot != null && snapshot.exists()) {
+                    val jsonCard = snapshot.data.toString()
+                    val userBoolean = Gson().fromJson(jsonCard, UserBoolean::class.java)
+                    val scannedCards = db.userBooleanDao().getAllUsersBoolean()
+
+                    var cardExists = false
+
+                    scannedCards.forEach {
+                        if (it.uuid == userBoolean.uuid) {
+                            cardExists = true
+                        }
+                    }
+
+                    when (cardExists) {
+                        true ->
+                            Toast.makeText(
+                                applicationContext,
+                                "Визитка уже сущетвует!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        false -> {
+                            db.userBooleanDao().insertUserBoolean(userBoolean)
+                            Toast.makeText(
+                                applicationContext,
+                                "Визитка успешно считана!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } else {
                     Toast.makeText(
                         applicationContext,
                         "Ошибка считывания визитки!",
                         Toast.LENGTH_SHORT
                     ).show()
-                } else {
-                    db.userDao().insertUser(user)
-                    Toast.makeText(
-                        applicationContext,
-                        "Визитка успешно считана!",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                println("Ошибка считывания: " + databaseError.code)
-            }
-        })
     }
 }

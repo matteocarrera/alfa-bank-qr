@@ -105,7 +105,7 @@ class ProgramUtils {
             }
         }
 
-        fun exportContact(user: User): Intent {
+        fun exportContact(data: User): Intent {
             val intent = Intent(ContactsContract.Intents.Insert.ACTION)
             intent.type = ContactsContract.RawContacts.CONTENT_TYPE
 
@@ -113,42 +113,42 @@ class ProgramUtils {
             intent
                 .putExtra(
                     ContactsContract.Intents.Insert.NAME,
-                    user.name + " " + user.patronymic + " " + user.surname
+                    data.name + " " + data.patronymic + " " + data.surname
                 )
-                .putExtra(ContactsContract.Intents.Insert.COMPANY, user.company)
-                .putExtra(ContactsContract.Intents.Insert.JOB_TITLE, user.jobTitle)
-                .putExtra(ContactsContract.Intents.Insert.PHONE, user.mobile)
+                .putExtra(ContactsContract.Intents.Insert.COMPANY, data.company)
+                .putExtra(ContactsContract.Intents.Insert.JOB_TITLE, data.jobTitle)
+                .putExtra(ContactsContract.Intents.Insert.PHONE, data.mobile)
                 .putExtra(
                     ContactsContract.Intents.Insert.PHONE_TYPE,
                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
                 )
-                .putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, user.mobileSecond)
+                .putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, data.mobileSecond)
                 .putExtra(
                     ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE,
                     ContactsContract.CommonDataKinds.Phone.TYPE_OTHER
                 )
-                .putExtra(ContactsContract.Intents.Insert.EMAIL, user.email)
+                .putExtra(ContactsContract.Intents.Insert.EMAIL, data.email)
                 .putExtra(
                     ContactsContract.Intents.Insert.EMAIL_TYPE,
                     ContactsContract.CommonDataKinds.Email.TYPE_WORK
                 )
-                .putExtra(ContactsContract.Intents.Insert.SECONDARY_EMAIL, user.emailSecond)
+                .putExtra(ContactsContract.Intents.Insert.SECONDARY_EMAIL, data.emailSecond)
                 .putExtra(
                     ContactsContract.Intents.Insert.SECONDARY_EMAIL_TYPE,
                     ContactsContract.CommonDataKinds.Email.TYPE_OTHER
                 )
-                .putExtra(ContactsContract.Intents.Insert.POSTAL, user.address)
+                .putExtra(ContactsContract.Intents.Insert.POSTAL, data.address)
                 .putExtra(
                     ContactsContract.Intents.Insert.POSTAL_TYPE,
                     ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK
                 )
-                .putExtra(ContactsContract.Intents.Insert.NOTES, user.notes)
+                .putExtra(ContactsContract.Intents.Insert.NOTES, data.notes)
 
             val fields = arrayOf(
-                DataItem("vk.com/", user.vk),
-                DataItem("facebook.com/", user.facebook),
-                DataItem("instagram.com/", user.instagram),
-                DataItem("twitter.com/", user.twitter)
+                DataItem("vk.com/", data.vk),
+                DataItem("facebook.com/", data.facebook),
+                DataItem("instagram.com/", data.instagram),
+                DataItem("twitter.com/", data.twitter)
             )
 
             val data = ArrayList<ContentValues>()

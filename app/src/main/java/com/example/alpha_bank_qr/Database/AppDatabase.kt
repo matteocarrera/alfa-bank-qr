@@ -4,18 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.alpha_bank_qr.DAO.CardDao
+import androidx.room.TypeConverters
+import com.example.alpha_bank_qr.DAO.CardInfoDao
 import com.example.alpha_bank_qr.DAO.UserBooleanDao
-import com.example.alpha_bank_qr.DAO.UserDao
-import com.example.alpha_bank_qr.Entities.Card
+import com.example.alpha_bank_qr.DAO.UsersDao
+import com.example.alpha_bank_qr.Entities.CardInfo
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
 
-@Database(entities = [User::class, Card::class, UserBoolean::class], version = 1)
+@Database(entities = [User::class, UserBoolean::class, CardInfo::class], version = 1)
+@TypeConverters(DataConverters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDao
-    abstract fun cardDao(): CardDao
+    abstract fun userDao(): UsersDao
     abstract fun userBooleanDao(): UserBooleanDao
+    abstract fun cardInfoDao(): CardInfoDao
+
 
     companion object {
         @Volatile

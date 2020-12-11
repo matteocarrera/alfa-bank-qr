@@ -34,7 +34,7 @@ class TemplatesFragment : Fragment() {
 
         db = AppDatabase.getInstance(requireContext())
 
-        val cards = db.cardDao().getAllCards()
+        val cards = db.cardInfoDao().getAllCards()
 
         templates_list.apply {
             layoutManager = LinearLayoutManager(requireActivity())
@@ -46,9 +46,12 @@ class TemplatesFragment : Fragment() {
                 RecyclerItemClickListener.OnItemClickListener {
                 override fun onItemClick(view: View, position: Int) {
                     if (view.card_qr.visibility == View.GONE) {
-                        val user = db.userDao().getUserById(view.user_id.text.toString())
+                        val userBoolean =
+                            db.userBooleanDao().getUserBooleanById(view.user_id.text.toString())
                         var bitmap =
-                            QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000)
+                            QRCode.from(userBoolean.parentId + "|" + userBoolean.uuid)
+                                .withCharset("utf-8")
+                                .withSize(1000, 1000)
                                 .bitmap()
                         bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
                         view.card_qr.visibility = View.VISIBLE
@@ -73,9 +76,11 @@ class TemplatesFragment : Fragment() {
                                     .addToBackStack(null).commit()
                             }
                             R.id.share -> {
-                                val user = db.userDao().getUserById(view.user_id.text.toString())
+                                val userBoolean = db.userBooleanDao()
+                                    .getUserBooleanById(view.user_id.text.toString())
                                 var bitmap =
-                                    QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000)
+                                    QRCode.from(userBoolean.parentId + "|" + userBoolean.uuid)
+                                        .withCharset("utf-8").withSize(1000, 1000)
                                         .bitmap()
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
                                 ProgramUtils.saveImage(view.context, arrayListOf(bitmap))
@@ -85,16 +90,20 @@ class TemplatesFragment : Fragment() {
                                 builder.setTitle("Удаление визитки")
                                 builder.setMessage("Вы действительно хотите удалить данную визитку?")
                                 builder.setPositiveButton("Да") { _, _ ->
-                                    val card = db.cardDao()
+                                    val card = db.cardInfoDao()
                                         .getCardById(view.card_id.text.toString().toInt())
-                                    db.cardDao().deleteCard(card)
+                                    db.cardInfoDao().deleteCard(card)
+                                    db.userBooleanDao()
+                                        .deleteUserBoolean(
+                                            db.userBooleanDao().getUserBooleanById(card.id)
+                                        )
                                     Toast.makeText(
                                         requireContext(),
                                         "Визитка успешно удалена!",
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-                                    val updatedCards = db.cardDao().getAllCards()
+                                    val updatedCards = db.cardInfoDao().getAllCards()
                                     templates_list.adapter = null
                                     templates_list.apply {
                                         layoutManager = LinearLayoutManager(requireActivity())
