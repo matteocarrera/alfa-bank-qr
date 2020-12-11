@@ -14,6 +14,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Database.AppDatabase
+import com.example.alpha_bank_qr.Database.FirestoreInstance
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ImageUtils
@@ -309,7 +310,7 @@ class EditProfileFragment : Fragment() {
             editProfileFragment.db.userDao().updateUser(user)
 
             val databaseRef =
-                FirebaseFirestore.getInstance().collection("users").document(user.uuid)
+                FirestoreInstance.getInstance().collection("users").document(user.uuid)
             databaseRef.set(Gson().toJson(user))
 
             editProfileFragment.parentFragmentManager.popBackStack()

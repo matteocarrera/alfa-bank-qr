@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
+import com.example.alpha_bank_qr.Database.FirestoreInstance
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
@@ -34,7 +35,7 @@ class CardViewFragment : Fragment() {
         setToolbar()
 
         val databaseRef =
-            FirebaseFirestore.getInstance().collection("users").document(userId)
+            FirestoreInstance.getInstance().collection("users").document(userId)
                 .collection("data")
                 .document(userId)
         databaseRef.get().addOnSuccessListener { dataSnapshot ->

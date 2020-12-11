@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Adapters.DataListAdapter
 import com.example.alpha_bank_qr.Database.AppDatabase
+import com.example.alpha_bank_qr.Database.FirestoreInstance
 import com.example.alpha_bank_qr.Entities.CardInfo
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.UserBoolean
@@ -137,7 +138,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
                 }
             }
             if (!userExists) {
-                val databaseRef = FirebaseFirestore.getInstance().collection("users")
+                val databaseRef = FirestoreInstance.getInstance().collection("users")
                 databaseRef.document(uuid).set((Gson().toJson(newUser)))
 
                 addFragment.db.userBooleanDao().insertUserBoolean(newUser)

@@ -17,6 +17,7 @@ import com.example.alpha_bank_qr.Adapters.RecyclerItemClickListener
 import com.example.alpha_bank_qr.Adapters.SelectedContactsAdapter
 import com.example.alpha_bank_qr.Constants.TextConstants.ID_SEPARATOR
 import com.example.alpha_bank_qr.Database.AppDatabase
+import com.example.alpha_bank_qr.Database.FirestoreInstance
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
@@ -187,7 +188,7 @@ class ContactsFragment : Fragment() {
 
             contactsFragment.userContacts.forEach { userBoolean ->
                 val databaseRef =
-                    FirebaseFirestore.getInstance().collection("users")
+                    FirestoreInstance.getInstance().collection("users")
                         .document(userBoolean.parentId)
                         .collection("data")
                         .document(userBoolean.parentId)

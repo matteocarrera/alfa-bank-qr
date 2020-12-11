@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.alpha_bank_qr.Constants.TextConstants.ID_SEPARATOR
 import com.example.alpha_bank_qr.Database.AppDatabase
+import com.example.alpha_bank_qr.Database.FirestoreInstance
 import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserFromQR(rawResult: Result) {
-        val databaseRef = FirebaseFirestore.getInstance()
+        val databaseRef = FirestoreInstance.getInstance()
         val splitLink = rawResult.toString().split(ID_SEPARATOR)
 
         databaseRef.collection("users").document(splitLink[0]).collection("cards")
