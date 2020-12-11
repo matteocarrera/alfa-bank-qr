@@ -15,6 +15,7 @@ import com.example.alpha_bank_qr.Activities.MainActivity
 import com.example.alpha_bank_qr.Adapters.ContactsAdapter
 import com.example.alpha_bank_qr.Adapters.RecyclerItemClickListener
 import com.example.alpha_bank_qr.Adapters.SelectedContactsAdapter
+import com.example.alpha_bank_qr.Constants.TextConstants.ID_SEPARATOR
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
@@ -214,7 +215,7 @@ class ContactsFragment : Fragment() {
                 builder.setPositiveButton("Да") { _, _ ->
                     contactsFragment.selectedItems.forEach {
                         val contactCard = contactsFragment.db.userBooleanDao()
-                            .getUserBooleanById(it.split("|")[1])
+                            .getUserBooleanById(it.split(ID_SEPARATOR)[1])
                         contactsFragment.db.userBooleanDao().deleteUserBoolean(contactCard)
                     }
                     Toast.makeText(

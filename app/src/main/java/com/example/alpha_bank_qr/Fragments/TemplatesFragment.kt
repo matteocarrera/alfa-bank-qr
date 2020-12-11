@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alpha_bank_qr.Adapters.RecyclerItemClickListener
 import com.example.alpha_bank_qr.Adapters.TemplatesAdapter
+import com.example.alpha_bank_qr.Constants.TextConstants.ID_SEPARATOR
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ProgramUtils
@@ -49,7 +50,7 @@ class TemplatesFragment : Fragment() {
                         val userBoolean =
                             db.userBooleanDao().getUserBooleanById(view.user_id.text.toString())
                         var bitmap =
-                            QRCode.from(userBoolean.parentId + "|" + userBoolean.uuid)
+                            QRCode.from(userBoolean.parentId + ID_SEPARATOR + userBoolean.uuid)
                                 .withCharset("utf-8")
                                 .withSize(1000, 1000)
                                 .bitmap()
@@ -79,7 +80,7 @@ class TemplatesFragment : Fragment() {
                                 val userBoolean = db.userBooleanDao()
                                     .getUserBooleanById(view.user_id.text.toString())
                                 var bitmap =
-                                    QRCode.from(userBoolean.parentId + "|" + userBoolean.uuid)
+                                    QRCode.from(userBoolean.parentId + ID_SEPARATOR + userBoolean.uuid)
                                         .withCharset("utf-8").withSize(1000, 1000)
                                         .bitmap()
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)

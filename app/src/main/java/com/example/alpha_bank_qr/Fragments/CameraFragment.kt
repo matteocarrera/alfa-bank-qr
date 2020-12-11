@@ -21,6 +21,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.fragment_camera.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
+import com.example.alpha_bank_qr.Constants.TextConstants.ID_SEPARATOR
 
 
 class CameraFragment : Fragment() {
@@ -63,7 +64,7 @@ class CameraFragment : Fragment() {
                 override fun handleResult(rawResult: Result?) {
                     if (rawResult != null) {
                         val databaseRef = FirebaseFirestore.getInstance()
-                        val splitLink = rawResult.toString().split("|")
+                        val splitLink = rawResult.toString().split(ID_SEPARATOR)
                         databaseRef.collection("users").document(splitLink[0]).collection("cards")
                             .document(splitLink[1]).addSnapshotListener { snapshot, e ->
                                 if (e != null) {
