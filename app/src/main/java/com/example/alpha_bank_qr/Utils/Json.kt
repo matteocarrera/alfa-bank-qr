@@ -4,8 +4,8 @@ import com.example.alpha_bank_qr.Entities.User
 
 class Json {
     companion object {
-        fun toJson(user: User): String {
-            return user.toString()
+        fun toJson(data: User): String {
+            return data.toString()
         }
 
         fun fromJson(json: String): User {

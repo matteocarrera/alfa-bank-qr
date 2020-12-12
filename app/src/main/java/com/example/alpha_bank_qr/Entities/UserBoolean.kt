@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
     Класс Пользователя, сгенерированного на основе родительского Пользователя
  */
 
-@Entity(tableName = "usersBoolean")
+@Entity(tableName = "cards")
 data class UserBoolean(
     var parentId: String = "",
     var name: Boolean = false,

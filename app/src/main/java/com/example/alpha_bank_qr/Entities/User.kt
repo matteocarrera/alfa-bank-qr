@@ -1,16 +1,12 @@
 package com.example.alpha_bank_qr.Entities
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/*
-    Основной класс Пользователя
- */
-
 @Entity(tableName = "users")
 data class User(
-    // UUID родительского пользователя
-    var parentId: String = "",
+    var parentId: String = "",// UUID родительского пользователя
     var photo: String = "",
     var name: String = "",
     var surname: String = "",
@@ -33,7 +29,6 @@ data class User(
     var twitter: String = "",
     var notes: String = ""
 ) {
-    // UUID, присвоенный конкретному пользователю
     @PrimaryKey
     var uuid: String = ""
 

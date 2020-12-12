@@ -3,9 +3,9 @@ package com.example.alpha_bank_qr.Adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.alpha_bank_qr.Entities.Card
+import com.example.alpha_bank_qr.Entities.CardInfo
 
-class TemplatesAdapter(private val list: List<Card>) : RecyclerView.Adapter<TemplatesHolder>() {
+class TemplatesAdapter(private val list: List<CardInfo>) : RecyclerView.Adapter<TemplatesHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplatesHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -13,8 +13,8 @@ class TemplatesAdapter(private val list: List<Card>) : RecyclerView.Adapter<Temp
     }
 
     override fun onBindViewHolder(holder: TemplatesHolder, position: Int) {
-        val card: Card = list[position]
-        holder.bind(card)
+        val cardInfo: CardInfo = list[position]
+        holder.bind(cardInfo)
     }
 
     override fun getItemCount(): Int = list.size

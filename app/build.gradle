@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.example.alpha_bank_qr"
+        applicationId "com.mksdevelopmentgroup.CloudCards"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
@@ -53,9 +53,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation 'com.google.firebase:firebase-auth:19.3.1'
-    implementation 'com.google.firebase:firebase-database:19.3.0'
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
 
     // Navigation
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
