@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.alpha_bank_qr.Constants.TextConstants.ID_SEPARATOR
@@ -19,7 +18,6 @@ import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         db = AppDatabase.getInstance(applicationContext)
-        if (db.userDao().checkUerExists() == 0) {
+        if (db.userDao().checkUserExists() == 0) {
             val uuid = UUID.randomUUID()
             db.userDao().insertUser(User(uuid = uuid.toString(), parentId = uuid.toString()))}
 

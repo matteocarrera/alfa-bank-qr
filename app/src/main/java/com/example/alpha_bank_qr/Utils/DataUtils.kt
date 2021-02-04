@@ -4,7 +4,11 @@ import com.example.alpha_bank_qr.Entities.CardInfo
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
-import java.util.HashMap
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.set
 
 class DataUtils {
     companion object {
@@ -74,32 +78,19 @@ class DataUtils {
             return updateMap
         }
 
+        fun mapToUser(map: HashMap<String, String>): User {
+            val gson = Gson()
+            val jsonString = gson.toJson(map)
+            return gson.fromJson(jsonString, User::class.java)
+        }
+
         fun userToMap(user: User): HashMap<String, String> {
-            val updateMap = HashMap<String, String>()
-            updateMap["uuid"] = user.uuid
-            updateMap["parentId"] = user.parentId
-            updateMap["photo"] = user.photo
-            updateMap["name"] = user.name
-            updateMap["surname"] = user.surname
-            updateMap["patronymic"] = user.patronymic
-            updateMap["company"] = user.company
-            updateMap["jobTitle"] = user.jobTitle
-            updateMap["mobile"] = user.mobile
-            updateMap["mobileSecond"] = user.mobileSecond
-            updateMap["email"] = user.email
-            updateMap["emailSecond"] = user.emailSecond
-            updateMap["address"] = user.address
-            updateMap["addressSecond"] = user.addressSecond
-            updateMap["cardNumber"] = user.cardNumber
-            updateMap["cardNumberSecond"] = user.cardNumberSecond
-            updateMap["website"] = user.website
-            updateMap["vk"] = user.vk
-            updateMap["telegram"] = user.telegram
-            updateMap["facebook"] = user.facebook
-            updateMap["instagram"] = user.instagram
-            updateMap["twitter"] = user.twitter
-            updateMap["notes"] = user.notes
-            return updateMap
+            val gson = Gson()
+            val jsonString = gson.toJson(user)
+            return gson.fromJson(
+                jsonString,
+                object : TypeToken<HashMap<String?, String?>?>() {}.getType()
+            )
         }
 
         fun getUserFromTemplate(data: User, userBoolean: UserBoolean): User {

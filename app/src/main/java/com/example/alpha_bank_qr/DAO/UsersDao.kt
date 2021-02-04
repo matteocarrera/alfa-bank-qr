@@ -9,7 +9,7 @@ interface UsersDao {
     fun getOwnerUser(): User
 
     @Query("SELECT COUNT(*) FROM users")
-    fun checkUerExists(): Int
+    fun checkUserExists(): Int
 
     @Update()
     fun updateUser(user: User)
