@@ -6,12 +6,12 @@
     app:startDestination="@id/cardsFragment">
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.alpha_bank_qr.Fragments.SettingsFragment"
+        android:name="com.example.cloudCards.Fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/cardsFragment"
-        android:name="com.example.alpha_bank_qr.Fragments.CardsFragment"
+        android:name="com.example.cloudCards.Fragments.CardsFragment"
         android:label="fragment_cards"
         tools:layout="@layout/fragment_cards" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/allContactsFragment"
-        android:name="com.example.alpha_bank_qr.Fragments.AllContactsFragment"
+        android:name="com.example.cloudCards.Fragments.AllContactsFragment"
         android:label="fragments_all_contacts"
         tools:layout="@layout/fragments_all_contacts" >
         <action
