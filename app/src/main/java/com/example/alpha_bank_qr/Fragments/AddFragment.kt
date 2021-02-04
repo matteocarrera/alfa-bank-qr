@@ -17,11 +17,10 @@ import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.DataUtils
+import com.example.alpha_bank_qr.Utils.DataUtils.Companion.getUserFromTemplate
+import com.example.alpha_bank_qr.Utils.DataUtils.Companion.userToMap
 import com.example.alpha_bank_qr.Utils.ListUtils
 import com.example.alpha_bank_qr.Utils.ProgramUtils
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_create_card.data_list
 import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
 import kotlinx.android.synthetic.main.dialog_save_card.view.*
@@ -51,7 +50,12 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
 
         db = AppDatabase.getInstance(requireContext())
 
-        setToolbar(this, view)
+        val cardColor = ContextCompat.getColor(view.context, R.color.colorPrimary)
+        view.card_color.setOnClickListener {
+            setColorPicker(this, view)
+        }
+
+        setToolbar(this, view, cardColor)
 
         selectedItems.clear()
 
@@ -72,12 +76,46 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     companion object {
-        private fun setToolbar(addFragment: AddFragment, view: View) {
-            addFragment.toolbar_add.setNavigationOnClickListener {
-                setSaveDialog(addFragment, view)
-            }
+        private fun setToolbar(addFragment: AddFragment, view: View, cardColor: Int) {
             addFragment.toolbar_add.setOnMenuItemClickListener {
-                if (it.itemId == R.id.done) generateQR(addFragment, view)
+                if (it.itemId == R.id.done) {
+                    val title = view.card_title.text.toString()
+                    val cardTitles = addFragment.db.cardInfoDao().getAllCardsNames()
+                    when {
+                        title.length > addFragment.MAX_CARD_TITLE_LENGTH -> {
+                            Toast.makeText(
+                                view.context,
+                                "Название слишком длинное!",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                        cardTitles.contains(title.trimStart().trimEnd()) -> {
+                            Toast.makeText(
+                                view.context,
+                                "Шаблон с таким названием уже существует!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {
+                            val user = createTemplate(addFragment)
+                            val card = CardInfo(
+                                id = user.uuid,
+                                color = cardColor,
+                                title = title.trimStart().trimEnd(),
+                                cardId = user.uuid
+                            )
+                            addFragment.db.cardInfoDao().insertCard(card)
+                            Toast.makeText(
+                                view.context,
+                                "Шаблон успешно создан!",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            addFragment.parentFragmentManager.popBackStack()
+                        }
+                    }
+                }
                 true
             }
         }
@@ -120,7 +158,8 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
 
         private fun createTemplate(addFragment: AddFragment): UserBoolean {
             val newUser = DataUtils.parseDataToUserCard(addFragment.selectedItems)
-            val parentId = addFragment.db.userDao().getOwnerUser().uuid
+            val userOwner = addFragment.db.userDao().getOwnerUser()
+            val parentId = userOwner.uuid
             var uuid = UUID.randomUUID().toString()
 
             newUser.parentId = parentId
@@ -139,7 +178,9 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
             }
             if (!userExists) {
                 val databaseRef = FirestoreInstance.getInstance().collection("users")
-                databaseRef.document(uuid).set((Gson().toJson(newUser)))
+                databaseRef.document(parentId).collection("cards").document(newUser.uuid).set(
+                    userToMap(getUserFromTemplate(userOwner, newUser))
+                )
 
                 addFragment.db.userBooleanDao().insertUserBoolean(newUser)
             }
@@ -161,53 +202,6 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener {
             val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             positiveButton.setOnClickListener {
                 ProgramUtils.saveImage(view.context, arrayListOf(bitmap))
-            }
-        }
-
-        private fun setSaveDialog(addFragment: AddFragment, view: View) {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
-            val inflater = addFragment.requireActivity().layoutInflater
-            val layout = inflater.inflate(R.layout.dialog_save_card, null)
-            val cardColor = ContextCompat.getColor(layout.context, R.color.colorPrimary)
-            layout.card_color.setOnClickListener {
-                setColorPicker(addFragment, layout)
-            }
-
-            val dialog = builder.setView(layout)
-                .setPositiveButton("Сохранить", null)
-                .setNegativeButton("Отмена") { dialog, _ ->
-                    dialog.cancel()
-                }
-                .show()
-            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            positiveButton.setOnClickListener {
-                val title = layout.card_title.text.toString()
-                val cardTitles = addFragment.db.cardInfoDao().getAllCardsNames()
-                when {
-                    title.length > addFragment.MAX_CARD_TITLE_LENGTH -> {
-                        Toast.makeText(
-                            view.context,
-                            "Название слишком длинное!",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                    cardTitles.contains(title.trimStart().trimEnd()) -> {
-                        Toast.makeText(
-                            view.context,
-                            "Шаблон с таким названием уже существует!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    else -> {
-                        val user = createTemplate(addFragment)
-                        val card = CardInfo(cardColor, title.trimStart().trimEnd(), user.uuid)
-                        addFragment.db.cardInfoDao().insertCard(card)
-                        Toast.makeText(view.context, "Шаблон успешно создан!", Toast.LENGTH_SHORT)
-                            .show()
-                        dialog.cancel()
-                    }
-                }
             }
         }
 

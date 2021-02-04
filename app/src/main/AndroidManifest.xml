@@ -75,8 +75,7 @@
         <activity
             android:name=".Activities.CardsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Activities.SplashActivity"
             android:configChanges="orientation"

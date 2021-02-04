@@ -23,7 +23,6 @@ import com.example.alpha_bank_qr.Entities.UserBoolean
 import com.example.alpha_bank_qr.R
 import com.example.alpha_bank_qr.Utils.ProgramUtils
 import com.example.alpha_bank_qr.Utils.DataUtils
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
@@ -241,7 +240,7 @@ class ContactsFragment : Fragment() {
             visibility: Int
         ) {
             val navHostFragment = contactsFragment.parentFragment as CardsFragment
-            navHostFragment.requireView().findViewById<View>(R.id.toolbar).visibility = visibility
+            navHostFragment.requireView().findViewById<View>(R.id.cards_toolbar).visibility = visibility
         }
 
         private fun shareCards(contactsFragment: ContactsFragment) {

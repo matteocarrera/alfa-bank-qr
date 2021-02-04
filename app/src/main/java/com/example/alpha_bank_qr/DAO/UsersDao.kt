@@ -8,7 +8,10 @@ interface UsersDao {
     @Query("SELECT * FROM users WHERE parentId = uuid")
     fun getOwnerUser(): User
 
-    @Update(entity = User::class)
+    @Query("SELECT COUNT(*) FROM users")
+    fun checkUerExists(): Int
+
+    @Update()
     fun updateUser(user: User)
 
     @Insert

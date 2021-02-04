@@ -1,12 +1,13 @@
 package com.example.alpha_bank_qr.Entities
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "users")
 data class User(
-    var parentId: String = "",// UUID родительского пользователя
+    @PrimaryKey
+    var uuid: String = "",
+    var parentId: String = uuid,// UUID родительского пользователя
     var photo: String = "",
     var name: String = "",
     var surname: String = "",
@@ -29,9 +30,6 @@ data class User(
     var twitter: String = "",
     var notes: String = ""
 ) {
-    @PrimaryKey
-    var uuid: String = ""
-
     override fun toString(): String {
         return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$cardNumber|$cardNumberSecond|$website|$vk|$telegram|$facebook|$instagram|$twitter|$notes"
     }

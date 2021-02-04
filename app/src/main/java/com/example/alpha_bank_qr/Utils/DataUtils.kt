@@ -1,8 +1,10 @@
 package com.example.alpha_bank_qr.Utils
 
+import com.example.alpha_bank_qr.Entities.CardInfo
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
+import java.util.HashMap
 
 class DataUtils {
     companion object {
@@ -61,6 +63,43 @@ class DataUtils {
                 }
             }
             return user
+        }
+
+        fun cardInfoToMap(cardInfo: CardInfo): HashMap<String, String> {
+            val updateMap = HashMap<String, String>()
+            updateMap["id"] = cardInfo.id
+            updateMap["color"] = cardInfo.color.toString()
+            updateMap["title"] = cardInfo.title
+            updateMap["cardId"] = cardInfo.cardId
+            return updateMap
+        }
+
+        fun userToMap(user: User): HashMap<String, String> {
+            val updateMap = HashMap<String, String>()
+            updateMap["uuid"] = user.uuid
+            updateMap["parentId"] = user.parentId
+            updateMap["photo"] = user.photo
+            updateMap["name"] = user.name
+            updateMap["surname"] = user.surname
+            updateMap["patronymic"] = user.patronymic
+            updateMap["company"] = user.company
+            updateMap["jobTitle"] = user.jobTitle
+            updateMap["mobile"] = user.mobile
+            updateMap["mobileSecond"] = user.mobileSecond
+            updateMap["email"] = user.email
+            updateMap["emailSecond"] = user.emailSecond
+            updateMap["address"] = user.address
+            updateMap["addressSecond"] = user.addressSecond
+            updateMap["cardNumber"] = user.cardNumber
+            updateMap["cardNumberSecond"] = user.cardNumberSecond
+            updateMap["website"] = user.website
+            updateMap["vk"] = user.vk
+            updateMap["telegram"] = user.telegram
+            updateMap["facebook"] = user.facebook
+            updateMap["instagram"] = user.instagram
+            updateMap["twitter"] = user.twitter
+            updateMap["notes"] = user.notes
+            return updateMap
         }
 
         fun getUserFromTemplate(data: User, userBoolean: UserBoolean): User {

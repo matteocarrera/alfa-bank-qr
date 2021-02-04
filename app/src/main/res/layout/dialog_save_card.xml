@@ -20,7 +20,7 @@
         android:id="@+id/textField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Название визитки"
+        android:hint="@string/cardName"
         app:counterEnabled="true"
         app:counterMaxLength="30"
         android:layout_marginRight="10dp"

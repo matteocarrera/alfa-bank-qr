@@ -3,35 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_cards">
-
+    app:startDestination="@id/cardsFragment">
     <fragment
-        android:id="@+id/navigation_cards"
-        android:name="com.example.alpha_bank_qr.Fragments.CardsFragment"
-        android:label="Карты"
-        tools:layout="@layout/activity_main" />
-
-    <fragment
-        android:id="@+id/navigation_camera"
-        android:name="com.example.alpha_bank_qr.Fragments.CameraFragment"
-        android:label="Камера"
-        tools:layout="@layout/fragment_camera" />
-
-    <fragment
-        android:id="@+id/navigation_add"
-        android:name="com.example.alpha_bank_qr.Fragments.AddFragment"
-        android:label="Создание визитки"
-        tools:layout="@layout/fragment_add" />
-
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.alpha_bank_qr.Fragments.ProfileFragment"
-        android:label="Профиль"
-        tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/navigation_settings"
+        android:id="@+id/settingsFragment"
         android:name="com.example.alpha_bank_qr.Fragments.SettingsFragment"
-        android:label="Настройки"
+        android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/cardsFragment"
+        android:name="com.example.alpha_bank_qr.Fragments.CardsFragment"
+        android:label="fragment_cards"
+        tools:layout="@layout/fragment_cards" >
+        <action
+            android:id="@+id/action_cardsFragment_to_allContactsFragment"
+            app:destination="@id/allContactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allContactsFragment"
+        android:name="com.example.alpha_bank_qr.Fragments.AllContactsFragment"
+        android:label="fragments_all_contacts"
+        tools:layout="@layout/fragments_all_contacts" >
+        <action
+            android:id="@+id/action_allContactsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 </navigation>

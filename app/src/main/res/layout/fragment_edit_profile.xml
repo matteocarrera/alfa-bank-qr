@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".Activities.CreateCardActivity">
+    tools:context=".Fragments.EditProfileFragment">
 
     <LinearLayout
         android:id="@+id/progressbar"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#CC000000"
         android:gravity="center"
-        android:translationZ="1dp">
+        android:translationZ="1dp"
+        android:visibility="gone">
+
         <ProgressBar
             android:layout_width="70dp"
             android:layout_height="70dp" />
@@ -25,18 +25,18 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Редактирование профиля"
             app:menu="@menu/edit_profile_menu"
-            app:navigationIcon="@drawable/ic_back"/>
+            app:navigationIcon="@drawable/ic_back"
+            android:background="@color/colorTopBackground" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -47,401 +47,424 @@
         android:layout_marginTop="@dimen/app_margin_top_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/change_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/photo"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimary" />
+
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/qr"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/change"
-                    android:textColor="@color/colorTextPrimary"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/app_margin_top_small"
-                    android:textSize="@dimen/app_text_size_medium"
-                    />
+                    android:text="@string/change"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="@dimen/app_text_size_medium" />
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/surname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/app_margin_top_small"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/surname"
-                    android:inputType="text"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:textColor="@color/colorTextPrimary"
-                    android:maxLines="1"
-                    android:hint="@string/surname"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginBottom="@dimen/app_margin_bottom_small"
+                android:hint="@string/surname"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginLeft="@dimen/app_left_margin"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name"
-                    android:inputType="text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorTextPrimary"
-                    android:maxLines="1"
-                    android:hint="@string/name"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginBottom="@dimen/app_margin_bottom_small"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary" />
 
             <EditText
                 android:id="@+id/patronymic"
-                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/patronymic"
+                android:inputType="text"
                 android:maxLines="1"
-                android:hint="@string/patronymic"/>
+                android:textColor="@color/colorTextPrimary" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/company"
-                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_company"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/company"
+                android:inputType="text"
                 android:maxLines="1"
-                android:hint="@string/company" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_company" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/job_title"
-                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_manager"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/jobTitle"
+                android:inputType="text"
                 android:maxLines="1"
-                android:hint="@string/jobTitle" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_manager" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
+                android:hint="@string/mobile"
                 android:inputType="phone"
-                android:hint="@string/mobile" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableStartCompat="@drawable/ic_mobile" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/mobile_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
+                android:hint="@string/mobileSecond"
                 android:inputType="phone"
-                android:hint="@string/mobileSecond" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_mobile" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                app:drawableStartCompat="@drawable/ic_email"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:hint="@string/email" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary"
+                app:drawableStartCompat="@drawable/ic_email" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/email_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                app:drawableStartCompat="@drawable/ic_email"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
+                android:hint="@string/emailSecond"
                 android:inputType="textEmailAddress"
-                android:hint="@string/emailSecond" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_email" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_location"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/address"
                 android:maxLines="1"
-                android:hint="@string/address" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_location" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/address_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_location"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/addressSecond"
                 android:maxLines="1"
-                android:hint="@string/addressSecond" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_location" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/card_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
+                android:hint="Номер карты 1"
                 android:inputType="number"
                 android:maxLength="20"
-                android:hint="Номер карты 1" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/card_number_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
+                android:hint="Номер карты 2"
                 android:inputType="number"
                 android:maxLength="20"
-                android:hint="Номер карты 2" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/website"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="Сайт"
                 android:maxLines="1"
-                android:hint="Сайт" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/vk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_vk"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/vk"
                 android:maxLines="1"
-                android:hint="@string/vk" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_vk" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/telegram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/telegram"
                 android:maxLines="1"
-                android:hint="Telegram" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_telegram" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_facebook"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/facebook"
                 android:maxLines="1"
-                android:hint="@string/facebook" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_facebook" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/instagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_instagram"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/instagram"
                 android:maxLines="1"
-                android:hint="@string/instagram" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_instagram" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
                 android:id="@+id/twitter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_twitter"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/twitter"
                 android:maxLines="1"
-                android:hint="@string/twitter" />
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_large"
+                app:drawableEndCompat="@drawable/ic_close"
+                app:drawableStartCompat="@drawable/ic_twitter" />
 
             <EditText
                 android:id="@+id/notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_medium"
-                android:textColor="@color/colorTextPrimary"
+                android:hint="@string/notes"
                 android:lines="3"
-                android:hint="@string/notes"/>
+                android:textColor="@color/colorTextPrimary" />
 
             <LinearLayout
                 android:id="@+id/add_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_medium">
+
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/ic_add"
-                    android:tint="@color/colorPrimary"
+                    android:layout_marginEnd="@dimen/app_right_margin"
                     android:layout_marginRight="@dimen/app_right_margin"
-                    android:layout_marginEnd="@dimen/app_right_margin" />
+                    android:tint="@color/colorAddField"
+                    app:srcCompat="@drawable/ic_add" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/addField"
-                    android:textSize="@dimen/app_text_size_large"
-                    android:textColor="@color/colorTextPrimary"/>
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="@dimen/app_text_size_large" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delete_all_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_left_margin"
+                android:layout_marginLeft="@dimen/app_left_margin"
+                android:layout_marginEnd="@dimen/app_right_margin"
+                android:layout_marginRight="@dimen/app_right_margin"
+                android:layout_marginBottom="@dimen/app_margin_bottom_medium">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/app_right_margin"
+                    android:layout_marginRight="@dimen/app_right_margin"
+                    android:tint="@color/colorClearAllFields"
+                    app:srcCompat="@drawable/ic_add" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clearAllFields"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="@dimen/app_text_size_large" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

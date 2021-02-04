@@ -6,9 +6,16 @@
 
     <color name="colorTextTetriaty">#B6BCC3</color>
 
+    <color name="colorTextNames">#000000</color>
+    <color name="colorAddField">#2BC36E</color>
+    <color name="colorClearAllFields">#EF2D1F</color>
+    <color name="colorTopBackground">#F6F6F6</color>
+
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#F15045</color>
     <color name="colorSecondary">#6D7986</color>
     <color name="colorButton">#e4e7ec</color>
     <color name="colorTextPrimary">#0B1F35</color>
+    <color name="backgroundToolbarColor">#f6f6f6</color>
+    <color name="backgroundPrimaryColor">#358ebc</color>
 </resources>

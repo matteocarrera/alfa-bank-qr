@@ -1,5 +1,6 @@
 package com.example.alpha_bank_qr.Fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -45,6 +46,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         private fun setDataToListView(profileFragment: ProfileFragment) {
             val user = profileFragment.db.userDao().getOwnerUser()
             val photoUUID = user.photo

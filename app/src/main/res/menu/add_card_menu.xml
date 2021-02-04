@@ -2,9 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/save_user"
-        android:icon="@drawable/ic_done"
-
+        android:id="@+id/add_card"
+        android:icon="@drawable/ic_add"
         app:showAsAction="always"
-        android:title="Сохранить" />
+        android:title="Добавить" />
 </menu>

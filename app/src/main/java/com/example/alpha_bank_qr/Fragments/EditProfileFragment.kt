@@ -11,40 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.alpha_bank_qr.Database.AppDatabase
 import com.example.alpha_bank_qr.Database.FirestoreInstance
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.R
+import com.example.alpha_bank_qr.Utils.DataUtils.Companion.userToMap
 import com.example.alpha_bank_qr.Utils.ImageUtils
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.add_field
-import kotlinx.android.synthetic.main.fragment_edit_profile.address
-import kotlinx.android.synthetic.main.fragment_edit_profile.address_second
-import kotlinx.android.synthetic.main.fragment_edit_profile.change_photo
-import kotlinx.android.synthetic.main.fragment_edit_profile.company
-import kotlinx.android.synthetic.main.fragment_edit_profile.email
-import kotlinx.android.synthetic.main.fragment_edit_profile.email_second
-import kotlinx.android.synthetic.main.fragment_edit_profile.facebook
-import kotlinx.android.synthetic.main.fragment_edit_profile.instagram
-import kotlinx.android.synthetic.main.fragment_edit_profile.job_title
-import kotlinx.android.synthetic.main.fragment_edit_profile.mobile
-import kotlinx.android.synthetic.main.fragment_edit_profile.mobile_second
-import kotlinx.android.synthetic.main.fragment_edit_profile.name
-import kotlinx.android.synthetic.main.fragment_edit_profile.notes
-import kotlinx.android.synthetic.main.fragment_edit_profile.patronymic
-import kotlinx.android.synthetic.main.fragment_edit_profile.photo
-import kotlinx.android.synthetic.main.fragment_edit_profile.progressbar
-import kotlinx.android.synthetic.main.fragment_edit_profile.surname
-import kotlinx.android.synthetic.main.fragment_edit_profile.twitter
-import kotlinx.android.synthetic.main.fragment_edit_profile.vk
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -141,6 +121,29 @@ class EditProfileFragment : Fragment() {
 
         add_field.setOnClickListener { setFieldsDialog(this) }
 
+        delete_all_field.setOnClickListener {
+            surname.setText("")
+            name.setText("")
+            patronymic.setText("")
+            company.setText("")
+            job_title.setText("")
+            mobile.setText("")
+            mobile_second.setText("")
+            email.setText("")
+            email_second.setText("")
+            address.setText("")
+            address_second.setText("")
+            card_number.setText("")
+            card_number_second.setText("")
+            website.setText("")
+            vk.setText("")
+            telegram.setText("")
+            facebook.setText("")
+            instagram.setText("")
+            twitter.setText("")
+            notes.setText("")
+        }
+
         change_photo.setOnClickListener {
             CropImage
                 .activity()
@@ -167,7 +170,7 @@ class EditProfileFragment : Fragment() {
             uri = try {
                 result.uri.toString()
             } catch (e: Exception) {
-                ""
+                "Exception while getting result"
             }
         }
     }
@@ -207,6 +210,7 @@ class EditProfileFragment : Fragment() {
             }
             editProfileFragment.toolbar_edit_profile.setOnMenuItemClickListener {
                 if (it.itemId == R.id.save_user) saveUser(editProfileFragment)
+
                 true
             }
         }
@@ -223,27 +227,29 @@ class EditProfileFragment : Fragment() {
 
         private fun getUserData(editProfileFragment: EditProfileFragment): User {
             return User(
-                editProfileFragment.uuid,
-                editProfileFragment.name.text.toString(),
-                editProfileFragment.surname.text.toString(),
-                editProfileFragment.patronymic.text.toString(),
-                editProfileFragment.company.text.toString(),
-                editProfileFragment.job_title.text.toString(),
-                editProfileFragment.mobile.text.toString(),
-                editProfileFragment.mobile_second.text.toString(),
-                editProfileFragment.email.text.toString(),
-                editProfileFragment.email_second.text.toString(),
-                editProfileFragment.address.text.toString(),
-                editProfileFragment.address_second.text.toString(),
-                editProfileFragment.card_number.text.toString(),
-                editProfileFragment.card_number_second.text.toString(),
-                editProfileFragment.website.text.toString(),
-                editProfileFragment.vk.text.toString(),
-                editProfileFragment.telegram.text.toString(),
-                editProfileFragment.facebook.text.toString(),
-                editProfileFragment.instagram.text.toString(),
-                editProfileFragment.twitter.text.toString(),
-                editProfileFragment.notes.text.toString()
+                uuid = editProfileFragment.uuid,
+                parentId = editProfileFragment.uuid,
+                photo = editProfileFragment.uuid,
+                name = editProfileFragment.name.text.toString(),
+                surname = editProfileFragment.surname.text.toString(),
+                patronymic = editProfileFragment.patronymic.text.toString(),
+                company = editProfileFragment.company.text.toString(),
+                jobTitle = editProfileFragment.job_title.text.toString(),
+                mobile = editProfileFragment.mobile.text.toString(),
+                mobileSecond = editProfileFragment.mobile_second.text.toString(),
+                email = editProfileFragment.email.text.toString(),
+                emailSecond = editProfileFragment.email_second.text.toString(),
+                address = editProfileFragment.address.text.toString(),
+                addressSecond = editProfileFragment.address_second.text.toString(),
+                cardNumber = editProfileFragment.card_number.text.toString(),
+                cardNumberSecond = editProfileFragment.card_number_second.text.toString(),
+                website = editProfileFragment.website.text.toString(),
+                vk = editProfileFragment.vk.text.toString(),
+                telegram = editProfileFragment.telegram.text.toString(),
+                facebook = editProfileFragment.facebook.text.toString(),
+                instagram = editProfileFragment.instagram.text.toString(),
+                twitter = editProfileFragment.twitter.text.toString(),
+                notes = editProfileFragment.notes.text.toString()
             )
         }
 
@@ -285,6 +291,7 @@ class EditProfileFragment : Fragment() {
         }
 
         // Сначала загружаем фото на сервер, если успешно, то только потом сохраняем данные пользователя
+        @SuppressLint("ShowToast")
         private fun saveUser(editProfileFragment: EditProfileFragment) {
             editProfileFragment.progressbar.visibility = View.VISIBLE
             if (editProfileFragment.uri != "") {
@@ -294,24 +301,51 @@ class EditProfileFragment : Fragment() {
                 )
                 editProfileFragment.mStorageRef.putFile(Uri.parse(editProfileFragment.uri))
                     .addOnSuccessListener {
+                        Toast.makeText(
+                            editProfileFragment.context,
+                            "Profile photo has been downloaded!",
+                            Toast.LENGTH_LONG
+                        ).show()
                         saveUserData(editProfileFragment)
                     }
             } else {
+                Toast.makeText(
+                    editProfileFragment.context,
+                    "Фото не выбрано",
+                    Toast.LENGTH_LONG
+                ).show()
                 saveUserData(editProfileFragment)
             }
         }
 
+        @SuppressLint("ShowToast")
         private fun saveUserData(editProfileFragment: EditProfileFragment) {
             var user = editProfileFragment.db.userDao().getOwnerUser()
             val userUUID = user.uuid
             user = getUserData(editProfileFragment)
+            user.parentId = userUUID
             user.uuid = userUUID
 
             editProfileFragment.db.userDao().updateUser(user)
 
             val databaseRef =
                 FirestoreInstance.getInstance().collection("users").document(user.uuid)
-            databaseRef.set(Gson().toJson(user))
+                    .collection("data").document(user.uuid)
+            databaseRef.set(userToMap(user))
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        editProfileFragment.context,
+                        "DocumentSnapshot successfully written!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        editProfileFragment.context,
+                        "Error writing document: $e",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
 
             editProfileFragment.parentFragmentManager.popBackStack()
         }
