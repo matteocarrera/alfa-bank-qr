@@ -14,5 +14,5 @@
     <color name="colorAccent">#F15045</color>
     <color name="colorSecondary">#6D7986</color>
     <color name="colorButton">#e4e7ec</color>
-    <color name="colorTextPrimary">#0B1F35</color>
+    <color name="colorTextPrimary">#000000</color>
 </resources>

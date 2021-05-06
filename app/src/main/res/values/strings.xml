@@ -27,8 +27,21 @@
     <string name="more">Просмотреть</string>
     <string name="delete">Удалить</string>
 
+    <!-- Settings Activity -->
+    <string name="camera_permission">Доступ к камере</string>
+    <string name="gallery_permission">Доступ к галерее</string>
+    <string name="call_permission">Доступ к звонкам</string>
+    <string name="contacts_permission">Доступ к контактам</string>
+    <string name="attention">Внимание!</string>
+    <string name="attention_message">Убрать доступ к функциям можно только в настройках самого телефона, в данном меню Вы можете только выдать доступ!\nИменно поэтому некоторые кнопки отключены!</string>
+    <string name="privacy">Конфидециальность</string>
+    <string name="user_agreeement">Пользовательское соглашение</string>
+    <string name="help">Помощь</string>
+
     <!-- Edit Profile Activity -->
     <string name="edit_profile_title">Редактирование профиля</string>
+    <string name="profile">Профиль</string>
+    <string name="profile_is_empty">Профиль отсутствует</string>
     <string name="change">Изменить</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
@@ -42,13 +55,15 @@
     <string name="address">Адрес</string>
     <string name="addressSecond">Адрес (другой)</string>
     <string name="vk">VK</string>
+    <string name="website">Сайт</string>
     <string name="facebook">Facebook</string>
+    <string name="telegram">Telegram</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
     <string name="notes">Заметки</string>
 
     <!-- AboutApp Activity -->
-    <string name="about">О программе</string>
+    <string name="about">О приложении</string>
     <string name="alfa_bank_qr">Cloud Cards</string>
     <string name="version">Версия 1.0</string>
     <string name="about_text">Приложение для создания, редактирования и быстрого обмена электронными визитками, используя QR-код</string>
