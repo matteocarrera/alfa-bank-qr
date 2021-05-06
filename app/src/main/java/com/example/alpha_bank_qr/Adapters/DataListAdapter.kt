@@ -19,7 +19,7 @@ class DataListAdapter(private val context: FragmentActivity, private val dataIte
         val data = rowView.findViewById(R.id.description) as TextView
 
         title.text = dataItems[position].title
-        data.text = dataItems[position].description
+        data.text = dataItems[position].data
 
         return rowView
     }

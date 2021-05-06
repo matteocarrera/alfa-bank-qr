@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /*
+    Класс визитки пользователя в TemplatesFragment
+
     Переменная userId используется как связка с таблицей users в базе данных для получения
     данных определенного пользователя, созданного для конкретной визитной карточки
 

@@ -204,13 +204,13 @@ class CardActivity : AppCompatActivity() {
         data_list.setOnItemClickListener { adapterView, _, i, _ ->
             val item = adapterView?.getItemAtPosition(i) as DataItem
             when (item.title) {
-                "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.description)
-                "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.description)
-                "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.description)
+                "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.data)
+                "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.data)
+                "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.data)
                 "vk", "facebook", "instagram", "twitter" -> ProgramUtils.openWebsite(this, item)
                 else -> {
                     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText("text", item.description)
+                    val clip = ClipData.newPlainText("text", item.data)
                     clipboard.setPrimaryClip(clip)
                     Toast.makeText(this, "Данные скопированы", Toast.LENGTH_SHORT).show()
                 }
