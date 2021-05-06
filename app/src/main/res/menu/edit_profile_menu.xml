@@ -5,5 +5,5 @@
         android:id="@+id/save_user"
         android:icon="@drawable/ic_done"
         app:showAsAction="always"
-        android:title="Сохранить" />
+        android:title="@string/save" />
 </menu>

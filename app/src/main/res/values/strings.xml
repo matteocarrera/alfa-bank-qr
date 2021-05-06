@@ -7,7 +7,8 @@
 
     <!-- Cards Activity -->
     <string name="my_cards">Мои визитки</string>
-    <string name="saved_cards">Сохраненные визитки</string>
+    <string name="search">Поиск</string>
+    <string name="sort">Сортировка</string>
 
     <!-- Card List Item -->
     <string name="item_name">Название карты</string>
@@ -20,7 +21,11 @@
     <string name="create_card">Создание визитки</string>
     <string name="card_name">Название визитки</string>
     <string name="qr_code">QR код</string>
+    <string name="export">Экспорт контакта</string>
     <string name="save">Сохранить</string>
+    <string name="done">Готово</string>
+    <string name="more">Просмотреть</string>
+    <string name="delete">Удалить</string>
 
     <!-- Edit Profile Activity -->
     <string name="edit_profile_title">Редактирование профиля</string>
