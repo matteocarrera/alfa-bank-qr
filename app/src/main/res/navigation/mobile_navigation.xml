@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/navigation_cards"
-        android:name="com.example.alpha_bank_qr.Fragments.CardsFragment"
+        android:name="com.example.cloud_cards.Fragments.CardsFragment"
         android:label="Карты"
         tools:layout="@layout/activity_main" />
 
     <fragment
         android:id="@+id/navigation_camera"
-        android:name="com.example.alpha_bank_qr.Fragments.CameraFragment"
+        android:name="com.example.cloud_cards.Fragments.CameraFragment"
         android:label="Камера"
         tools:layout="@layout/fragment_camera" />
 
     <fragment
         android:id="@+id/navigation_add"
-        android:name="com.example.alpha_bank_qr.Fragments.AddFragment"
+        android:name="com.example.cloud_cards.Fragments.AddFragment"
         android:label="Создание визитки"
         tools:layout="@layout/fragment_add" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.alpha_bank_qr.Fragments.ProfileFragment"
+        android:name="com.example.cloud_cards.Fragments.ProfileFragment"
         android:label="Профиль"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.example.alpha_bank_qr.Fragments.SettingsFragment"
+        android:name="com.example.cloud_cards.Fragments.SettingsFragment"
         android:label="Настройки"
         tools:layout="@layout/fragment_settings" />
 </navigation>
