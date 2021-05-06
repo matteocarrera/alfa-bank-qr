@@ -56,7 +56,7 @@ class ProgramUtils {
                 "twitter" -> website = "twitter.com/"
                 else -> {}
             }
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + website + item.description))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + website + item.data))
             context.startActivity(intent)
         }
 
@@ -121,13 +121,13 @@ class ProgramUtils {
             val data = ArrayList<ContentValues>()
 
             for (i in fields.indices) {
-                if (fields[i].description.isNotEmpty()) {
+                if (fields[i].data.isNotEmpty()) {
                     val row = ContentValues()
                     row.put(
                         ContactsContract.Data.MIMETYPE,
                         ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE
                     )
-                    row.put(ContactsContract.CommonDataKinds.Website.URL, fields[i].title + fields[i].description)
+                    row.put(ContactsContract.CommonDataKinds.Website.URL, fields[i].title + fields[i].data)
                     row.put(ContactsContract.CommonDataKinds.Website.TYPE, ContactsContract.CommonDataKinds.Website.TYPE_PROFILE)
                     data.add(row)
                 }
