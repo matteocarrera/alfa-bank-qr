@@ -2,7 +2,6 @@ package com.example.alpha_bank_qr.Utils
 
 import android.content.Context
 import com.example.alpha_bank_qr.Database.DBService
-import com.example.alpha_bank_qr.Database.QRDatabaseHelper
 import com.example.alpha_bank_qr.Entities.DataItem
 import com.example.alpha_bank_qr.Entities.User
 import com.example.alpha_bank_qr.Entities.UserBoolean
@@ -103,26 +102,26 @@ class DataUtils {
             val user = User()
             data.forEach {
                 when (it.title) {
-                    "имя" -> user.name = it.description
-                    "фамилия" -> user.surname = it.description
-                    "отчество" -> user.patronymic = it.description
-                    "компания" -> user.company = it.description
-                    "должность" -> user.jobTitle = it.description
-                    "мобильный номер" -> user.mobile = it.description
-                    "мобильный номер (другой)" -> user.mobileSecond = it.description
-                    "email" -> user.email = it.description
-                    "email (другой)" -> user.emailSecond = it.description
-                    "адрес" -> user.address = it.description
-                    "адрес (другой)" -> user.addressSecond = it.description
-                    "Номер карты 1" -> user.cardNumber = it.description
-                    "Номер карты 2" -> user.cardNumberSecond = it.description
-                    "Сайт" -> user.website = it.description
-                    "vk" -> user.vk = it.description
-                    "telegram" -> user.telegram = it.description
-                    "facebook" -> user.facebook = it.description
-                    "instagram" -> user.instagram = it.description
-                    "twitter" -> user.twitter = it.description
-                    "заметки" -> user.notes = it.description
+                    "имя" -> user.name = it.data
+                    "фамилия" -> user.surname = it.data
+                    "отчество" -> user.patronymic = it.data
+                    "компания" -> user.company = it.data
+                    "должность" -> user.jobTitle = it.data
+                    "мобильный номер" -> user.mobile = it.data
+                    "мобильный номер (другой)" -> user.mobileSecond = it.data
+                    "email" -> user.email = it.data
+                    "email (другой)" -> user.emailSecond = it.data
+                    "адрес" -> user.address = it.data
+                    "адрес (другой)" -> user.addressSecond = it.data
+                    "Номер карты 1" -> user.cardNumber = it.data
+                    "Номер карты 2" -> user.cardNumberSecond = it.data
+                    "Сайт" -> user.website = it.data
+                    "vk" -> user.vk = it.data
+                    "telegram" -> user.telegram = it.data
+                    "facebook" -> user.facebook = it.data
+                    "instagram" -> user.instagram = it.data
+                    "twitter" -> user.twitter = it.data
+                    "заметки" -> user.notes = it.data
                 }
             }
             return user
