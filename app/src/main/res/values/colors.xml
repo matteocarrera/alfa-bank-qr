@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0B1F35</color>
+    <color name="colorPrimary">#0358EBC</color>
+    <color name="colorLightGray">#F6F6F6</color>
+    <color name="colorMainGray">#8E9198</color>
+
+    <!--old or default colors, remove unnecessary colors -->
     <color name="colorBrand">#EF3124</color>
     <color name="colorBackground">#F3F4F5</color>
 

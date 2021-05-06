@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Альфа-Банк QR</string>
+    <string name="app_name">Cloud Cards</string>
 
     <!-- Profile Activity -->
     <string name="edit_profile">Править</string>
@@ -36,33 +36,27 @@
     <string name="emailSecond">email (другой)</string>
     <string name="address">Адрес</string>
     <string name="addressSecond">Адрес (другой)</string>
-    <string name="sberbank">Сбербанк (расчетный счет)</string>
-    <string name="vtb">ВТБ (расчетный счет)</string>
-    <string name="alfabank">Альфа-Банк (расчетный счет)</string>
     <string name="vk">VK</string>
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
     <string name="notes">Заметки</string>
-    <string name="addField">Добавить поле</string>
 
     <!-- AboutApp Activity -->
     <string name="about">О программе</string>
-    <string name="alfa_bank_qr">Альфа-Банк QR</string>
+    <string name="alfa_bank_qr">Cloud Cards</string>
     <string name="version">Версия 1.0</string>
     <string name="about_text">Приложение для создания, редактирования и быстрого обмена электронными визитками, используя QR-код</string>
-    <string name="alfa_bank_ekb">Альфа-Банк Екатеринбург</string>
-    <string name="year">2020 год</string>
+    <string name="year">2020 – 2021 год</string>
 
     <!-- Bottom Navigation Menu -->
-    <string name="cards">Визитки</string>
-    <string name="scan_card">Камера</string>
-    <string name="profile">Профиль</string>
+    <string name="cards">Мои визитки</string>
+    <string name="contacts">Контакты</string>
+    <string name="settings">Настройки</string>
     <string name="title_activity_cards">Cards</string>
 
-    <string name="tab_templates">ШАБЛОНЫ</string>
-    <string name="tab_contacts">КОНТАКТЫ</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_templates">Мои визитки</string>
+    <string name="tab_contacts">Контакты</string>
+    <string name="tab_settings">Настройки</string>
 
 </resources>

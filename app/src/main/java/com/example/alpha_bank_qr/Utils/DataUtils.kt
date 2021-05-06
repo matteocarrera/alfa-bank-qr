@@ -24,8 +24,6 @@ class DataUtils {
             addItem("email (другой)", user.emailSecond)
             addItem("адрес", user.address)
             addItem("адрес (другой)", user.addressSecond)
-            addItem("Номер карты 1", user.cardNumber)
-            addItem("Номер карты 2", user.cardNumberSecond)
             addItem("Сайт", user.website)
             addItem("vk", user.vk)
             addItem("telegram", user.telegram)
@@ -51,8 +49,6 @@ class DataUtils {
                     "email (другой)" -> user.emailSecond = true
                     "адрес" -> user.address = true
                     "адрес (другой)" -> user.addressSecond = true
-                    "Номер карты 1" -> user.cardNumber = true
-                    "Номер карты 2" -> user.cardNumberSecond = true
                     "Сайт" -> user.website = true
                     "vk" -> user.vk = true
                     "telegram" -> user.telegram = true
@@ -77,8 +73,6 @@ class DataUtils {
                     firstUser.emailSecond == secondUser.emailSecond &&
                     firstUser.address == secondUser.address &&
                     firstUser.addressSecond == secondUser.addressSecond &&
-                    firstUser.cardNumber == secondUser.cardNumber &&
-                    firstUser.cardNumberSecond == secondUser.cardNumberSecond &&
                     firstUser.website == secondUser.website &&
                     firstUser.vk == secondUser.vk &&
                     firstUser.telegram == secondUser.telegram &&
@@ -146,9 +140,6 @@ class DataUtils {
                 it.emailSecond = checkForDifference(it.emailSecond, user.emailSecond)
                 it.address = checkForDifference(it.address, user.address)
                 it.addressSecond = checkForDifference(it.addressSecond, user.addressSecond)
-                //it.sberbank = checkForDifference(it.sberbank, user.sberbank)
-                //it.vtb = checkForDifference(it.vtb, user.vtb)
-                //it.alfabank = checkForDifference(it.alfabank, user.alfabank)
                 it.vk = checkForDifference(it.vk, user.vk)
                 it.facebook = checkForDifference(it.facebook, user.facebook)
                 it.instagram = checkForDifference(it.instagram, user.instagram)
