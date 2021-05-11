@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/more"
-        android:title="Подробно" />
+        android:title="@string/more" />
     <item
         android:id="@+id/share"
-        android:title="Поделиться"/>
+        android:title="@string/share"/>
     <item
         android:id="@+id/delete"
-        android:title="Удалить"/>
+        android:title="@string/delete"/>
 </menu>

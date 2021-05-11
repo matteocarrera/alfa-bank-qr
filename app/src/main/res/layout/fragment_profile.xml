@@ -71,7 +71,7 @@
         android:id="@+id/profile_is_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Профиль отсутствует"
+        android:text="@string/profile_is_empty"
         android:textAllCaps="false"
         android:textColor="@color/colorTextTetriaty"
         android:textSize="@dimen/app_text_size_large"

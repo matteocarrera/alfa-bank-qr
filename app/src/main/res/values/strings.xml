@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Альфа-Банк QR</string>
+    <string name="app_name">Cloud Cards</string>
 
     <!-- Profile Activity -->
     <string name="edit_profile">Править</string>
@@ -7,7 +7,8 @@
 
     <!-- Cards Activity -->
     <string name="my_cards">Мои визитки</string>
-    <string name="saved_cards">Сохраненные визитки</string>
+    <string name="search">Поиск</string>
+    <string name="sort">Сортировка</string>
 
     <!-- Card List Item -->
     <string name="item_name">Название карты</string>
@@ -20,10 +21,27 @@
     <string name="create_card">Создание визитки</string>
     <string name="card_name">Название визитки</string>
     <string name="qr_code">QR код</string>
+    <string name="export">Экспорт контакта</string>
     <string name="save">Сохранить</string>
+    <string name="done">Готово</string>
+    <string name="more">Просмотреть</string>
+    <string name="delete">Удалить</string>
+
+    <!-- Settings Activity -->
+    <string name="camera_permission">Доступ к камере</string>
+    <string name="gallery_permission">Доступ к галерее</string>
+    <string name="call_permission">Доступ к звонкам</string>
+    <string name="contacts_permission">Доступ к контактам</string>
+    <string name="attention">Внимание!</string>
+    <string name="attention_message">Убрать доступ к функциям можно только в настройках самого телефона, в данном меню Вы можете только выдать доступ!\nИменно поэтому некоторые кнопки отключены!</string>
+    <string name="privacy">Конфидециальность</string>
+    <string name="user_agreeement">Пользовательское соглашение</string>
+    <string name="help">Помощь</string>
 
     <!-- Edit Profile Activity -->
     <string name="edit_profile_title">Редактирование профиля</string>
+    <string name="profile">Профиль</string>
+    <string name="profile_is_empty">Профиль отсутствует</string>
     <string name="change">Изменить</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
@@ -36,33 +54,29 @@
     <string name="emailSecond">email (другой)</string>
     <string name="address">Адрес</string>
     <string name="addressSecond">Адрес (другой)</string>
-    <string name="sberbank">Сбербанк (расчетный счет)</string>
-    <string name="vtb">ВТБ (расчетный счет)</string>
-    <string name="alfabank">Альфа-Банк (расчетный счет)</string>
     <string name="vk">VK</string>
+    <string name="website">Сайт</string>
     <string name="facebook">Facebook</string>
+    <string name="telegram">Telegram</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
     <string name="notes">Заметки</string>
-    <string name="addField">Добавить поле</string>
 
     <!-- AboutApp Activity -->
-    <string name="about">О программе</string>
-    <string name="alfa_bank_qr">Альфа-Банк QR</string>
+    <string name="about">О приложении</string>
+    <string name="alfa_bank_qr">Cloud Cards</string>
     <string name="version">Версия 1.0</string>
     <string name="about_text">Приложение для создания, редактирования и быстрого обмена электронными визитками, используя QR-код</string>
-    <string name="alfa_bank_ekb">Альфа-Банк Екатеринбург</string>
-    <string name="year">2020 год</string>
+    <string name="year">2020 – 2021 год</string>
 
     <!-- Bottom Navigation Menu -->
-    <string name="cards">Визитки</string>
-    <string name="scan_card">Камера</string>
-    <string name="profile">Профиль</string>
+    <string name="cards">Мои визитки</string>
+    <string name="contacts">Контакты</string>
+    <string name="settings">Настройки</string>
     <string name="title_activity_cards">Cards</string>
 
-    <string name="tab_templates">ШАБЛОНЫ</string>
-    <string name="tab_contacts">КОНТАКТЫ</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_templates">Мои визитки</string>
+    <string name="tab_contacts">Контакты</string>
+    <string name="tab_settings">Настройки</string>
 
 </resources>

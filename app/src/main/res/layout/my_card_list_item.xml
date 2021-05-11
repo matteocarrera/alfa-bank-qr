@@ -29,7 +29,7 @@
                 android:layout_width="10dp"
                 android:layout_height="50dp"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut"
-                app:cardBackgroundColor="@color/colorBrand"
+                app:cardBackgroundColor="@color/colorPrimary"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 

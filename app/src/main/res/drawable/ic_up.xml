@@ -27,7 +27,7 @@
       android:strokeColor="#000000"/>
   <path
       android:pathData="M321.87,275.73L170.93,426.67L133.33,389.07L321.87,200.27L510.4,389.07L472.8,426.67L321.87,275.73Z"
-      android:fillColor="#0b1f35"
+      android:fillColor="@color/colorPrimary"
       android:fillAlpha="1"/>
   <path
       android:fillColor="#FF000000"

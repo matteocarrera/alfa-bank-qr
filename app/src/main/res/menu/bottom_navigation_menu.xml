@@ -5,19 +5,11 @@
         android:icon="@drawable/ic_cards"
         android:title="@string/cards" />
     <item
-        android:id="@+id/navigation_camera"
-        android:icon="@drawable/ic_camera"
-        android:title="@string/scan_card"/>
-    <item
-        android:id="@+id/navigation_add"
-        android:icon="@drawable/ic_add"
-        android:title="Добавить"/>
-    <item
-        android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_user"
-        android:title="@string/profile"/>
+        android:id="@+id/navigation_contacts"
+        android:icon="@drawable/ic_contacts"
+        android:title="@string/contacts"/>
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
-        android:title="Настройки"/>
+        android:title="@string/settings"/>
 </menu>

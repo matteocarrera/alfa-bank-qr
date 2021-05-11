@@ -146,7 +146,6 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
                 android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_company"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -164,7 +163,6 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
                 android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_manager"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -180,7 +178,6 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
                 android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -198,7 +195,6 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
                 android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_mobile"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -214,7 +210,6 @@
                 android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                app:drawableStartCompat="@drawable/ic_email"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -231,7 +226,6 @@
                 android:layout_marginRight="@dimen/app_right_margin"
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                app:drawableStartCompat="@drawable/ic_email"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -249,7 +243,6 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
                 android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
@@ -266,47 +259,10 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginBottom="@dimen/app_margin_bottom_small"
                 android:textSize="@dimen/app_text_size_large"
-                app:drawableStartCompat="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
                 android:hint="@string/addressSecond" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
-                android:id="@+id/card_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
-                android:inputType="number"
-                android:maxLength="20"
-                android:hint="Номер карты 1" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                app:drawableEndCompat="@drawable/ic_close"
-                android:id="@+id/card_number_second"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small"
-                android:textSize="@dimen/app_text_size_large"
-                android:drawablePadding="5dp"
-                android:textColor="@color/colorTextPrimary"
-                android:maxLines="1"
-                android:inputType="number"
-                android:maxLength="20"
-                android:hint="Номер карты 2" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/website"
@@ -321,7 +277,7 @@
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
-                android:hint="Сайт" />
+                android:hint="@string/website" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 app:drawableEndCompat="@drawable/ic_close"
@@ -354,7 +310,7 @@
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorTextPrimary"
                 android:maxLines="1"
-                android:hint="Telegram" />
+                android:hint="@string/telegram" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 app:drawableEndCompat="@drawable/ic_close"
@@ -419,30 +375,6 @@
                 android:textColor="@color/colorTextPrimary"
                 android:lines="3"
                 android:hint="@string/notes"/>
-
-            <LinearLayout
-                android:id="@+id/add_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_left_margin"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginRight="@dimen/app_right_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_medium">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@drawable/ic_add"
-                    android:tint="@color/colorPrimary"
-                    android:layout_marginRight="@dimen/app_right_margin"
-                    android:layout_marginEnd="@dimen/app_right_margin" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/addField"
-                    android:textSize="@dimen/app_text_size_large"
-                    android:textColor="@color/colorTextPrimary"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

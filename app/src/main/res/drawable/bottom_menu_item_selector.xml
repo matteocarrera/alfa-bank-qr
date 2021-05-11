@@ -2,10 +2,10 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:color="@color/colorBrand"
+        android:color="@color/colorPrimary"
         android:state_selected="true" />
     <item
-        android:color="@color/colorTextTetriaty"
+        android:color="@color/colorMainGray"
         android:state_selected="false"
         android:state_checked="false" />
 </selector>
