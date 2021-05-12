@@ -19,13 +19,11 @@ import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
 import net.glxn.qrgen.android.QRCode
 
@@ -41,11 +39,30 @@ class ContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_contacts, container, false)
+        val view = inflater.inflate(R.layout.fragment_contacts, container, false)
+        val toolbar = view.findViewById(R.id.contacts_toolbar) as MaterialToolbar
+        toolbar.inflateMenu(R.menu.main_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.sort -> {
+                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                }
+                R.id.search -> {
+                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                }
+                R.id.camera -> {
+                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                }
+            }
+            true
+        }
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+   /*  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         db = AppDatabase.getInstance(requireContext())
@@ -90,20 +107,15 @@ class ContactsFragment : Fragment() {
             })
         )
     }
+    */
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setToolbar()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
-            .show()
-        else if (item.itemId == R.id.sort) Toast.makeText(requireContext(), "SORT", Toast.LENGTH_SHORT)
-            .show()
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun setUsersToList(callback: (list: List<User>) -> Unit){
+    /* private fun setUsersToList(callback: (list: List<User>) -> Unit){
         users.clear()
         users = ArrayList(db.userDao().getScannedUsers())
 
@@ -127,7 +139,9 @@ class ContactsFragment : Fragment() {
         }
     }
 
-    private val actionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
+     */
+
+    /* private val actionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
         override fun onActionItemClicked(
             mode: ActionMode?,
             item: MenuItem?
@@ -163,7 +177,7 @@ class ContactsFragment : Fragment() {
             return false
         }
 
-        override fun onDestroyActionMode(mode: ActionMode?) {
+        /* override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             mode?.finish()
             setStandardToolbarVisibility(View.VISIBLE)
@@ -176,17 +190,25 @@ class ContactsFragment : Fragment() {
             setNavEnabled(true)
             multipleSelectionMode = false
         }
-    }
 
-    private fun setStandardToolbarVisibility(visibility : Int) {
-        val navHostFragment = parentFragment as CardsFragment
-        navHostFragment.requireView().findViewById<View>(R.id.toolbar).visibility = visibility
+         */
     }
+    */
 
-    private fun setNavEnabled(visibility : Boolean) {
-        val cardsFragment = parentFragment as CardsFragment
-        val mainActivity = cardsFragment.requireActivity() as MainActivity
-        mainActivity.nav_view.isVisible = visibility
+    private fun setToolbar() {
+        contacts_toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        contacts_toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.sort) Toast.makeText(requireContext(), "SORT", Toast.LENGTH_SHORT)
+                .show()
+            else if (it.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
+                .show()
+            else if (it.itemId == R.id.camera) Toast.makeText(requireContext(), "CAMERA", Toast.LENGTH_SHORT)
+                .show()
+            true
+        }
+
     }
 
     private fun shareCards() {
@@ -202,7 +224,7 @@ class ContactsFragment : Fragment() {
         }
     }
 
-    private fun deleteCards() {
+    /* private fun deleteCards() {
         if (selectedItems.count() == 0) Toast.makeText(requireContext(), "Вы не выбрали ни одной визитки!", Toast.LENGTH_SHORT).show()
         else {
             val builder = AlertDialog.Builder(requireContext())
@@ -225,6 +247,8 @@ class ContactsFragment : Fragment() {
             dialog.show()
         }
     }
+
+     */
 
     companion object {
         @JvmStatic

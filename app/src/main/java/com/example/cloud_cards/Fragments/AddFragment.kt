@@ -18,7 +18,6 @@ import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.DataUtils
 import com.example.cloud_cards.Utils.ListUtils
 import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_card.data_list
 import kotlinx.android.synthetic.main.activity_qr.view.*
@@ -52,7 +51,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
 
         db = AppDatabase.getInstance(requireContext())
 
-        setToolbar(view)
+        //setToolbar(view)
 
         selectedItems.clear()
 
@@ -72,7 +71,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
         inflater.inflate(R.menu.create_card_menu, menu)
     }
 
-    private fun setToolbar(view: View) {
+    /* private fun setToolbar(view: View) {
         toolbar_add.setNavigationOnClickListener {
             setSaveDialog(view)
         }
@@ -111,7 +110,7 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
                 }
                 else -> {
                     val user = createUser()
-                    val card = Card(cardColor, title.trimStart().trimEnd(), user.id)
+                    val card = Card(cardColor, title.trimStart().trimEnd(), user.uuid)
                     db.cardDao().insertCard(card)
                     Toast.makeText(view.context, "Шаблон успешно создан!", Toast.LENGTH_SHORT).show()
                     dialog.cancel()
@@ -119,6 +118,8 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
             }
         }
     }
+
+     */
     
     private fun setShowQRDialog(view: View, bitmap: Bitmap) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
@@ -138,14 +139,14 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
         }
     }
 
-    private fun generateQR(view: View) {
+    /*private fun generateQR(view: View) {
         try {
             if (selectedItems.size == 0) {
                 Toast.makeText(view.context, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
             } else {
                 val user = createUser()
 
-                var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
+                var bitmap = QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000).bitmap()
                 bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
 
                 setShowQRDialog(view, bitmap)
@@ -155,11 +156,13 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
         }
     }
 
-    private fun createUser() : User {
+     */
+
+    /*private fun createUser() : User {
         val ownerUser = db.userDao().getOwnerUser()
         val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
         var uuid = UUID.randomUUID().toString()
-        newUser.id = uuid
+        newUser.uuid = uuid
 
         val myCardsUsers = db.userDao().getUsersFromMyCards()
         var userExists = false
@@ -180,6 +183,8 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
         }
         return newUser
     }
+
+     */
 
     // https://androidexample365.com/a-simple-color-picker-library-for-android/
     private fun setColorPicker(view : View) {

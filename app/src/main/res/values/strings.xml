@@ -9,6 +9,7 @@
     <string name="my_cards">Мои визитки</string>
     <string name="search">Поиск</string>
     <string name="sort">Сортировка</string>
+    <string name="camera">Камера</string>
 
     <!-- Card List Item -->
     <string name="item_name">Название карты</string>
@@ -28,6 +29,9 @@
     <string name="delete">Удалить</string>
 
     <!-- Settings Activity -->
+    <string name="name_is_empty">Имя не указано</string>
+    <string name="mobile_is_empry">Мобильный номер не указан</string>
+    <string name="email_is_empty">Email не указан</string>
     <string name="camera_permission">Доступ к камере</string>
     <string name="gallery_permission">Доступ к галерее</string>
     <string name="call_permission">Доступ к звонкам</string>
@@ -35,7 +39,7 @@
     <string name="attention">Внимание!</string>
     <string name="attention_message">Убрать доступ к функциям можно только в настройках самого телефона, в данном меню Вы можете только выдать доступ!\nИменно поэтому некоторые кнопки отключены!</string>
     <string name="privacy">Конфидециальность</string>
-    <string name="user_agreeement">Пользовательское соглашение</string>
+    <string name="user_agreement">Пользовательское соглашение</string>
     <string name="help">Помощь</string>
 
     <!-- Edit Profile Activity -->

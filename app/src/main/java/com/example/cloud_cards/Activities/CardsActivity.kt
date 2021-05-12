@@ -54,14 +54,14 @@ class CardsActivity : AppCompatActivity(){
             selectedItems.clear()
             setStandardToolbar(View.INVISIBLE, false)
             setSelectionToolbar(View.VISIBLE)
-            setSavedCardsAdapter(true, R.layout.selected_saved_card_list_item)
+            //setSavedCardsAdapter(true, R.layout.selected_saved_card_list_item)
         }
 
         cancel_selection.setOnClickListener {
             selectedItems.clear()
             setStandardToolbar(View.VISIBLE, true)
             setSelectionToolbar(View.INVISIBLE)
-            setSavedCardsAdapter(false, R.layout.saved_card_list_item)
+            //setSavedCardsAdapter(false, R.layout.saved_card_list_item)
         }
 
         // Получение QR-визитки в виде изображения вне приложения
@@ -71,10 +71,10 @@ class CardsActivity : AppCompatActivity(){
             handleSendMultipleImages(intent)
 
         setMyCardsAdapter()
-        setSavedCardsAdapter(false, R.layout.saved_card_list_item)
+        //setSavedCardsAdapter(false, R.layout.saved_card_list_item)
 
         ListUtils.setDynamicHeight(my_cards_list)
-        ListUtils.setDynamicHeight(saved_cards_list)
+        //ListUtils.setDynamicHeight(saved_cards_list)
     }
 
     private fun shareCards() {
@@ -126,7 +126,7 @@ class CardsActivity : AppCompatActivity(){
     }
 
     // Устанавливаем адаптер относительно того, какое действие происходит
-    private fun setSavedCardsAdapter(selection : Boolean, layout: Int) {
+    /*private fun setSavedCardsAdapter(selection : Boolean, layout: Int) {
        // val savedCards = SavedCardListAdapter.setSavedCardsToView(this)
         //val savedCardsAdapter = SavedCardListAdapter(this, savedCards.toTypedArray(), layout)
         if (selection) {
@@ -150,6 +150,7 @@ class CardsActivity : AppCompatActivity(){
         //saved_cards_list.adapter = savedCardsAdapter
         countCheck(saved_cards_list, saved_cards_notification)
     }
+    */
 
     // Обработка полученного изображения вне приложения
     private fun handleSendImage(intent: Intent) {

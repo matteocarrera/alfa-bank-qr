@@ -10,10 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.zxing.Result
 import com.karumi.dexter.Dexter
@@ -38,7 +34,7 @@ class CameraFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_camera, container, false)
         return root
     }
-
+/*
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = AppDatabase.getInstance(requireContext())
@@ -110,4 +106,5 @@ class CameraFragment : Fragment() {
         super.onStop()
         scanner.stopCamera()
     }
+    */
 }

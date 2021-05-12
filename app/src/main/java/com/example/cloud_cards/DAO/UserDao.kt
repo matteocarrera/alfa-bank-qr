@@ -6,7 +6,7 @@ import com.example.cloud_cards.Entities.User
 @Dao //add userBooleanDAO (findById, insert, delete)
 interface UserDao {
     @Query("SELECT * FROM users WHERE parentId = uuid")
-    fun getOwnerUser() : User
+    fun getOwnerUser() : User?
 
     @Query("SELECT * FROM users")
     fun getAllUsers() : List<User>

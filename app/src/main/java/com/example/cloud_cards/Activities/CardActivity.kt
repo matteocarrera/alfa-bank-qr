@@ -81,7 +81,7 @@ class CardActivity : AppCompatActivity() {
                         builder.setMessage("Вы действительно хотите удалить данную визитку?")
                         builder.setPositiveButton("Да"){ _, _ ->
                             DBService.deleteUser(this, id)
-                            if (!flag) DBService.deleteCard(this, cardId)
+                            //if (!flag) DBService.deleteCard(this, cardId)
                             goToActivity(CardsActivity::class.java)
                             Toast.makeText(this,"Визитка успешно удалена!",Toast.LENGTH_SHORT).show()
                         }
@@ -93,18 +93,15 @@ class CardActivity : AppCompatActivity() {
                         if (!contactExists(user.mobile))
                             startActivity(ProgramUtils.exportContact(user))
                     }
-                    R.id.add_photo -> {
+                    /*R.id.add_photo -> {
                         CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON)
                             .setAspectRatio(1, 1)
                             .start(this)
-                    }
+                    }*/
                 }
                 true
             }
-
-            if (flag) popupMenu.menuInflater.inflate(R.menu.saved_card_menu, popupMenu.menu)
-            else popupMenu.menuInflater.inflate(R.menu.my_card_menu, popupMenu.menu)
 
             try {
                 val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")

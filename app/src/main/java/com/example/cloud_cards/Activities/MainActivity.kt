@@ -12,14 +12,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.cloud_cards.Database.AppDatabase
-import com.example.cloud_cards.Entities.User
+import com.example.cloud_cards.Entities.IdPair
 import com.example.cloud_cards.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.gson.Gson
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 
@@ -81,29 +76,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserFromQR(rawResult : Result) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference(rawResult.toString())
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val jsonUser = dataSnapshot.value.toString()
-                val user = Gson().fromJson(jsonUser, User::class.java)
-                val scannedUsers = db.userDao().getAllUsers()
-                var userExists = false
-                scannedUsers.forEach {
-                    if (it.id == user.id) userExists = true
-                }
-                if (userExists) {
-                    Toast.makeText(applicationContext, "Ошибка считывания визитки!", Toast.LENGTH_SHORT).show()
-                } else {
-                    user.isScanned = true
-                    user.isOwner = false
-                    db.userDao().insertUser(user)
-                    Toast.makeText(applicationContext, "Визитка успешно считана!", Toast.LENGTH_SHORT).show()
-                }
-            }
+        val result = rawResult.toString()
+        if (!result.contains("cloudcards.h1n.ru") && !result.contains("&")) {
+            Toast.makeText(applicationContext, "QR невозможно считать!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val idsString = result.split("#")[1]
+        val parentId = idsString.split("&")[0]
+        val uuid = idsString.split("&")[1]
+        var idPairList = db.idPairDao().getAllPairs()
+        var idPair = IdPair(uuid, parentId)
+        if (idPairList.contains(idPair)) {
+            Toast.makeText(applicationContext, "Ошибка считывания визитки!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        db.idPairDao().insertPair(idPair)
+        Toast.makeText(applicationContext, "Визитка успешно считана!", Toast.LENGTH_SHORT).show()
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                println("Ошибка считывания: " + databaseError.code)
-            }
-        })
     }
 }

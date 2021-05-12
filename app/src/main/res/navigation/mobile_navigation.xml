@@ -7,31 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_cards"
-        android:name="com.example.cloud_cards.Fragments.CardsFragment"
-        android:label="Карты"
-        tools:layout="@layout/activity_main" />
+        android:name="com.example.cloud_cards.Fragments.TemplatesFragment"
+        android:label="@string/cards"
+        tools:layout="@layout/fragment_templates" />
 
     <fragment
-        android:id="@+id/navigation_camera"
-        android:name="com.example.cloud_cards.Fragments.CameraFragment"
-        android:label="Камера"
-        tools:layout="@layout/fragment_camera" />
-
-    <fragment
-        android:id="@+id/navigation_add"
-        android:name="com.example.cloud_cards.Fragments.AddFragment"
-        android:label="Создание визитки"
-        tools:layout="@layout/fragment_add" />
-
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.cloud_cards.Fragments.ProfileFragment"
-        android:label="Профиль"
-        tools:layout="@layout/fragment_profile" />
+        android:id="@+id/navigation_contacts"
+        android:name="com.example.cloud_cards.Fragments.ContactsFragment"
+        android:label="@string/contacts"
+        tools:layout="@layout/fragment_contacts" />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.example.cloud_cards.Fragments.SettingsFragment"
-        android:label="Настройки"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>
