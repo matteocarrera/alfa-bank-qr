@@ -45,16 +45,13 @@ class ContactsFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.sort -> {
-                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                    Toast.makeText(requireContext(), "SORT", Toast.LENGTH_SHORT).show()
                 }
                 R.id.search -> {
-                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                    Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT).show()
                 }
                 R.id.camera -> {
-                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                    Toast.makeText(requireContext(), "CAMERA", Toast.LENGTH_SHORT).show()
                 }
             }
             true
@@ -108,12 +105,6 @@ class ContactsFragment : Fragment() {
         )
     }
     */
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setToolbar()
-    }
 
     /* private fun setUsersToList(callback: (list: List<User>) -> Unit){
         users.clear()
@@ -194,22 +185,6 @@ class ContactsFragment : Fragment() {
          */
     }
     */
-
-    private fun setToolbar() {
-        contacts_toolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-        contacts_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.sort) Toast.makeText(requireContext(), "SORT", Toast.LENGTH_SHORT)
-                .show()
-            else if (it.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
-                .show()
-            else if (it.itemId == R.id.camera) Toast.makeText(requireContext(), "CAMERA", Toast.LENGTH_SHORT)
-                .show()
-            true
-        }
-
-    }
 
     private fun shareCards() {
         val qrList = ArrayList<Bitmap>()

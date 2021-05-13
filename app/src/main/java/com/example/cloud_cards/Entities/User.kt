@@ -34,8 +34,4 @@ data class User(
     var instagram: String = "",
     var twitter: String = "",
     var notes : String = ""
-) {
-    override fun toString(): String {
-        return "$photo|$name|$surname|$patronymic|$company|$jobTitle|$mobile|$mobileSecond|$email|$emailSecond|$address|$addressSecond|$cardNumber|$cardNumberSecond|$website|$vk|$telegram|$facebook|$instagram|$twitter|$notes"
-    }
-}
+)

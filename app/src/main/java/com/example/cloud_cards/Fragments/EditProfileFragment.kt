@@ -15,6 +15,7 @@ import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -26,7 +27,7 @@ import java.util.*
 
 class EditProfileFragment : Fragment() {
 
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
     private lateinit var mStorageRef: StorageReference
     private var uuid = ""
     private var parentId = ""
@@ -45,10 +46,22 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = view.findViewById(R.id.toolbar_edit_profile) as MaterialToolbar
+        toolbar.inflateMenu(R.menu.edit_profile_menu)
+        toolbar_edit_profile.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.save_user -> {
+                    saveUser()
+                }
+            }
+            true
+        }
+
         db = AppDatabase.getInstance(requireContext())
         ownerUser = db.userDao().getOwnerUser()
-
-        setToolbar()
 
         setUserData()
 
@@ -66,22 +79,11 @@ class EditProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
-            Log.d("TAG", "onActivityResult" + result)
             if (result != null) {
                 photo.setImageURI(result.uri)
                 Log.d("TAG", "saving photo")
                 photoWasChanged = true
             }
-        }
-    }
-
-    private fun setToolbar() {
-        toolbar_edit_profile.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-        toolbar_edit_profile.setOnMenuItemClickListener {
-            if (it.itemId == R.id.save_user) saveUser()
-            true
         }
     }
 
@@ -111,7 +113,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun getUserData() : User {
-        var user = User()
+        val user = User()
         user.parentId = parentId
         user.uuid = uuid
         user.photo = photoUuid
@@ -148,8 +150,11 @@ class EditProfileFragment : Fragment() {
                 Toast.LENGTH_SHORT).show()
             return
         }
+
         progressbar.visibility = View.VISIBLE
+
         val oldPhotoId = ownerUser?.photo
+
         if (photoWasChanged) {
             if (!oldPhotoId.isNullOrEmpty()) {
                 mStorageRef = FirebaseStorage.getInstance().getReference(oldPhotoId)
@@ -163,7 +168,6 @@ class EditProfileFragment : Fragment() {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
             val data = baos.toByteArray()
 
-            Log.d("TAG", "uploading photo")
             mStorageRef.putBytes(data).addOnSuccessListener {
                 saveUserData()
             }
@@ -177,25 +181,18 @@ class EditProfileFragment : Fragment() {
         if (ownerUser == null) {
             uuid = UUID.randomUUID().toString()
             parentId = uuid
-            val newUser = getUserData()
-            db.userDao().insertUser(newUser)
-
-            FirebaseFirestore.getInstance()
-                .collection("users").document(uuid)
-                .collection("data").document(uuid)
-                .set(newUser)
 
         } else {
             uuid = ownerUser!!.uuid
             parentId = ownerUser!!.parentId
-            val userForUpdate = getUserData()
-            db.userDao().updateUser(userForUpdate)
-
-            FirebaseFirestore.getInstance()
-                .collection("users").document(uuid)
-                .collection("data").document(uuid)
-                .set(userForUpdate)
         }
+        val user = getUserData()
+        db.userDao().updateUser(user)
+
+        FirebaseFirestore.getInstance()
+            .collection("users").document(uuid)
+            .collection("data").document(uuid)
+            .set(user)
         parentFragmentManager.popBackStack()
     }
 }

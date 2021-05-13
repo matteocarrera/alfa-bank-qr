@@ -9,17 +9,17 @@ import com.example.cloud_cards.Entities.UserBoolean
 @Dao
 interface UserBooleanDao {
     @Insert
-    fun insertUserBoolean(userBoolean : UserBoolean)
+    fun insertUserBoolean(userBoolean: UserBoolean)
 
     @Delete
-    fun deleteUserBoolean(userBoolean : UserBoolean)
+    fun deleteUserBoolean(userBoolean: UserBoolean)
 
     @Query("SELECT * FROM usersBoolean")
-    fun getAllUsersBoolean() : List<UserBoolean>
+    fun getAllUsersBoolean(): List<UserBoolean>
 
     @Query("SELECT * FROM usersBoolean WHERE parentId = :id")
-    fun getTemplateUsers(id: String) : List<UserBoolean>
+    fun getTemplateUsers(id: String): List<UserBoolean>
 
     @Query("SELECT * FROM usersBoolean WHERE parentId != :id")
-    fun getContactUsers(id: String) : List<UserBoolean>
+    fun getContactUsers(id: String): List<UserBoolean>
 }

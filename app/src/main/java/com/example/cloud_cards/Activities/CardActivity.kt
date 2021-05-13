@@ -1,47 +1,10 @@
 package com.example.cloud_cards.Activities
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Bundle
-import android.provider.ContactsContract.PhoneLookup
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.PopupMenu
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.cloud_cards.Adapters.DataListAdapter
-import com.example.cloud_cards.Database.DBService
-import com.example.cloud_cards.Entities.DataItem
-import com.example.cloud_cards.Entities.User
-import com.example.cloud_cards.R
-import com.example.cloud_cards.Utils.DataUtils
-import com.example.cloud_cards.Utils.ImageUtils
-import com.example.cloud_cards.Utils.Json
-import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.activity_card.*
-import kotlinx.android.synthetic.main.activity_qr.view.*
-import net.glxn.qrgen.android.QRCode
-import java.util.*
 
 class CardActivity : AppCompatActivity() {
 
-    private var id : Int = 0
+    /*private var id : Int = 0
     private var user = User()
     private lateinit var mStorageRef: StorageReference
     private var READ_CONTACTS_PERMISSION = 0
@@ -245,4 +208,6 @@ class CardActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
         finish()
     }
+
+     */
 }

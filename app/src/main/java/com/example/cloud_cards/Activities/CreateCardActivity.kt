@@ -1,32 +1,6 @@
 package com.example.cloud_cards.Activities
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.example.cloud_cards.Adapters.DataListAdapter
-import com.example.cloud_cards.Database.DBService
-import com.example.cloud_cards.Entities.DataItem
-import com.example.cloud_cards.R
-import com.example.cloud_cards.Utils.DataUtils
-import com.example.cloud_cards.Utils.Json
-import com.example.cloud_cards.Utils.ListUtils
-import kotlinx.android.synthetic.main.activity_create_card.*
-import kotlinx.android.synthetic.main.activity_qr.view.*
-import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
-import net.glxn.qrgen.android.QRCode
-import yuku.ambilwarna.AmbilWarnaDialog
-
+/*
 class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val selectedItems = ArrayList<DataItem>()
@@ -152,4 +126,6 @@ class CreateCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         overridePendingTransition(0, 0)
         finish()
     }
-}
+
+
+}*/

@@ -1,34 +1,11 @@
 package com.example.cloud_cards.Activities
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Bundle
-import android.os.Parcelable
-import android.provider.MediaStore
-import android.view.View
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cloud_cards.Database.DBService
-import com.example.cloud_cards.Entities.Card
-import com.example.cloud_cards.R
-import com.example.cloud_cards.Utils.DataUtils
-import com.example.cloud_cards.Utils.Json
-import com.example.cloud_cards.Utils.ListUtils
-import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.zxing.*
-import com.google.zxing.common.HybridBinarizer
-import kotlinx.android.synthetic.main.activity_cards.*
-import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
-import net.glxn.qrgen.android.QRCode
 
 
 class CardsActivity : AppCompatActivity(){
 
-    private val selectedItems = ArrayList<Int>()
+    /*private val selectedItems = ArrayList<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cards)
@@ -77,7 +54,7 @@ class CardsActivity : AppCompatActivity(){
         //ListUtils.setDynamicHeight(saved_cards_list)
     }
 
-    private fun shareCards() {
+    /*private fun shareCards() {
         val qrList = ArrayList<Bitmap>()
         if (selectedItems.count() == 0) Toast.makeText(this, "Вы не выбрали ни одной визитки!", Toast.LENGTH_SHORT).show()
         else {
@@ -110,6 +87,8 @@ class CardsActivity : AppCompatActivity(){
             dialog.show()
         }
     }
+
+     */
 
     private fun setMyCardsAdapter() {
         //val cards = MyCardListAdapter.setMyCardsToView(this)
@@ -241,4 +220,6 @@ class CardsActivity : AppCompatActivity(){
         overridePendingTransition(0, 0)
         finish()
     }
+
+     */
 }

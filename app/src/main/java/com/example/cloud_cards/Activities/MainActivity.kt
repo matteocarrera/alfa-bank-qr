@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         var idPairList = db.idPairDao().getAllPairs()
         var idPair = IdPair(uuid, parentId)
         if (idPairList.contains(idPair)) {
-            Toast.makeText(applicationContext, "Ошибка считывания визитки!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Такая визитка уже существует!", Toast.LENGTH_SHORT).show()
             return
         }
         db.idPairDao().insertPair(idPair)
