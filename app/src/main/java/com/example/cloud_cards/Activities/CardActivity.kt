@@ -1,47 +1,10 @@
 package com.example.cloud_cards.Activities
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Bundle
-import android.provider.ContactsContract.PhoneLookup
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.PopupMenu
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.cloud_cards.Adapters.DataListAdapter
-import com.example.cloud_cards.Database.DBService
-import com.example.cloud_cards.Entities.DataItem
-import com.example.cloud_cards.Entities.User
-import com.example.cloud_cards.R
-import com.example.cloud_cards.Utils.DataUtils
-import com.example.cloud_cards.Utils.ImageUtils
-import com.example.cloud_cards.Utils.Json
-import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.activity_card.*
-import kotlinx.android.synthetic.main.activity_qr.view.*
-import net.glxn.qrgen.android.QRCode
-import java.util.*
 
 class CardActivity : AppCompatActivity() {
 
-    private var id : Int = 0
+    /*private var id : Int = 0
     private var user = User()
     private lateinit var mStorageRef: StorageReference
     private var READ_CONTACTS_PERMISSION = 0
@@ -81,7 +44,7 @@ class CardActivity : AppCompatActivity() {
                         builder.setMessage("Вы действительно хотите удалить данную визитку?")
                         builder.setPositiveButton("Да"){ _, _ ->
                             DBService.deleteUser(this, id)
-                            if (!flag) DBService.deleteCard(this, cardId)
+                            //if (!flag) DBService.deleteCard(this, cardId)
                             goToActivity(CardsActivity::class.java)
                             Toast.makeText(this,"Визитка успешно удалена!",Toast.LENGTH_SHORT).show()
                         }
@@ -93,18 +56,15 @@ class CardActivity : AppCompatActivity() {
                         if (!contactExists(user.mobile))
                             startActivity(ProgramUtils.exportContact(user))
                     }
-                    R.id.add_photo -> {
+                    /*R.id.add_photo -> {
                         CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON)
                             .setAspectRatio(1, 1)
                             .start(this)
-                    }
+                    }*/
                 }
                 true
             }
-
-            if (flag) popupMenu.menuInflater.inflate(R.menu.saved_card_menu, popupMenu.menu)
-            else popupMenu.menuInflater.inflate(R.menu.my_card_menu, popupMenu.menu)
 
             try {
                 val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
@@ -248,4 +208,6 @@ class CardActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
         finish()
     }
+
+     */
 }

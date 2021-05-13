@@ -1,34 +1,11 @@
 package com.example.cloud_cards.Activities
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Bundle
-import android.os.Parcelable
-import android.provider.MediaStore
-import android.view.View
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cloud_cards.Database.DBService
-import com.example.cloud_cards.Entities.Card
-import com.example.cloud_cards.R
-import com.example.cloud_cards.Utils.DataUtils
-import com.example.cloud_cards.Utils.Json
-import com.example.cloud_cards.Utils.ListUtils
-import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.zxing.*
-import com.google.zxing.common.HybridBinarizer
-import kotlinx.android.synthetic.main.activity_cards.*
-import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
-import net.glxn.qrgen.android.QRCode
 
 
 class CardsActivity : AppCompatActivity(){
 
-    private val selectedItems = ArrayList<Int>()
+    /*private val selectedItems = ArrayList<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cards)
@@ -54,14 +31,14 @@ class CardsActivity : AppCompatActivity(){
             selectedItems.clear()
             setStandardToolbar(View.INVISIBLE, false)
             setSelectionToolbar(View.VISIBLE)
-            setSavedCardsAdapter(true, R.layout.selected_saved_card_list_item)
+            //setSavedCardsAdapter(true, R.layout.selected_saved_card_list_item)
         }
 
         cancel_selection.setOnClickListener {
             selectedItems.clear()
             setStandardToolbar(View.VISIBLE, true)
             setSelectionToolbar(View.INVISIBLE)
-            setSavedCardsAdapter(false, R.layout.saved_card_list_item)
+            //setSavedCardsAdapter(false, R.layout.saved_card_list_item)
         }
 
         // Получение QR-визитки в виде изображения вне приложения
@@ -71,13 +48,13 @@ class CardsActivity : AppCompatActivity(){
             handleSendMultipleImages(intent)
 
         setMyCardsAdapter()
-        setSavedCardsAdapter(false, R.layout.saved_card_list_item)
+        //setSavedCardsAdapter(false, R.layout.saved_card_list_item)
 
         ListUtils.setDynamicHeight(my_cards_list)
-        ListUtils.setDynamicHeight(saved_cards_list)
+        //ListUtils.setDynamicHeight(saved_cards_list)
     }
 
-    private fun shareCards() {
+    /*private fun shareCards() {
         val qrList = ArrayList<Bitmap>()
         if (selectedItems.count() == 0) Toast.makeText(this, "Вы не выбрали ни одной визитки!", Toast.LENGTH_SHORT).show()
         else {
@@ -111,6 +88,8 @@ class CardsActivity : AppCompatActivity(){
         }
     }
 
+     */
+
     private fun setMyCardsAdapter() {
         //val cards = MyCardListAdapter.setMyCardsToView(this)
         //val myCardsAdapter = MyCardListAdapter(this, cards.toTypedArray())
@@ -126,7 +105,7 @@ class CardsActivity : AppCompatActivity(){
     }
 
     // Устанавливаем адаптер относительно того, какое действие происходит
-    private fun setSavedCardsAdapter(selection : Boolean, layout: Int) {
+    /*private fun setSavedCardsAdapter(selection : Boolean, layout: Int) {
        // val savedCards = SavedCardListAdapter.setSavedCardsToView(this)
         //val savedCardsAdapter = SavedCardListAdapter(this, savedCards.toTypedArray(), layout)
         if (selection) {
@@ -150,6 +129,7 @@ class CardsActivity : AppCompatActivity(){
         //saved_cards_list.adapter = savedCardsAdapter
         countCheck(saved_cards_list, saved_cards_notification)
     }
+    */
 
     // Обработка полученного изображения вне приложения
     private fun handleSendImage(intent: Intent) {
@@ -240,4 +220,6 @@ class CardsActivity : AppCompatActivity(){
         overridePendingTransition(0, 0)
         finish()
     }
+
+     */
 }

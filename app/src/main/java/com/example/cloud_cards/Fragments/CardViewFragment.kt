@@ -10,10 +10,6 @@ import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.DataUtils
 import com.example.cloud_cards.Utils.ImageUtils
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_card_view.*
 import kotlinx.android.synthetic.main.fragment_card_view.circle
@@ -34,7 +30,7 @@ class CardViewFragment : Fragment() {
         userId = requireArguments().getString("ID").toString()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbar()
@@ -63,7 +59,7 @@ class CardViewFragment : Fragment() {
                 println("Ошибка считывания: " + databaseError.code)
             }
         })
-    }
+    } */
 
     private fun setToolbar() {
         toolbar_card_view.setNavigationOnClickListener {

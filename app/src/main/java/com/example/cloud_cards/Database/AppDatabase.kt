@@ -5,17 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cloud_cards.DAO.CardDao
+import com.example.cloud_cards.DAO.IdPairDao
 import com.example.cloud_cards.DAO.UserBooleanDao
 import com.example.cloud_cards.DAO.UserDao
 import com.example.cloud_cards.Entities.Card
+import com.example.cloud_cards.Entities.IdPair
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Entities.UserBoolean
 
-@Database(entities = [User::class, Card::class, UserBoolean::class], version = 1)
+@Database(entities = [User::class, Card::class, UserBoolean::class, IdPair::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao() : UserDao
     abstract fun cardDao() : CardDao
     abstract fun userBooleanDao() : UserBooleanDao
+    abstract fun idPairDao() : IdPairDao
 
     companion object {
         @Volatile private var INSTANCE : AppDatabase? = null

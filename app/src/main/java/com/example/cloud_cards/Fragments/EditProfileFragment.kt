@@ -1,83 +1,39 @@
 package com.example.cloud_cards.Fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
-import com.google.firebase.database.FirebaseDatabase
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.add_field
-import kotlinx.android.synthetic.main.fragment_edit_profile.address
-import kotlinx.android.synthetic.main.fragment_edit_profile.address_second
-import kotlinx.android.synthetic.main.fragment_edit_profile.change_photo
-import kotlinx.android.synthetic.main.fragment_edit_profile.company
-import kotlinx.android.synthetic.main.fragment_edit_profile.email
-import kotlinx.android.synthetic.main.fragment_edit_profile.email_second
-import kotlinx.android.synthetic.main.fragment_edit_profile.facebook
-import kotlinx.android.synthetic.main.fragment_edit_profile.instagram
-import kotlinx.android.synthetic.main.fragment_edit_profile.job_title
-import kotlinx.android.synthetic.main.fragment_edit_profile.mobile
-import kotlinx.android.synthetic.main.fragment_edit_profile.mobile_second
-import kotlinx.android.synthetic.main.fragment_edit_profile.name
-import kotlinx.android.synthetic.main.fragment_edit_profile.notes
-import kotlinx.android.synthetic.main.fragment_edit_profile.patronymic
-import kotlinx.android.synthetic.main.fragment_edit_profile.photo
-import kotlinx.android.synthetic.main.fragment_edit_profile.progressbar
-import kotlinx.android.synthetic.main.fragment_edit_profile.surname
-import kotlinx.android.synthetic.main.fragment_edit_profile.twitter
-import kotlinx.android.synthetic.main.fragment_edit_profile.vk
+import java.io.ByteArrayOutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 class EditProfileFragment : Fragment() {
 
-    /*  Описание списков, использующихся в классе
-    allEditTexts - Список всех EditText на экране EditProfileActivity
-
-    Используем для того, чтобы добавить доп. поля для заполнения профиля
-    fieldsHints -      Список с именами полей на русском языке, которые являются дополнительными
-    additionalFields - Список с самими полями, используем для того, чтобы скрывать/отображать
-                       поля для пользователя в интерфейсе
-    availableFields -  Поля, доступные на данный момент для выбора из списка
-
-    Общая логика такова:
-    В onCreate мы проверяем, пустые ли доп. поля или нет (используем метод initializeFields).
-    Те поля, которые оказываются пустыми, добавляем в лист availableFields, причем вносим туда
-    описание EditText, а не сам объект. После чего, в методе setFieldsDialog мы проверяем,
-    содержится ли элемент availableFields в fieldsHints (данная проверка нужна для того, чтобы
-    выставить поля в нужном нам списке, заданом нами ниже) и выводим их далее в выпадающем
-    списке для выбора пользователем.
- */
-
-    private var allEditTexts = ArrayList<EditText>()
-    private val fieldsHints = arrayOf(
-        "Мобильный номер (другой)", "email (другой)", "Должность", "Компания", "Адрес", "Адрес (другой)",
-        "Номер карты 1", "Номер карты 2", "VK", "Telegram", "Facebook", "Instagram", "Twitter")
-    private var additionalFields = ArrayList<EditText>()
-    private var availableFields = ArrayList<String>()
-
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
     private lateinit var mStorageRef: StorageReference
     private var uuid = ""
-    private var uri = ""
+    private var parentId = ""
+    private var photoUuid = ""
+    private var photoWasChanged = false
+    private var ownerUser: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,24 +46,24 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = view.findViewById(R.id.toolbar_edit_profile) as MaterialToolbar
+        toolbar.inflateMenu(R.menu.edit_profile_menu)
+        toolbar_edit_profile.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.save_user -> {
+                    saveUser()
+                }
+            }
+            true
+        }
+
         db = AppDatabase.getInstance(requireContext())
-
-        allEditTexts = arrayListOf(
-            surname, name, patronymic, company, job_title, mobile, mobile_second, email, email_second,
-            address, address_second, card_number, card_number_second, website, vk, telegram, facebook, instagram, twitter, notes
-        )
-
-        additionalFields = arrayListOf(
-            company, job_title, mobile_second, email_second, address, address_second,
-            card_number, card_number_second, vk, telegram, facebook, instagram, twitter)
-
-        setToolbar()
+        ownerUser = db.userDao().getOwnerUser()
 
         setUserData()
-
-        initializeFields()
-
-        add_field.setOnClickListener { setFieldsDialog() }
 
         change_photo.setOnClickListener {
             CropImage
@@ -117,190 +73,126 @@ class EditProfileFragment : Fragment() {
                 .start(requireContext(), this)
         }
 
-        for (i in additionalFields.indices) {
-            additionalFields[i].setOnTouchListener { _, event -> deleteField(additionalFields[i], event) }
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
-            if (result != null) photo.setImageURI(result.uri)
-            uri = try {
-                result.uri.toString()
-            } catch (e : Exception) {
-                ""
+            if (result != null) {
+                photo.setImageURI(result.uri)
+                Log.d("TAG", "saving photo")
+                photoWasChanged = true
             }
         }
-    }
-
-    private fun setToolbar() {
-        toolbar_edit_profile.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-        toolbar_edit_profile.setOnMenuItemClickListener {
-            if (it.itemId == R.id.save_user) saveUser()
-            true
-        }
-    }
-
-    // Узнаем для каждого поля его текущее состояние для конкретного профиля пользователя
-    private fun initializeFields() {
-        for (i in additionalFields.indices) {
-            checkForVisibility(additionalFields[i])
-        }
-    }
-
-    // Если поле пустое, то добавляем его в список тех, которые можно отображать при нажатии на кнопку "добавить поле"
-    private fun checkForVisibility(editText: EditText) {
-        if (editText.visibility == View.GONE &&
-            !availableFields.contains(editText.hint.toString())) availableFields.add(editText.hint.toString())
-        else if (editText.visibility == View.VISIBLE) availableFields.remove(editText.hint.toString())
-    }
-
-    // Функция для реализации возможности удаления доп. полей
-    private fun deleteField(editText: EditText, event: MotionEvent): Boolean {
-        val DRAWABLE_RIGHT = 2
-        if (event.action == MotionEvent.ACTION_UP) {
-            if (event.rawX >= editText.right - editText.compoundDrawables[DRAWABLE_RIGHT].bounds.width()) {
-                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
-                editText.visibility = View.GONE
-                editText.text.clear()
-                initializeFields()
-                return true
-            }
-        }
-        return false
     }
 
     private fun setUserData() {
         val user = db.userDao().getOwnerUser()
         if (user != null) {
             ImageUtils.getImageFromFirebase(user.photo, photo)
-            surname.setText(user.surname)
-            name.setText(user.name)
-            patronymic.setText(user.patronymic)
-            company.setText(user.company)
-            job_title.setText(user.jobTitle)
-            mobile.setText(user.mobile)
-            mobile_second.setText(user.mobileSecond)
-            email.setText(user.email)
-            email_second.setText(user.emailSecond)
-            address.setText(user.address)
-            address_second.setText(user.addressSecond)
-            card_number.setText(user.cardNumber)
-            card_number_second.setText(user.cardNumberSecond)
-            website.setText(user.website)
-            vk.setText(user.vk)
-            telegram.setText(user.telegram)
-            facebook.setText(user.facebook)
-            twitter.setText(user.twitter)
-            instagram.setText(user.instagram)
-            notes.setText(user.notes)
-        }
-        additionalFields.forEach {
-            if (it.text.toString() == "") it.visibility = View.GONE
+            surnameField.setText(user.surname)
+            nameField.setText(user.name)
+            patronymicField.setText(user.patronymic)
+            companyField.setText(user.company)
+            jobTitleField.setText(user.jobTitle)
+            mobileField.setText(user.mobile)
+            mobileSecondField.setText(user.mobileSecond)
+            emailField.setText(user.email)
+            emailSecondField.setText(user.emailSecond)
+            addressField.setText(user.address)
+            addressSecondField.setText(user.addressSecond)
+            websiteField.setText(user.website)
+            vkField.setText(user.vk)
+            telegramField.setText(user.telegram)
+            facebookField.setText(user.facebook)
+            twitterField.setText(user.twitter)
+            instagramField.setText(user.instagram)
+            notesField.setText(user.notes)
         }
     }
 
     private fun getUserData() : User {
-        return User(
-            uuid,
-            true,
-            false,
-            name.text.toString(),
-            surname.text.toString(),
-            patronymic.text.toString(),
-            company.text.toString(),
-            job_title.text.toString(),
-            mobile.text.toString(),
-            mobile_second.text.toString(),
-            email.text.toString(),
-            email_second.text.toString(),
-            address.text.toString(),
-            address_second.text.toString(),
-            card_number.text.toString(),
-            card_number_second.text.toString(),
-            website.text.toString(),
-            vk.text.toString(),
-            telegram.text.toString(),
-            facebook.text.toString(),
-            instagram.text.toString(),
-            twitter.text.toString(),
-            notes.text.toString()
-        )
+        val user = User()
+        user.parentId = parentId
+        user.uuid = uuid
+        user.photo = photoUuid
+        user.name = nameField.text.toString()
+        user.surname = surnameField.text.toString()
+        user.patronymic = patronymicField.text.toString()
+        user.company = companyField.text.toString()
+        user.jobTitle = jobTitleField.text.toString()
+        user.mobile = mobileField.text.toString()
+        user.mobileSecond = mobileSecondField.text.toString()
+        user.email = emailField.text.toString()
+        user.emailSecond = emailSecondField.text.toString()
+        user.address = addressField.text.toString()
+        user.addressSecond = addressSecondField.text.toString()
+        user.website = websiteField.text.toString()
+        user.vk = vkField.text.toString()
+        user.telegram = telegramField.text.toString()
+        user.facebook = facebookField.text.toString()
+        user.instagram = instagramField.text.toString()
+        user.twitter = twitterField.text.toString()
+        user.notes = notesField.text.toString()
+        return user
     }
 
     // Сначала загружаем фото на сервер, если успешно, то только потом сохраняем данные пользователя
     private fun saveUser() {
+        if (nameField.text.toString().isEmpty() ||
+            surnameField.text.toString().isEmpty() ||
+            mobileField.text.toString().isEmpty() ||
+            emailField.text.toString().isEmpty()) {
+
+            Toast.makeText(requireContext(),
+                "Обязательные поля: имя, фамилия, мобильный номер и email - не заполнены!",
+                Toast.LENGTH_SHORT).show()
+            return
+        }
+
         progressbar.visibility = View.VISIBLE
-        if (uri != "") {
-            uuid = UUID.randomUUID().toString()
-            mStorageRef = FirebaseStorage.getInstance().getReference(uuid)
-            mStorageRef.putFile(Uri.parse(uri)).addOnSuccessListener {
+
+        val oldPhotoId = ownerUser?.photo
+
+        if (photoWasChanged) {
+            if (!oldPhotoId.isNullOrEmpty()) {
+                mStorageRef = FirebaseStorage.getInstance().getReference(oldPhotoId)
+                mStorageRef.delete()
+            }
+            photoUuid = UUID.randomUUID().toString()
+            mStorageRef = FirebaseStorage.getInstance().getReference(photoUuid)
+
+            val bitmap = (photo.drawable as BitmapDrawable).bitmap
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+            val data = baos.toByteArray()
+
+            mStorageRef.putBytes(data).addOnSuccessListener {
                 saveUserData()
             }
         } else {
+            photoUuid = if (!oldPhotoId.isNullOrEmpty()) oldPhotoId else ""
             saveUserData()
         }
     }
 
     private fun saveUserData() {
-        var user = db.userDao().getOwnerUser()
-        if (user == null) {
-            val ownerUser = getUserData()
-            val userUUID = UUID.randomUUID().toString()
-            ownerUser.id = userUUID
-            db.userDao().insertUser(ownerUser)
+        if (ownerUser == null) {
+            uuid = UUID.randomUUID().toString()
+            parentId = uuid
 
-            val databaseRef = FirebaseDatabase.getInstance().getReference(userUUID)
-            databaseRef.setValue(Gson().toJson(ownerUser))
         } else {
-            val userUUID = user.id
-            user = getUserData()
-            user.id = userUUID
-
-            db.userDao().updateUser(user)
-
-            val databaseRef = FirebaseDatabase.getInstance().getReference(user.id)
-            databaseRef.setValue(Gson().toJson(user))
-
-            val myCardsUsers = db.userDao().getUsersFromMyCards()
-            println(myCardsUsers.size)
-            myCardsUsers.forEach {
-                it.photo = uuid
-                db.userDao().updateUser(it)
-                val databaseReference = FirebaseDatabase.getInstance().getReference(it.id)
-                databaseReference.setValue(Gson().toJson(it))
-            }
+            uuid = ownerUser!!.uuid
+            parentId = ownerUser!!.parentId
         }
+        val user = getUserData()
+        db.userDao().updateUser(user)
+
+        FirebaseFirestore.getInstance()
+            .collection("users").document(uuid)
+            .collection("data").document(uuid)
+            .set(user)
         parentFragmentManager.popBackStack()
     }
-
-    private fun setFieldsDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Добавить поле")
-
-        val fieldsList = ArrayList<String>()
-        fieldsList.clear()
-        fieldsHints.forEach {
-            if (availableFields.contains(it)) fieldsList.add(it)
-        }
-
-        val fields = fieldsList.toTypedArray()
-        builder.setItems(fields) { _, item ->
-            val selectedText = fields[item]
-            allEditTexts.forEach {
-                if (it.hint.toString() == selectedText) it.visibility = View.VISIBLE
-            }
-            initializeFields()
-        }
-
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
-
-
 }

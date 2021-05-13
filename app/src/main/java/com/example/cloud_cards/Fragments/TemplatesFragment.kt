@@ -14,6 +14,8 @@ import com.example.cloud_cards.Adapters.TemplatesAdapter
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ProgramUtils
+import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_templates.*
 import kotlinx.android.synthetic.main.my_card_list_item.view.*
 import kotlinx.android.synthetic.main.my_card_list_item.view.more
@@ -26,11 +28,22 @@ class TemplatesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_templates, container, false)
+        val view = inflater.inflate(R.layout.fragment_templates, container, false)
+        val toolbar = view.findViewById(R.id.templates_toolbar) as MaterialToolbar
+        toolbar.inflateMenu(R.menu.add_template_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.add -> {
+                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                }
+            }
+            true
+        }
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    /* override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         db = AppDatabase.getInstance(requireContext())
@@ -105,16 +118,24 @@ class TemplatesFragment : Fragment() {
             })
         )
     }
+    */
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu)
-        menu.findItem(R.id.sort).isVisible = false
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setToolbar()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.search) Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT)
-            .show()
-        return super.onOptionsItemSelected(item)
+    private fun setToolbar() {
+        templates_toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        templates_toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.add) Toast.makeText(requireContext(), "ADD", Toast.LENGTH_SHORT)
+                .show()
+            true
+        }
+
     }
 
     companion object {

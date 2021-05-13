@@ -1,7 +1,5 @@
 package com.example.cloud_cards.Utils
 
-import android.content.Context
-import com.example.cloud_cards.Database.DBService
 import com.example.cloud_cards.Entities.DataItem
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Entities.UserBoolean
@@ -61,36 +59,6 @@ class DataUtils {
             return user
         }
 
-        fun generatedUsersEqual(firstUser: UserBoolean, secondUser: UserBoolean): Boolean {
-            return firstUser.name == secondUser.name &&
-                    firstUser.surname == secondUser.surname &&
-                    firstUser.patronymic == secondUser.patronymic &&
-                    firstUser.company == secondUser.company &&
-                    firstUser.jobTitle == secondUser.jobTitle &&
-                    firstUser.mobile == secondUser.mobile &&
-                    firstUser.mobileSecond == secondUser.mobileSecond &&
-                    firstUser.email == secondUser.email &&
-                    firstUser.emailSecond == secondUser.emailSecond &&
-                    firstUser.address == secondUser.address &&
-                    firstUser.addressSecond == secondUser.addressSecond &&
-                    firstUser.website == secondUser.website &&
-                    firstUser.vk == secondUser.vk &&
-                    firstUser.telegram == secondUser.telegram &&
-                    firstUser.facebook == secondUser.facebook &&
-                    firstUser.instagram == secondUser.instagram &&
-                    firstUser.twitter == secondUser.twitter &&
-                    firstUser.notes == secondUser.notes
-        }
-
-        fun checkCardForExistence(context: Context, user : User) : Boolean {
-            DBService.getScannedUsers(context)?.forEach {
-                val userData = Json.toJson(user)
-                val scannedUserData = Json.toJson(it)
-                if (userData == scannedUserData) return true
-            }
-            return false
-        }
-
         // Переводим выбранные данные в генераторе в пользователя для дальнейшего использования
         fun parseDataToUser(data : ArrayList<DataItem>, photoUUID : String) : User {
             val user = User()
@@ -124,34 +92,6 @@ class DataUtils {
         // Если какие-то данные пустые (отсутствуют), то мы не добавляем, иначе добавляем
         private fun addItem(title: String, description: String) {
             if (description.isNotEmpty()) data.add(DataItem(title, description))
-        }
-
-        // Методы для получения существующих пользователей в визитках и обновления их данных
-        fun updateMyCardsData(context: Context, user: User) {
-            DBService.getUsersFromMyCards(context).forEach {
-                it.name = checkForDifference(it.name, user.name)
-                it.surname = checkForDifference(it.surname, user.surname)
-                it.patronymic = checkForDifference(it.patronymic, user.patronymic)
-                it.company = checkForDifference(it.company, user.company)
-                it.jobTitle = checkForDifference(it.jobTitle, user.jobTitle)
-                it.mobile = checkForDifference(it.mobile, user.mobile)
-                it.mobileSecond = checkForDifference(it.mobileSecond, user.mobileSecond)
-                it.email = checkForDifference(it.email, user.email)
-                it.emailSecond = checkForDifference(it.emailSecond, user.emailSecond)
-                it.address = checkForDifference(it.address, user.address)
-                it.addressSecond = checkForDifference(it.addressSecond, user.addressSecond)
-                it.vk = checkForDifference(it.vk, user.vk)
-                it.facebook = checkForDifference(it.facebook, user.facebook)
-                it.instagram = checkForDifference(it.instagram, user.instagram)
-                it.twitter = checkForDifference(it.twitter, user.twitter)
-                it.notes = checkForDifference(it.notes, user.notes)
-                DBService.updateUser(context, it)
-            }
-        }
-
-        private fun checkForDifference(oldUserData : String, newUserData : String) : String {
-            if (oldUserData != "" && oldUserData != newUserData) return newUserData
-            return oldUserData
         }
     }
 }
