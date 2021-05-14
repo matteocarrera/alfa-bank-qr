@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
@@ -19,8 +21,6 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -80,7 +80,7 @@ class EditProfileFragment : Fragment() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (result != null) {
-                photo.setImageURI(result.uri)
+                photo.setImageURI(result.uriContent)
                 Log.d("TAG", "saving photo")
                 photoWasChanged = true
             }
@@ -178,16 +178,18 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun saveUserData() {
+        val user: User
         if (ownerUser == null) {
             uuid = UUID.randomUUID().toString()
             parentId = uuid
-
+            user = getUserData()
+            db.userDao().insertUser(user)
         } else {
             uuid = ownerUser!!.uuid
             parentId = ownerUser!!.parentId
+            user = getUserData()
+            db.userDao().updateUser(user)
         }
-        val user = getUserData()
-        db.userDao().updateUser(user)
 
         FirebaseFirestore.getInstance()
             .collection("users").document(uuid)

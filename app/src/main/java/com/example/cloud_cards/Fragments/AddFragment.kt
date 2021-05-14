@@ -25,8 +25,6 @@ import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
 import kotlinx.android.synthetic.main.dialog_save_card.view.*
 import kotlinx.android.synthetic.main.fragment_add.*
 import net.glxn.qrgen.android.QRCode
-import petrov.kristiyan.colorpicker.ColorPicker
-import petrov.kristiyan.colorpicker.ColorPicker.OnChooseColorListener
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -185,27 +183,6 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
     }
 
      */
-
-    // https://androidexample365.com/a-simple-color-picker-library-for-android/
-    private fun setColorPicker(view : View) {
-        val colorPicker = ColorPicker(activity)
-        colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
-            override fun onChooseColor(position: Int, color: Int) {}
-            override fun onCancel() {}
-        })
-            .addListenerButton("ОТМЕНА") { _: View, _: Int, _: Int ->
-                colorPicker.dismissDialog()
-            }
-            .addListenerButton("СОХРАНИТЬ") { _: View, _: Int, color: Int ->
-                cardColor = color
-                view.card_color.setBackgroundColor(cardColor)
-                colorPicker.dismissDialog()
-            }
-            .disableDefaultButtons(true)
-            .setRoundColorButton(true)
-            .setTitle("Выберите цвет")
-            .show()
-    }
 
     private fun setDataToListView() {
         val user = db.userDao().getOwnerUser()
