@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.example.cloud_cards.Activities.MainActivity"
-            android:label="Добавить в Альфа-Банк QR">
+            android:label="Добавить в CloudCards">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -83,11 +83,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+        <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/Base.Theme.AppCompat" />
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Base.Theme.AppCompat"/>
     </application>
 
 </manifest>

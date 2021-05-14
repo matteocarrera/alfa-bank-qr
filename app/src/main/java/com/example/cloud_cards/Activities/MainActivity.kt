@@ -15,6 +15,7 @@ import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.IdPair
 import com.example.cloud_cards.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.FirebaseApp
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 
