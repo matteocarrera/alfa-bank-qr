@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
-import kotlinx.android.synthetic.main.saved_card_list_item.view.*
+import kotlinx.android.synthetic.main.selected_saved_card_list_item.view.*
 
 class SelectedContactsHolder (inflater : LayoutInflater, parent: ViewGroup):
     RecyclerView.ViewHolder(inflater.inflate(R.layout.selected_saved_card_list_item, parent, false)) {

@@ -14,9 +14,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "cards")
 data class Card (
-    var color : Int,
-    var title : String,
-    var userId: String
-) {
-    @PrimaryKey(autoGenerate = true) var id: Int = 0
-}
+    @PrimaryKey
+    var uuid: String,
+    var type: CardType,
+    var color: String,
+    var title: String,
+    var cardUuid: String
+)

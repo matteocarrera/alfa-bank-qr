@@ -15,7 +15,7 @@ class TemplatesAdapter(private val list: List<Card>)
 
     override fun onBindViewHolder(holder: TemplatesHolder, position: Int) {
         val card : Card = list[position]
-        holder.bind(card)
+        //holder.bind(card)
     }
 
     override fun getItemCount(): Int = list.size

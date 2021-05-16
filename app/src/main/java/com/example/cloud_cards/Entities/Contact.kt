@@ -1,6 +1,6 @@
 package com.example.cloud_cards.Entities
 
-import com.example.cloud_cards.Utils.ImageUtils
+import de.hdodenhof.circleimageview.CircleImageView
 
 /*
     Класс, хранящий в себе данные пользователя и его фотографию
@@ -8,5 +8,5 @@ import com.example.cloud_cards.Utils.ImageUtils
 
 class Contact (
     var user: User,
-    var image: ImageUtils
+    var image: CircleImageView
 )
