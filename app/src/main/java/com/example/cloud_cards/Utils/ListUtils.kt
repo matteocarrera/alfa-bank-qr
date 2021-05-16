@@ -1,10 +1,7 @@
 package com.example.cloud_cards.Utils
 
 import android.view.View
-import android.widget.ImageView
 import android.widget.ListView
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.cloud_cards.R
 
 class ListUtils {
     companion object {
@@ -22,18 +19,6 @@ class ListUtils {
             params.height = height + mListView.dividerHeight * (mListAdapter.count - 1)
             mListView.layoutParams = params
             mListView.requestLayout()
-        }
-
-        fun setVisibility(layout: ConstraintLayout, list: ListView, image: ImageView) {
-            layout.setOnClickListener {
-                if (list.visibility == View.VISIBLE) {
-                    list.visibility = View.GONE
-                    image.setImageResource(R.drawable.ic_down)
-                } else {
-                    list.visibility = View.VISIBLE
-                    image.setImageResource(R.drawable.ic_up)
-                }
-            }
         }
     }
 }

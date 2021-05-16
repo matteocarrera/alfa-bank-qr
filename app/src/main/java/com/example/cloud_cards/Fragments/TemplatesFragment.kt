@@ -1,25 +1,16 @@
 package com.example.cloud_cards.Fragments
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.*
-import android.widget.PopupMenu
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cloud_cards.Adapters.RecyclerItemClickListener
-import com.example.cloud_cards.Adapters.TemplatesAdapter
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.R
-import com.example.cloud_cards.Utils.ProgramUtils
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_templates.*
-import kotlinx.android.synthetic.main.my_card_list_item.view.*
-import kotlinx.android.synthetic.main.my_card_list_item.view.more
-import net.glxn.qrgen.android.QRCode
 
 class TemplatesFragment : Fragment() {
 
@@ -136,11 +127,5 @@ class TemplatesFragment : Fragment() {
             true
         }
 
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            TemplatesFragment()
     }
 }

@@ -12,4 +12,9 @@ class IdPair (
     @PrimaryKey
     var uuid: String = "",
     var parentUuid: String = ""
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        val otherIdPair = other as IdPair
+        return uuid == otherIdPair.uuid && parentUuid == otherIdPair.parentUuid
+    }
+}

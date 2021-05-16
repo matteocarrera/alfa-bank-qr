@@ -89,6 +89,38 @@ class DataUtils {
             return user
         }
 
+        fun getUserFromTemplate(user: User, userBoolean: UserBoolean): User {
+            val currentUser = User()
+            currentUser.parentId = userBoolean.parentId
+            currentUser.uuid = userBoolean.uuid
+            currentUser.photo = if (user.photo != "") user.photo else ""
+            currentUser.name = checkField(user.name, userBoolean.name)
+            currentUser.surname = checkField(user.surname, userBoolean.surname)
+            currentUser.patronymic = checkField(user.patronymic, userBoolean.patronymic)
+            currentUser.company = checkField(user.company, userBoolean.company)
+            currentUser.jobTitle = checkField(user.jobTitle, userBoolean.jobTitle)
+            currentUser.mobile = checkField(user.mobile, userBoolean.mobile)
+            currentUser.mobileSecond = checkField(user.mobileSecond, userBoolean.mobileSecond)
+            currentUser.email = checkField(user.email, userBoolean.email)
+            currentUser.emailSecond = checkField(user.emailSecond, userBoolean.emailSecond)
+            currentUser.address = checkField(user.address, userBoolean.address)
+            currentUser.addressSecond = checkField(user.addressSecond, userBoolean.addressSecond)
+            currentUser.cardNumber = checkField(user.cardNumber, userBoolean.cardNumber)
+            currentUser.cardNumberSecond = checkField(user.cardNumberSecond, userBoolean.cardNumberSecond)
+            currentUser.website = checkField(user.website, userBoolean.website)
+            currentUser.vk = checkField(user.vk, userBoolean.vk)
+            currentUser.telegram = checkField(user.telegram, userBoolean.telegram)
+            currentUser.facebook = checkField(user.facebook, userBoolean.facebook)
+            currentUser.instagram = checkField(user.instagram, userBoolean.instagram)
+            currentUser.twitter = checkField(user.twitter, userBoolean.twitter)
+            currentUser.notes = checkField(user.notes, userBoolean.notes)
+            return currentUser
+        }
+
+        private fun checkField(field: String, isSelected: Boolean): String {
+            return if (isSelected) field else String()
+        }
+
         // Если какие-то данные пустые (отсутствуют), то мы не добавляем, иначе добавляем
         private fun addItem(title: String, description: String) {
             if (description.isNotEmpty()) data.add(DataItem(title, description))

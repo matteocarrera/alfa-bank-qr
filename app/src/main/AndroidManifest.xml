@@ -73,6 +73,9 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Activities.CameraActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.example.cloud_cards.Activities.SplashActivity"
             android:configChanges="orientation"
