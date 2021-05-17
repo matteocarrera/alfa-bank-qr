@@ -10,7 +10,7 @@ import com.example.cloud_cards.Entities.Card
 interface CardDao {
 
     @Query("SELECT * FROM cards")
-    fun getAllCards(): List<Card>
+    fun getAllCards(): List<Card?>
 
     @Query("SELECT title FROM cards")
     fun getAllCardsNames(): List<String>

@@ -2,6 +2,7 @@ package com.example.cloud_cards.Entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 /*
     Основной класс Пользователя
@@ -34,4 +35,4 @@ data class User(
     var instagram: String = "",
     var twitter: String = "",
     var notes : String = ""
-)
+): Serializable

@@ -57,15 +57,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.AboutAppActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.example.cloud_cards.Activities.CreateCardActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.example.cloud_cards.Activities.CardActivity"
+            android:name="com.example.cloud_cards.Activities.CardViewActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity

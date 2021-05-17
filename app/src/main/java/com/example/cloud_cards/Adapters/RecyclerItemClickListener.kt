@@ -8,7 +8,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 
-
 class RecyclerItemClickListener(
     context: Context?,
     recyclerView: RecyclerView,

@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "usersBoolean")
 data class UserBoolean(
+    @PrimaryKey
+    var uuid: String = "",
     var parentId : String = "",
     var name: Boolean = false,
     var surname: Boolean = false,
@@ -31,8 +33,6 @@ data class UserBoolean(
     var twitter: Boolean = false,
     var notes : Boolean = false
 ) {
-    @PrimaryKey var uuid: String = ""
-
     override fun equals(other: Any?): Boolean {
         val secondUser = other as UserBoolean
         return this.name == secondUser.name &&

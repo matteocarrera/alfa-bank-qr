@@ -14,8 +14,11 @@ interface IdPairDao {
     @Query("SELECT * FROM idPairs")
     fun getAllPairs(): List<IdPair>
 
-    @Query("SELECT * FROM idPairs WHERE parentUuid <> uuid")
-    fun getAllContactsPairs(): List<IdPair>
+    @Query("SELECT * FROM idPairs WHERE parentUuid <> :parentUuid")
+    fun getAllContactsPairs(parentUuid: String?): List<IdPair>
+
+    @Query("SELECT * FROM idPairs WHERE parentUuid = :parentUuid")
+    fun getAllTemplatesPairs(parentUuid: String?): List<IdPair>
 
     @Query("SELECT * FROM idPairs WHERE uuid = :uuid")
     fun getIdPairById(uuid: String): IdPair

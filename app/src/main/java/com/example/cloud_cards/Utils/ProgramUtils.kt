@@ -3,6 +3,7 @@ package com.example.cloud_cards.Utils
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -10,17 +11,41 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.ContactsContract
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.example.cloud_cards.Entities.DataItem
 import com.example.cloud_cards.Entities.User
+import com.example.cloud_cards.R
+import kotlinx.android.synthetic.main.activity_qr.view.*
+import net.glxn.qrgen.android.QRCode
 import java.io.File
 import java.io.FileOutputStream
 
-
 class ProgramUtils {
     companion object {
+        fun setQRWindow(context: Context?, link: String) {
+            val alert = AlertDialog.Builder(context)
+            val factory = LayoutInflater.from(context)
+            val view: View = factory.inflate(R.layout.activity_qr, null)
+
+            var bitmap = QRCode.from(link).withCharset("utf-8").withSize(1000, 1000).bitmap()
+            bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
+            view.qr_img.setImageBitmap(bitmap)
+
+            alert.setView(view)
+            alert.setPositiveButton("Готово") { dialog, id ->
+                dialog.cancel()
+            }
+            alert.setNeutralButton("Поделиться") { dialog, id ->
+                // TODO()
+            }
+
+            alert.show()
+        }
+
         fun goToActivityAnimated(context: Context, cls : Class<*>) {
             val intent = Intent(context, cls)
             context.startActivity(intent)
