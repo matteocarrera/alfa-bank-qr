@@ -29,7 +29,7 @@
 
     <LinearLayout
         android:id="@+id/settings_profile_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/privacy_settings"
-        android:layout_marginTop="@dimen/app_margin_top_large">
+        android:paddingTop="@dimen/app_margin_top_large">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/settings_profile_photo"
             android:layout_width="150dp"

@@ -5,6 +5,7 @@ package com.example.cloud_cards.Entities
  */
 
 class DataItem (
-    val title : String ,
-    val data : String
+    val title: String,
+    val data: String,
+    var checked: Boolean = false
 )

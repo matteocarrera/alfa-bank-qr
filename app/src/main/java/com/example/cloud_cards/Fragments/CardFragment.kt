@@ -1,8 +1,38 @@
-package com.example.cloud_cards.Activities
+package com.example.cloud_cards.Fragments
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.cloud_cards.R
+import com.google.android.material.appbar.MaterialToolbar
 
-class CardActivity : AppCompatActivity() {
+class CardFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.activity_card_view, container, false)
+
+        val toolbar = view.findViewById(R.id.toolbar) as MaterialToolbar
+        toolbar.inflateMenu(R.menu.create_card_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.done -> {
+                    //saveTemplate()
+                }
+            }
+            true
+        }
+        toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        return view
+    }
 
     /*private var id : Int = 0
     private var user = User()

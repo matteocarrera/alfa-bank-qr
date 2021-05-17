@@ -23,7 +23,6 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
 
-
 class ContactsFragment : Fragment() {
 
     private lateinit var db: AppDatabase
@@ -47,14 +46,14 @@ class ContactsFragment : Fragment() {
                     Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT).show()
                 }
                 R.id.camera -> {
-                    //val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    //tx.replace(R.id.nav_host_fragment, CameraFragment()).addToBackStack(null).commit()
-
                     val intent = Intent(context, CameraActivity::class.java)
                     startActivity(intent)
                 }
             }
             true
+        }
+        toolbar.setNavigationOnClickListener {
+            Toast.makeText(requireContext(), "CHANGE", Toast.LENGTH_SHORT).show()
         }
 
         return view
@@ -66,7 +65,8 @@ class ContactsFragment : Fragment() {
         contactList.clear()
         progress_bar.visibility = View.VISIBLE
 
-        val idPairs = ArrayList(db.idPairDao().getAllPairs())
+        val ownerUser = db.userDao().getOwnerUser()
+        val idPairs = ArrayList(db.idPairDao().getAllContactsPairs(ownerUser?.parentId))
 
         Thread {
             idPairs.forEach { idPair ->
@@ -87,7 +87,7 @@ class ContactsFragment : Fragment() {
                                 if (contactList.size == idPairs.size) {
                                     contactList.sortBy { it.surname }
                                     contact_list.apply {
-                                        layoutManager = LinearLayoutManager(requireActivity())
+                                        layoutManager = LinearLayoutManager(activity)
                                         adapter = ContactsAdapter(contactList, this@ContactsFragment)
                                     }
                                     progress_bar.visibility = View.GONE

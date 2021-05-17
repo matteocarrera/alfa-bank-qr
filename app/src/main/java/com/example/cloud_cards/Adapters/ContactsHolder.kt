@@ -1,9 +1,7 @@
 package com.example.cloud_cards.Adapters
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
-import android.graphics.Bitmap
+import android.content.Intent
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -14,16 +12,15 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cloud_cards.Activities.CardViewActivity
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Fragments.ContactsFragment
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
+import com.example.cloud_cards.Utils.ProgramUtils
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.contact_list_item.view.*
-import net.glxn.qrgen.android.QRCode
-
 
 class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.contact_list_item, parent, false)) {
@@ -61,7 +58,7 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
                 when (item.itemId) {
                     R.id.qr -> {
                         val contactLink = "http://cloudcards.h1n.ru/#${user.parentId}&${user.uuid}"
-                        setQRWindow(fragment.context, contactLink)
+                        ProgramUtils.setQRWindow(fragment.context, contactLink)
                     }
                     R.id.share -> {
                     }
@@ -77,26 +74,11 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
             pop.show()
             true
         }
-    }
 
-    private fun setQRWindow(context: Context?, link: String) {
-        val alert = AlertDialog.Builder(context)
-        val factory = LayoutInflater.from(context)
-        val view: View = factory.inflate(R.layout.activity_qr, null)
-
-        var bitmap = QRCode.from(link).withCharset("utf-8").withSize(1000, 1000).bitmap()
-        bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-        view.qr_img.setImageBitmap(bitmap)
-
-        alert.setView(view)
-        alert.setPositiveButton("Готово") { dialog, id ->
-            dialog.cancel()
+        this.itemView.setOnClickListener {
+            val intent = Intent(fragment.context, CardViewActivity::class.java)
+            intent.putExtra("user", user)
+            fragment.startActivity(intent)
         }
-        alert.setNeutralButton("Поделиться") { dialog, id ->
-            // set your desired action here.
-        }
-
-        alert.show()
     }
-
 }

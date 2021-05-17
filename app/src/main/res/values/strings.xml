@@ -11,6 +11,9 @@
     <string name="sort">Сортировка</string>
     <string name="camera">Камера</string>
 
+    <!-- Fragment Card -->
+    <string name="card">Визитка</string>
+
     <!-- Card List Item -->
     <string name="item_name">Название карты</string>
 

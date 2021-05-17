@@ -1,38 +1,29 @@
 package com.example.cloud_cards.Fragments
 
-import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.cloud_cards.Adapters.DataListAdapter
+import com.example.cloud_cards.Adapters.DataAdapter
 import com.example.cloud_cards.Database.AppDatabase
-import com.example.cloud_cards.Entities.Card
-import com.example.cloud_cards.Entities.DataItem
-import com.example.cloud_cards.Entities.User
+import com.example.cloud_cards.Entities.*
 import com.example.cloud_cards.R
+import com.example.cloud_cards.Utils.ColorUtils
 import com.example.cloud_cards.Utils.DataUtils
-import com.example.cloud_cards.Utils.ListUtils
-import com.example.cloud_cards.Utils.ProgramUtils
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_create_card.data_list
-import kotlinx.android.synthetic.main.activity_qr.view.*
-import kotlinx.android.synthetic.main.data_list_checkbox_item.view.*
-import kotlinx.android.synthetic.main.dialog_save_card.view.*
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_add.*
-import net.glxn.qrgen.android.QRCode
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddFragment : Fragment(), AdapterView.OnItemClickListener{
+class AddFragment(private val templateUserList: List<UserBoolean>) : Fragment() {
 
-    private val MAX_CARD_TITLE_LENGTH = 30
     private val selectedItems = ArrayList<DataItem>()
-    private var cardColor : Int = 0
+    private var cardColor = ColorUtils.getColorList()[0]
     private lateinit var db : AppDatabase
 
     override fun onCreateView(
@@ -40,8 +31,23 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_add, container, false)
-        return root
+        val view = inflater.inflate(R.layout.fragment_add, container, false)
+
+        val toolbar = view.findViewById(R.id.toolbar_add) as MaterialToolbar
+        toolbar.inflateMenu(R.menu.create_card_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.done -> {
+                    saveTemplate()
+                }
+            }
+            true
+        }
+        toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,152 +55,61 @@ class AddFragment : Fragment(), AdapterView.OnItemClickListener{
 
         db = AppDatabase.getInstance(requireContext())
 
-        //setToolbar(view)
-
         selectedItems.clear()
 
         setDataToListView()
-    }
 
-    override fun onItemClick(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-        val item = adapterView?.getItemAtPosition(position) as DataItem
-        if (selectedItems.contains(item)) selectedItems.remove(item)
-        else selectedItems.add(item)
-        if (view != null) {
-            view.checkbox.isChecked = !view.checkbox.isChecked
+        card_color.setOnClickListener {
+            cardColor = ColorUtils.getColorList()[(0 until ColorUtils.getColorList().count()).random()]
+            card_color.setCardBackgroundColor(Color.parseColor(cardColor))
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.create_card_menu, menu)
-    }
-
-    /* private fun setToolbar(view: View) {
-        toolbar_add.setNavigationOnClickListener {
-            setSaveDialog(view)
-        }
-        toolbar_add.setOnMenuItemClickListener {
-            if (it.itemId == R.id.done) generateQR(view)
-            true
-        }
-    }
-
-    private fun setSaveDialog(view: View) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
-        val inflater = requireActivity().layoutInflater
-        val layout = inflater.inflate(R.layout.dialog_save_card, null)
-
-        cardColor = ContextCompat.getColor(layout.context, R.color.colorPrimary)
-        layout.card_color.setOnClickListener {
-            setColorPicker(layout)
-        }
-
-        val dialog = builder.setView(layout)
-            .setPositiveButton("Сохранить", null)
-            .setNegativeButton("Отмена") { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
-        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        positiveButton.setOnClickListener {
-            val title = layout.card_title.text.toString()
-            val cardTitles = db.cardDao().getAllCardsNames()
-            when {
-                title.length > MAX_CARD_TITLE_LENGTH -> {
-                    Toast.makeText(view.context, "Название слишком длинное!", Toast.LENGTH_SHORT).show()
-                }
-                cardTitles.contains(title.trimStart().trimEnd()) -> {
-                    Toast.makeText(view.context, "Шаблон с таким названием уже существует!", Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    val user = createUser()
-                    val card = Card(cardColor, title.trimStart().trimEnd(), user.uuid)
-                    db.cardDao().insertCard(card)
-                    Toast.makeText(view.context, "Шаблон успешно создан!", Toast.LENGTH_SHORT).show()
-                    dialog.cancel()
-                }
-            }
-        }
-    }
-
-     */
-    
-    private fun setShowQRDialog(view: View, bitmap: Bitmap) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
-        val inflater = requireActivity().layoutInflater
-        val layout = inflater.inflate(R.layout.activity_qr, null)
-
-        layout.qr_img.setImageBitmap(bitmap)
-        val dialog = builder.setView(layout)
-            .setNeutralButton("Закрыть") { dialog, _ ->
-                dialog.cancel()
-            }
-            .setPositiveButton("Поделиться", null)
-            .show()
-        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        positiveButton.setOnClickListener {
-            ProgramUtils.saveImage(view.context, arrayListOf(bitmap))
-        }
-    }
-
-    /*private fun generateQR(view: View) {
-        try {
-            if (selectedItems.size == 0) {
-                Toast.makeText(view.context, "Не выбрано ни одного поля!", Toast.LENGTH_LONG).show()
-            } else {
-                val user = createUser()
-
-                var bitmap = QRCode.from(user.uuid).withCharset("utf-8").withSize(1000, 1000).bitmap()
-                bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-
-                setShowQRDialog(view, bitmap)
-            }
-        } catch (e : Exception) {
-            e.printStackTrace()
-        }
-    }
-
-     */
-
-    /*private fun createUser() : User {
+    private fun saveTemplate() {
         val ownerUser = db.userDao().getOwnerUser()
-        val newUser = DataUtils.parseDataToUser(selectedItems, ownerUser.photo)
-        var uuid = UUID.randomUUID().toString()
-        newUser.uuid = uuid
+        val newTemplateUser = DataUtils.parseDataToUser(selectedItems)
 
-        val myCardsUsers = db.userDao().getUsersFromMyCards()
-        var userExists = false
-        if (myCardsUsers != null && myCardsUsers.isNotEmpty()) {
-            myCardsUsers.forEach {
-                if (it.toString() == newUser.toString()) {
-                    userExists = true
-                    newUser.id = it.id
-                    uuid = it.id
-                }
-            }
+        if (templateUserList.contains(newTemplateUser)) {
+            val templateUser = templateUserList[templateUserList.indexOf(newTemplateUser)]
+            val card = Card(UUID.randomUUID().toString(), CardType.PERSONAL, cardColor, card_title.text.toString(), templateUser.uuid)
+            db.cardDao().insertCard(card)
+            parentFragmentManager.popBackStack()
+            return
         }
-        if (!userExists) {
-            val databaseRef = FirebaseDatabase.getInstance().getReference(uuid)
-            databaseRef.setValue(Gson().toJson(newUser))
 
-            db.userDao().insertUser(newUser)
-        }
-        return newUser
+        newTemplateUser.parentId = ownerUser!!.uuid
+        newTemplateUser.uuid = UUID.randomUUID().toString()
+
+        FirebaseFirestore.getInstance()
+            .collection("users").document(newTemplateUser.parentId)
+            .collection("cards").document(newTemplateUser.uuid)
+            .set(newTemplateUser)
+
+        db.idPairDao().insertPair(IdPair(newTemplateUser.uuid, newTemplateUser.parentId))
+
+        val card = Card(UUID.randomUUID().toString(), CardType.PERSONAL, cardColor, card_title.text.toString(), newTemplateUser.uuid)
+        db.cardDao().insertCard(card)
+
+        parentFragmentManager.popBackStack()
     }
-
-     */
 
     private fun setDataToListView() {
         val user = db.userDao().getOwnerUser()
         if (user != null) {
             val data = DataUtils.setUserData(user)
 
-            val adapter = DataListAdapter(requireActivity(), data, R.layout.data_list_checkbox_item)
+            val adapter = DataAdapter(data, View.VISIBLE, requireContext())
             data_list.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-            data_list.onItemClickListener = this
             data_list.adapter = adapter
+            data_list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
 
-            ListUtils.setDynamicHeight(data_list)
+                val item = data[position]
+                item.checked = !item.checked
+                adapter.notifyDataSetChanged()
+
+                if (selectedItems.contains(item)) selectedItems.remove(item)
+                else selectedItems.add(item)
+            }
         }
     }
 }
