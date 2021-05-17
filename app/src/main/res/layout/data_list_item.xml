@@ -21,7 +21,7 @@
                 android:layout_marginEnd="@dimen/app_right_margin"
                 android:layout_marginStart="@dimen/app_left_margin"
                 android:textSize="@dimen/app_text_size_small"
-                android:textColor="#6D7986"/>
+                android:textColor="@color/colorMainGray"/>
 
             <TextView
                 android:id="@+id/data"
