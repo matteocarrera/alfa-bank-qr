@@ -20,6 +20,10 @@
     <!-- Camera Activity -->
     <string name="point_camera">Наведите камеру на QR-код визитки</string>
 
+    <!-- Template Card Activity -->
+    <string name="rename">Переименовать</string>
+    <string name="change_color">Изменить цвет</string>
+
     <!-- QR Activity -->
     <string name="share">Поделиться</string>
     <string name="ok">ОК</string>

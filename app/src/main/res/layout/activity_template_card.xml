@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraint"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.AddFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="@color/colorBackground">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_template_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/card"
+            app:titleTextColor="@color/colorTextPrimary"
+            app:navigationIcon="@drawable/ic_back"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_title_view"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@drawable/square_rounded"
+        app:cardBackgroundColor="@color/colorBackground"
+        android:layout_marginStart="@dimen/app_margin_top_medium"
+        android:layout_marginEnd="@dimen/app_margin_top_medium"
+        android:layout_marginTop="@dimen/app_margin_top_medium"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_color"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                android:layout_marginEnd="@dimen/app_margin_top_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/card_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/app_text_size_title"
+                android:gravity="center_vertical"
+                android:layout_marginStart="@dimen/app_margin_top_medium"
+                android:layout_marginEnd="@dimen/app_margin_top_medium"
+                app:layout_constraintStart_toEndOf="@id/card_color"
+                app:layout_constraintEnd_toStartOf="@id/menu_image"/>
+
+            <ImageView
+                android:id="@+id/menu_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_right"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/app_margin_top_medium"
+                app:tint="@color/colorPrimary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ListView
+        android:id="@+id/data_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/app_margin_top_medium"
+        app:layout_constraintTop_toBottomOf="@id/card_title_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:listSelector="@android:color/transparent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

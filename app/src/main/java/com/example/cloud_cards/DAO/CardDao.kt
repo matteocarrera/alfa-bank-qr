@@ -1,9 +1,6 @@
 package com.example.cloud_cards.DAO
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.cloud_cards.Entities.Card
 
 @Dao
@@ -20,6 +17,9 @@ interface CardDao {
 
     @Insert
     fun insertCard(card: Card)
+
+    @Update(entity = Card::class)
+    fun updateCard(card: Card)
 
     @Delete
     fun deleteCard(card: Card)

@@ -64,8 +64,8 @@ class TemplatesFragment : Fragment() {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         val cards = db.cardDao().getAllCards()
         val templateCards = cards.toMutableList()
@@ -83,82 +83,4 @@ class TemplatesFragment : Fragment() {
             }
         }
     }
-
-
-    /* override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        db = AppDatabase.getInstance(requireContext())
-
-        val cards = db.cardDao().getAllCards()
-
-        templates_list.apply {
-            layoutManager = LinearLayoutManager(requireActivity())
-            adapter = TemplatesAdapter(cards)
-        }
-
-        templates_list.addOnItemTouchListener(
-            RecyclerItemClickListener(context, templates_list, object :
-                RecyclerItemClickListener.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    if (view.card_qr.visibility == View.GONE) {
-                        val user = db.userDao().getUserById(view.user_id.text.toString())
-                        var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-                        view.card_qr.visibility = View.VISIBLE
-                        view.card_qr.setImageBitmap(bitmap)
-                    } else {
-                        view.card_qr.visibility = View.GONE
-                    }
-                }
-
-                override fun onLongItemClick(view: View, position: Int) {
-                    val popupMenu = PopupMenu(requireContext(), view.more)
-
-                    popupMenu.setOnMenuItemClickListener { item ->
-
-                        when(item.itemId) {
-                            R.id.more -> {
-                                val cardViewFragment = CardViewFragment.newInstance(view.user_id.text.toString())
-                                val tx: FragmentTransaction = requireParentFragment().parentFragmentManager.beginTransaction()
-                                tx.replace(R.id.nav_host_fragment, cardViewFragment).addToBackStack(null).commit()
-                            }
-                            R.id.share -> {
-                                val user = db.userDao().getUserById(view.user_id.text.toString())
-                                var bitmap = QRCode.from(user.id).withCharset("utf-8").withSize(1000, 1000).bitmap()
-                                bitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
-                                ProgramUtils.saveImage(view.context, arrayListOf(bitmap))
-                            }
-                            R.id.delete -> {
-                                val builder = AlertDialog.Builder(requireContext())
-                                builder.setTitle("Удаление визитки")
-                                builder.setMessage("Вы действительно хотите удалить данную визитку?")
-                                builder.setPositiveButton("Да"){ _, _ ->
-                                    val card = db.cardDao().getCardById(view.card_id.text.toString().toInt())
-                                    db.cardDao().deleteCard(card)
-                                    Toast.makeText(requireContext(),"Визитка успешно удалена!", Toast.LENGTH_SHORT).show()
-
-                                    val updatedCards = db.cardDao().getAllCards()
-                                    templates_list.adapter = null
-                                    templates_list.apply {
-                                        layoutManager = LinearLayoutManager(requireActivity())
-                                        adapter = TemplatesAdapter(updatedCards)
-                                    }
-                                }
-                                builder.setNegativeButton("Нет"){ _, _ -> }
-                                val dialog: AlertDialog = builder.create()
-                                dialog.show()
-                            }
-                        }
-                        true
-                    }
-
-                    popupMenu.menuInflater.inflate(R.menu.my_card_menu, popupMenu.menu)
-
-                    popupMenu.show()
-                }
-            })
-        )
-    }
-    */
 }
