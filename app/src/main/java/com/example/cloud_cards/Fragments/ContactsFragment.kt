@@ -59,8 +59,9 @@ class ContactsFragment : Fragment() {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+
         db = AppDatabase.getInstance(requireContext())
         contactList.clear()
         progress_bar.visibility = View.VISIBLE

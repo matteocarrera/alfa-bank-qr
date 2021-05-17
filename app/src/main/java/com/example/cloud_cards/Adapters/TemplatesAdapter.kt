@@ -2,6 +2,7 @@ package com.example.cloud_cards.Adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -15,7 +16,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import com.example.cloud_cards.Activities.TemplateCardActivity
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.Card
 import com.example.cloud_cards.Fragments.TemplatesFragment
@@ -75,6 +76,9 @@ internal class TemplatesAdapter(private val fragment: TemplatesFragment, private
             pop.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.more -> {
+                        val intent = Intent(fragment.context, TemplateCardActivity::class.java)
+                        intent.putExtra("card", templateCards[position])
+                        fragment.startActivity(intent)
                     }
                     R.id.share -> {
                     }
