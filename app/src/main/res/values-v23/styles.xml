@@ -11,39 +11,9 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="CustomTabTheme" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/colorBrand</item>
-        <item name="tabIndicatorHeight">3dp</item>
-        <item name="tabSelectedTextColor">@android:color/white</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="tabTextColor">@color/colorTextTetriaty</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">0dp</item>
-        <item name="cornerSizeTopLeft">5dp</item>
-        <item name="cornerSizeBottomRight">0dp</item>
-        <item name="cornerSizeBottomLeft">5dp</item>
-    </style>
-
-    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView.ActionBar">
-        <!--search view customization-->
-        <item name="layout">@layout/abc_search_view</item>
-        <item name="queryBackground">@drawable/abc_textfield_search_material</item>
-        <item name="submitBackground">@drawable/abc_textfield_search_material</item>
-        <item name="closeIcon">@drawable/abc_ic_clear_material</item>
-        <item name="searchIcon">@drawable/abc_ic_search_api_material</item>
-        <item name="searchHintIcon">@drawable/abc_ic_search_api_material</item>
-        <item name="goIcon">@drawable/abc_ic_go_search_api_material</item>
-        <item name="voiceIcon">@drawable/abc_ic_voice_search_api_material</item>
-        <item name="commitIcon">@drawable/abc_ic_commit_search_api_mtrl_alpha</item>
-        <item name="suggestionRowLayout">@layout/abc_search_dropdown_item_icons_2line</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
