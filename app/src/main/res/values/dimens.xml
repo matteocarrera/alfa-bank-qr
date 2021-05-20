@@ -4,15 +4,9 @@
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">60dp</dimen>
     <dimen name="design_bottom_navigation_icon_size" tools:override="true">26dp</dimen>
-    <dimen name="app_left_margin">15dp</dimen>
-    <dimen name="app_right_margin">15dp</dimen>
     <dimen name="app_margin_top_small">5dp</dimen>
-    <dimen name="app_margin_top_medium">15dp</dimen>
     <dimen name="app_margin_top_large">25dp</dimen>
-    <dimen name="app_margin_bottom_small">5dp</dimen>
-    <dimen name="app_margin_bottom_medium">15dp</dimen>
-    <dimen name="app_margin_bottom_large">25dp</dimen>
-    <dimen name="app_text_size_small">14sp</dimen>
+    <dimen name="app_text_size_small">12sp</dimen>
     <dimen name="app_text_size_medium">16sp</dimen>
     <dimen name="app_text_size_large">18sp</dimen>
     <dimen name="app_text_size_title">20sp</dimen>

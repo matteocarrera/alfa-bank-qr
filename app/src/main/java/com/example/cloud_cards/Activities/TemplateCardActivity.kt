@@ -16,10 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cloud_cards.Adapters.DataAdapter
 import com.example.cloud_cards.Database.AppDatabase
-import com.example.cloud_cards.Entities.Card
-import com.example.cloud_cards.Entities.DataItem
-import com.example.cloud_cards.Entities.User
-import com.example.cloud_cards.Entities.UserBoolean
+import com.example.cloud_cards.Entities.*
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ColorUtils
 import com.example.cloud_cards.Utils.DataUtils
@@ -56,31 +53,45 @@ class TemplateCardActivity: AppCompatActivity() {
         // Устанавливаем параметры в View
         card_color.setCardBackgroundColor(Color.parseColor(card.color))
         card_title.text = card.title
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         // Получаем данные о шаблонной визитке
         db = AppDatabase.getInstance(this)
         val idPair = db.idPairDao().getIdPairById(card.cardUuid)
+        val ownerUser = db.userDao().getOwnerUser()!!
 
         FirebaseFirestore.getInstance()
             .collection("users").document(idPair.parentUuid)
             .collection("cards").document(idPair.uuid)
             .get().addOnSuccessListener { document ->
-                val businessCardUser = Gson().fromJson(Gson().toJson(document.data).toString(), UserBoolean::class.java)
-                FirebaseFirestore.getInstance()
-                    .collection("users").document(idPair.parentUuid)
-                    .collection("data").document(idPair.parentUuid)
-                    .get().addOnSuccessListener { secondDocument ->
-                        val mainUser = Gson().fromJson(Gson().toJson(secondDocument.data).toString(), User::class.java)
-                        val currentUser = DataUtils.getUserFromTemplate(mainUser, businessCardUser)
-
+                val cardTypeRaw = document.data?.get("type") as? String
+                val cardType = if (cardTypeRaw != null) CardType.valueOf(cardTypeRaw) else null
+                val currentUser: User
+                val businessCard: BusinessCard<*>
+                when (cardType) {
+                    CardType.personal -> {
+                        businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
+                        val businessCardUser = Gson().fromJson(Gson().toJson(businessCard.data).toString(), UserBoolean::class.java)
+                        currentUser = DataUtils.getUserFromTemplate(ownerUser, businessCardUser)
                         data = DataUtils.setUserData(currentUser)
+                    }
+                    CardType.company -> {
+                        businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
+                        val businessCardCompany = Gson().fromJson(Gson().toJson(businessCard.data).toString(), Company::class.java)
+                        data = DataUtils.setCompanyData(businessCardCompany)
+                    }
+                    else -> {
+                        val businessCardData = Gson().fromJson(Gson().toJson(document.data).toString(), UserBoolean::class.java)
+                        currentUser = DataUtils.getUserFromTemplate(ownerUser, businessCardData)
+                        data = DataUtils.setUserData(currentUser)
+                    }
+                }
 
-                        val adapter = DataAdapter(data, View.GONE, this)
-                        data_list.adapter = adapter
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d("Error", "get failed with ", exception)
-                    }
+                val adapter = DataAdapter(data, View.GONE, this)
+                data_list.adapter = adapter
             }
             .addOnFailureListener { exception ->
                 Log.d("Error", "get failed with ", exception)

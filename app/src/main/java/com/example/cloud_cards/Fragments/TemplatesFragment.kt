@@ -1,13 +1,17 @@
 package com.example.cloud_cards.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import com.example.cloud_cards.Activities.CreateCompanyCardActivity
+import com.example.cloud_cards.Activities.CreatePersonalCardActivity
 import com.example.cloud_cards.Adapters.TemplatesAdapter
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
@@ -34,13 +38,19 @@ class TemplatesFragment : Fragment() {
         toolbar.inflateMenu(R.menu.add_template_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.add -> {
-                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    tx.replace(R.id.nav_host_fragment, AddFragment(templateUserList)).addToBackStack(null).commit()
+                R.id.personal_card -> {
+                    val intent = Intent(context, CreatePersonalCardActivity::class.java)
+                    intent.putParcelableArrayListExtra("templateUserList", templateUserList)
+                    startActivity(intent)
+                }
+                R.id.company_card -> {
+                    val intent = Intent(context, CreateCompanyCardActivity::class.java)
+                    startActivity(intent)
                 }
             }
             true
         }
+        toolbar.overflowIcon = resources.getDrawable(R.drawable.ic_add)
 
         db = AppDatabase.getInstance(requireContext())
         ownerUser = db.userDao().getOwnerUser()
@@ -73,10 +83,26 @@ class TemplatesFragment : Fragment() {
 
         templates_grid.adapter = TemplatesAdapter(this, templateCards)
 
-        templates_grid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+        templates_grid.onItemClickListener = AdapterView.OnItemClickListener { _, view, position, _ ->
             if (templateCards[position] == null) {
-                val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                tx.replace(R.id.nav_host_fragment, AddFragment(templateUserList)).addToBackStack(null).commit()
+                val pop = PopupMenu(context, view, Gravity.END)
+                pop.inflate(R.menu.add_template_menu)
+
+                pop.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.personal_card -> {
+                            val intent = Intent(context, CreatePersonalCardActivity::class.java)
+                            intent.putParcelableArrayListExtra("templateUserList", templateUserList)
+                            startActivity(intent)
+                        }
+                        R.id.company_card -> {
+                            val intent = Intent(context, CreateCompanyCardActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                    true
+                }
+                pop.show()
             } else {
                 val templateLink = "http://cloudcards.h1n.ru/#${ownerUser?.uuid}&${templateCards[position]?.cardUuid}"
                 ProgramUtils.setQRWindow(context, templateLink)

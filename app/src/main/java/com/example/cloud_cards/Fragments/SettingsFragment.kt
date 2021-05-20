@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.cloud_cards.Activities.CardViewActivity
+import com.example.cloud_cards.Activities.EditProfileActivity
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
@@ -33,8 +33,8 @@ class SettingsFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.change_user -> {
-                    val tx: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    tx.replace(R.id.nav_host_fragment, EditProfileFragment()).addToBackStack(null).commit()
+                    val intent = Intent(context, EditProfileActivity::class.java)
+                    startActivity(intent)
                 }
             }
             true
@@ -46,14 +46,18 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getUserInfo()
-
         settings_profile_info.setOnClickListener {
             val intent = Intent(context, CardViewActivity::class.java)
             intent.putExtra("user", ownerUser)
             intent.putExtra("isProfile", true)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getUserInfo()
     }
 
     private fun getUserInfo() {

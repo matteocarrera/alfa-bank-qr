@@ -1,5 +1,6 @@
 package com.example.cloud_cards.Utils
 
+import com.example.cloud_cards.Entities.Company
 import com.example.cloud_cards.Entities.DataItem
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Entities.UserBoolean
@@ -29,6 +30,18 @@ class DataUtils {
             addItem("instagram", user.instagram)
             addItem("twitter", user.twitter)
             addItem("заметки", user.notes)
+            return data
+        }
+
+        fun setCompanyData(company: Company): ArrayList<DataItem> {
+            data.clear()
+            addItem("наименование", company.name)
+            addItem("ответственное лицо", company.responsibleFullName)
+            addItem("должность ответственного лица", company.responsibleJobTitle)
+            addItem("адрес", company.address)
+            addItem("телефон", company.phone)
+            addItem("электронная почта", company.email)
+            addItem("сайт", company.website)
             return data
         }
 

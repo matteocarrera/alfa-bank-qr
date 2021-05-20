@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/add"
-        android:icon="@drawable/ic_add"
-        android:iconTint="@android:color/white"
-        android:title="@string/done"
-        app:showAsAction="always"/>
+        android:id="@+id/personal_card"
+        android:title="@string/personal_card"/>
+    <item
+        android:id="@+id/company_card"
+        android:title="@string/company_card"/>
 </menu>

@@ -59,7 +59,7 @@
             android:id="@+id/settings_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mobile_is_empry"
+            android:text="@string/mobile_is_empty"
             android:textColor="@color/colorSecondary"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/app_margin_top_small"
@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/app_margin_top_medium"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_constraintTop_toBottomOf="@id/settings_profile_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,11 +92,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_eye"
-            android:tint="@color/colorPrimary"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -121,11 +119,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_terms_of_use"
-            android:tint="@color/colorPrimary"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -150,11 +146,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_help"
-            android:tint="@color/colorPrimary"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -179,11 +173,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_info"
-            android:tint="@color/colorPrimary"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"

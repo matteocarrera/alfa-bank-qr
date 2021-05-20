@@ -32,7 +32,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/app_margin_top_medium"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:numColumns="2"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
