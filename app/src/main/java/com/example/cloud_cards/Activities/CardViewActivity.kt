@@ -94,7 +94,7 @@ class CardViewActivity : AppCompatActivity() {
     }
 
     /*
-        Метод, подволяющий проверить наличие контакта в телефонной книге
+        Метод, позволяющий проверить наличие контакта в телефонной книге
      */
 
     private fun contactExists(number: String): Boolean {
