@@ -1,5 +1,6 @@
 package com.example.cloud_cards.Fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cloud_cards.Activities.CameraActivity
 import com.example.cloud_cards.Adapters.ContactsAdapter
@@ -27,6 +30,7 @@ class ContactsFragment : Fragment() {
 
     private lateinit var db: AppDatabase
     private var contactList = ArrayList<User>()
+    private var checkedItem = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,26 @@ class ContactsFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.sort -> {
-                    Toast.makeText(requireContext(), "SORT", Toast.LENGTH_SHORT).show()
+                    val listItems = arrayOf("По имени", "По фамилии", "По компании", "По должности")
+                    val mBuilder = AlertDialog.Builder(requireContext())
+                    mBuilder.setTitle("Сортировать:")
+                    mBuilder.setSingleChoiceItems(listItems, checkedItem) { dialogInterface, i ->
+                        checkedItem = i
+                        when (i) {
+                            0 -> contactList.sortBy { it.name }
+                            1 -> contactList.sortBy { it.surname }
+                            2 -> contactList.sortBy { it.company }
+                            3 -> contactList.sortBy { it.jobTitle }
+                        }
+                        contact_list.adapter?.notifyDataSetChanged()
+                        dialogInterface.dismiss()
+                    }
+                    mBuilder.setNeutralButton("Отмена") { dialog, _ ->
+                        dialog.cancel()
+                    }
+
+                    val mDialog = mBuilder.create()
+                    mDialog.show()
                 }
                 R.id.search -> {
                     Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT).show()
@@ -85,21 +108,33 @@ class ContactsFragment : Fragment() {
 
                                 contactList.add(currentUser)
 
+                                val itemDecorator = DividerItemDecoration(
+                                    context, DividerItemDecoration.VERTICAL
+                                )
+                                itemDecorator.setDrawable(
+                                    ContextCompat.getDrawable(
+                                        requireContext(),
+                                        R.drawable.divider_contacts
+                                    )!!
+                                )
+
+                                if (contact_list.itemDecorationCount != 0) contact_list.removeItemDecorationAt(0)
                                 if (contactList.size == idPairs.size) {
                                     contactList.sortBy { it.surname }
                                     contact_list.apply {
                                         layoutManager = LinearLayoutManager(activity)
                                         adapter = ContactsAdapter(contactList, this@ContactsFragment)
+                                        addItemDecoration(itemDecorator)
                                     }
                                     progress_bar.visibility = View.GONE
                                 }
                             }
                             .addOnFailureListener { exception ->
-                                Log.d("Error", "get failed with ", exception)
+                                Log.d("Error", "An error occurred while retrieving data about Parent User", exception)
                             }
                     }
                     .addOnFailureListener { exception ->
-                        Log.d("Error", "get failed with ", exception)
+                        Log.d("Error", "An error occurred while retrieving data about Card User", exception)
                     }
             }
         }.start()

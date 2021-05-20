@@ -5,13 +5,17 @@
     <string name="edit_profile">Править</string>
     <string name="user_name">имя фамилия</string>
 
-    <!-- Cards Activity -->
+    <!-- Template Cards Fragment -->
     <string name="my_cards">Мои визитки</string>
+    <string name="personal_card">Личная визитка</string>
+    <string name="company_card">Визитка компании</string>
+
+    <!-- Contacts Fragment -->
     <string name="search">Поиск</string>
     <string name="sort">Сортировка</string>
     <string name="camera">Камера</string>
 
-    <!-- Fragment Card -->
+    <!-- Card Fragment -->
     <string name="card">Визитка</string>
 
     <!-- Card List Item -->
@@ -38,9 +42,16 @@
     <string name="more">Просмотреть</string>
     <string name="delete">Удалить</string>
 
+    <!-- Create Company Card Activity -->
+    <string name="company_name">Наименование</string>
+    <string name="responsible">Ответственное лицо</string>
+    <string name="responsible_job_title">Должность ответственного лица</string>
+    <string name="company_phone">Телефон</string>
+    <string name="company_email">Электронная почта</string>
+
     <!-- Settings Activity -->
     <string name="name_is_empty">Имя не указано</string>
-    <string name="mobile_is_empry">Мобильный номер не указан</string>
+    <string name="mobile_is_empty">Мобильный номер не указан</string>
     <string name="email_is_empty">Email не указан</string>
     <string name="camera_permission">Доступ к камере</string>
     <string name="gallery_permission">Доступ к галерее</string>

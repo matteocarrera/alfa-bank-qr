@@ -1,14 +1,16 @@
 package com.example.cloud_cards.Entities
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 /*
     Класс Пользователя, сгенерированного на основе родительского Пользователя
  */
 
 @Entity(tableName = "usersBoolean")
-data class UserBoolean(
+@Parcelize data class UserBoolean(
     @PrimaryKey
     var uuid: String = "",
     var parentId : String = "",
@@ -32,7 +34,7 @@ data class UserBoolean(
     var instagram: Boolean = false,
     var twitter: Boolean = false,
     var notes : Boolean = false
-) {
+): Parcelable {
     override fun equals(other: Any?): Boolean {
         val secondUser = other as UserBoolean
         return this.name == secondUser.name &&

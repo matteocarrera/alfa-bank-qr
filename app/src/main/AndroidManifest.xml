@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.cloud_cards.Activities.MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="Добавить в CloudCards">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -40,10 +40,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.cloud_cards.Activities.SettingsActivity" />
+        <activity android:name=".Activities.SettingsActivity" />
 
         <provider
-            android:name="com.example.cloud_cards.Utils.GenericFileProvider"
+            android:name=".Utils.GenericFileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -53,26 +53,39 @@
         </provider>
 
         <activity
-            android:name="com.example.cloud_cards.Activities.QRActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.example.cloud_cards.Activities.CardViewActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.example.cloud_cards.Activities.CardsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".Activities.CameraActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.TemplateCardActivity"
+            android:name=".Activities.QRActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.example.cloud_cards.Activities.SplashActivity"
+            android:name=".Activities.CardViewActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.CardsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.EditProfileActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.CameraActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.TemplateCardActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.CreatePersonalCardActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.CreateCompanyCardActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>

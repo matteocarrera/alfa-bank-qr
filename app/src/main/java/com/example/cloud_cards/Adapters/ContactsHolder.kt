@@ -26,7 +26,6 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.contact_list_item, parent, false)) {
 
     private var photo: CircleImageView = itemView.findViewById(R.id.photo)
-    private var id: TextView = itemView.findViewById(R.id.contact_id)
     private var name: TextView = itemView.findViewById(R.id.name)
     private var jobTitle: TextView = itemView.findViewById(R.id.job_title)
     private var company: TextView = itemView.findViewById(R.id.company)
@@ -36,12 +35,12 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
         if (user.photo == "") {
             itemView.letters.visibility = View.VISIBLE
             itemView.letters.text = user.name.take(1).plus(user.surname.take(1))
+            photo.setImageResource(R.color.colorPrimary)
         } else {
             photo.visibility = View.VISIBLE
             itemView.letters.visibility = View.GONE
             ImageUtils.getImageFromFirebase(user.photo, photo)
         }
-        id.text = user.uuid
         name.text = user.name.plus(" ").plus(user.surname)
         jobTitle.text = if (user.jobTitle.isNotEmpty()) user.jobTitle else "Должность не указана"
         company.text = if (user.company.isNotEmpty()) user.company else "Компания не указана"
@@ -61,6 +60,8 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
                         ProgramUtils.setQRWindow(fragment.context, contactLink)
                     }
                     R.id.share -> {
+                        val link = "http://cloudcards.h1n.ru/#${user.parentId}&${user.uuid}"
+                        ProgramUtils.showShareIntent(fragment.requireContext(), link)
                     }
                     R.id.delete -> {
                         val db = AppDatabase.getInstance(this.itemView.context)

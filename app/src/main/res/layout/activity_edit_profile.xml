@@ -44,7 +44,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/app_margin_top_medium"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
 
@@ -82,10 +82,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_left_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/app_margin_top_small"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/surnameField"
@@ -100,9 +100,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameField"
@@ -117,9 +117,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/patronymicField"
@@ -134,9 +134,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/companyField"
@@ -151,9 +151,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/jobTitleField"
@@ -168,9 +168,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mobileField"
@@ -185,9 +185,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mobileSecondField"
@@ -202,9 +202,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailField"
@@ -219,9 +219,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailSecondField"
@@ -236,9 +236,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/addressField"
@@ -253,9 +253,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/addressSecondField"
@@ -270,9 +270,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/websiteField"
@@ -287,9 +287,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/vkField"
@@ -304,9 +304,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/telegramField"
@@ -321,9 +321,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/facebookField"
@@ -338,9 +338,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/instagramField"
@@ -355,9 +355,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/twitterField"
@@ -372,9 +372,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginStart="@dimen/app_left_margin"
-                android:layout_marginEnd="@dimen/app_right_margin"
-                android:layout_marginBottom="@dimen/app_margin_bottom_small">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/appbar_padding_top">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/notesField"

@@ -1,16 +1,12 @@
-package com.example.cloud_cards.Fragments
+package com.example.cloud_cards.Activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
 import com.example.cloud_cards.Database.AppDatabase
@@ -21,11 +17,11 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import kotlinx.android.synthetic.main.activity_edit_profile.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class EditProfileFragment : Fragment() {
+class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var db: AppDatabase
     private lateinit var mStorageRef: StorageReference
@@ -35,21 +31,14 @@ class EditProfileFragment : Fragment() {
     private var photoWasChanged = false
     private var ownerUser: User? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_edit_profile)
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val toolbar = view.findViewById(R.id.toolbar_edit_profile) as MaterialToolbar
+        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar_edit_profile)
         toolbar.inflateMenu(R.menu.edit_profile_menu)
         toolbar_edit_profile.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            finish()
         }
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -60,7 +49,7 @@ class EditProfileFragment : Fragment() {
             true
         }
 
-        db = AppDatabase.getInstance(requireContext())
+        db = AppDatabase.getInstance(this)
         ownerUser = db.userDao().getOwnerUser()
 
         setUserData()
@@ -70,9 +59,8 @@ class EditProfileFragment : Fragment() {
                 .activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
-                .start(requireContext(), this)
+                .start(this, EditProfileActivity::class.java)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -81,7 +69,6 @@ class EditProfileFragment : Fragment() {
             val result = CropImage.getActivityResult(data)
             if (result != null) {
                 photo.setImageURI(result.uriContent)
-                Log.d("TAG", "saving photo")
                 photoWasChanged = true
             }
         }
@@ -145,7 +132,7 @@ class EditProfileFragment : Fragment() {
             mobileField.text.toString().isEmpty() ||
             emailField.text.toString().isEmpty()) {
 
-            Toast.makeText(requireContext(),
+            Toast.makeText(this,
                 "Обязательные поля: имя, фамилия, мобильный номер и email - не заполнены!",
                 Toast.LENGTH_SHORT).show()
             return
@@ -195,6 +182,7 @@ class EditProfileFragment : Fragment() {
             .collection("users").document(uuid)
             .collection("data").document(uuid)
             .set(user)
-        parentFragmentManager.popBackStack()
+
+        finish()
     }
 }

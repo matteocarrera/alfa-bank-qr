@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +20,10 @@ import androidx.core.content.ContextCompat
 import com.example.cloud_cards.Activities.TemplateCardActivity
 import com.example.cloud_cards.Database.AppDatabase
 import com.example.cloud_cards.Entities.Card
+import com.example.cloud_cards.Entities.CardType
 import com.example.cloud_cards.Fragments.TemplatesFragment
 import com.example.cloud_cards.R
+import com.example.cloud_cards.Utils.ProgramUtils
 
 internal class TemplatesAdapter(private val fragment: TemplatesFragment, private val templateCards: List<Card?>) : BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
@@ -52,7 +55,9 @@ internal class TemplatesAdapter(private val fragment: TemplatesFragment, private
         val cardMenuImage = convertView.findViewById(R.id.card_menu_image) as ImageView
         val cardTypeImage = convertView.findViewById(R.id.card_type_image) as ImageView
 
-        if (templateCards[position] == null) {
+        val card = templateCards[position]
+
+        if (card == null) {
             cardTitleView.text = "Создать визитку"
             cardMenuImage.visibility = View.INVISIBLE
             cardTypeImage.setImageResource(R.drawable.ic_add_round)
@@ -61,9 +66,13 @@ internal class TemplatesAdapter(private val fragment: TemplatesFragment, private
             return convertView
         }
 
-        cardTitleView.text = templateCards[position]?.title
-        cardTypeImage.setImageResource(R.drawable.ic_user)
-        cardContainer.setCardBackgroundColor(Color.parseColor(templateCards[position]?.color))
+        cardTitleView.text = card.title
+        if (card.type == CardType.personal) {
+            cardTypeImage.setImageResource(R.drawable.ic_person)
+        } else {
+            cardTypeImage.setImageResource(R.drawable.ic_suitcase)
+        }
+        cardContainer.setCardBackgroundColor(Color.parseColor(card.color))
 
         cardMenuImage.setOnClickListener {
             val pop = PopupMenu(convertView.context, it, Gravity.END)
@@ -77,14 +86,16 @@ internal class TemplatesAdapter(private val fragment: TemplatesFragment, private
                 when (item.itemId) {
                     R.id.more -> {
                         val intent = Intent(fragment.context, TemplateCardActivity::class.java)
-                        intent.putExtra("card", templateCards[position])
+                        intent.putExtra("card", card)
                         fragment.startActivity(intent)
                     }
                     R.id.share -> {
+                        val parentUuid = AppDatabase.getInstance(fragment.requireContext()).userDao().getOwnerUser()?.uuid
+                        val link = "http://cloudcards.h1n.ru/#${parentUuid}&${card.cardUuid}"
+                        ProgramUtils.showShareIntent(fragment.requireContext(), link)
                     }
                     R.id.delete -> {
-                        val db = AppDatabase.getInstance(fragment.requireContext())
-                        db.cardDao().deleteCard(templateCards[position]!!)
+                        AppDatabase.getInstance(fragment.requireContext()).cardDao().deleteCard(card)
                         fragment.onActivityCreated(null)
                     }
                 }
