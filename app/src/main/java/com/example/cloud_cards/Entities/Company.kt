@@ -1,5 +1,7 @@
 package com.example.cloud_cards.Entities
 
+import java.io.Serializable
+
 /*
     Класс компании, используемый в визитках
  */
@@ -31,4 +33,4 @@ class Company(
 
     // Сайт
     val website: String
-)
+): Serializable

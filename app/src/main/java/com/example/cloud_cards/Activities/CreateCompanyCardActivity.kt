@@ -11,12 +11,13 @@ import com.example.cloud_cards.Utils.ColorUtils
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_company_card.*
-import kotlinx.android.synthetic.main.activity_create_company_card.card_title
 import java.util.*
 
 class CreateCompanyCardActivity : AppCompatActivity() {
 
     private var cardColor = ColorUtils.getColorList()[0]
+    private var templateCompany: Company? = null
+    private var templateCard: Card? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,6 @@ class CreateCompanyCardActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.done -> {
                     saveCompanyBusinessCard()
-                    Toast.makeText(this, "Визитка компании успешно создана!", Toast.LENGTH_SHORT).show()
                 }
             }
             true
@@ -36,6 +36,14 @@ class CreateCompanyCardActivity : AppCompatActivity() {
 
         toolbar.setNavigationOnClickListener {
             finish()
+        }
+
+        templateCompany = intent.getSerializableExtra("company") as? Company
+        templateCard = intent.getSerializableExtra("card") as? Card
+        if (templateCompany != null && templateCard != null) {
+            cardColor = templateCard!!.color
+            card_title.setText(templateCard!!.title)
+            setDataToField(templateCompany!!)
         }
 
         card_color.setCardBackgroundColor(Color.parseColor(cardColor))
@@ -46,12 +54,22 @@ class CreateCompanyCardActivity : AppCompatActivity() {
         }
     }
 
+    private fun setDataToField(company: Company) {
+        companyNameField.setText(company.name)
+        responsibleFullNameField.setText(company.responsibleFullName)
+        responsibleJobTitleField.setText(company.responsibleJobTitle)
+        companyAddressField.setText(company.address)
+        companyPhoneField.setText(company.phone)
+        companyEmailField.setText(company.email)
+        companySiteField.setText(company.website)
+    }
+
     private fun saveCompanyBusinessCard() {
         val db = AppDatabase.getInstance(this)
         val ownerUser = db.userDao().getOwnerUser()!!
         val company = Company(
             ownerUser.uuid,
-            UUID.randomUUID().toString(),
+            if (templateCompany != null) templateCompany!!.uuid else UUID.randomUUID().toString(),
             companyNameField.text.toString(),
             responsibleFullNameField.text.toString(),
             responsibleJobTitleField.text.toString(),
@@ -63,11 +81,11 @@ class CreateCompanyCardActivity : AppCompatActivity() {
         val businessCard = BusinessCard(CardType.company, company)
 
         FirebaseFirestore.getInstance()
-            .collection("users").document(company.parentUuid)
-            .collection("cards").document(company.uuid)
+            .collection("users")
+            .document(company.parentUuid)
+            .collection("cards")
+            .document(company.uuid)
             .set(businessCard)
-
-        db.idPairDao().insertPair(IdPair(company.uuid, company.parentUuid))
 
         val card = Card(
             UUID.randomUUID().toString(),
@@ -76,8 +94,20 @@ class CreateCompanyCardActivity : AppCompatActivity() {
             card_title.text.toString(),
             company.uuid
         )
+
+        if (templateCard != null) {
+            card.uuid = templateCard!!.uuid
+            db.cardDao().updateCard(card)
+            finish()
+            Toast.makeText(this, "Визитка компании успешно обновлена!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         db.cardDao().insertCard(card)
 
+        db.idPairDao().insertPair(IdPair(company.uuid, company.parentUuid))
+
         finish()
+        Toast.makeText(this, "Визитка компании успешно создана!", Toast.LENGTH_SHORT).show()
     }
 }

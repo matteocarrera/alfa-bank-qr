@@ -1,6 +1,7 @@
 package com.example.cloud_cards.Activities
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
@@ -28,9 +29,8 @@ import kotlinx.android.synthetic.main.activity_template_card.*
 class TemplateCardActivity: AppCompatActivity() {
 
     private lateinit var db: AppDatabase
-    private lateinit var card: Card
-    private lateinit var popupMenu: PopupMenu
-    private var data = ArrayList<DataItem>()
+    private lateinit var uuid: String
+    private var businessCardCompany: Company? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +42,17 @@ class TemplateCardActivity: AppCompatActivity() {
         }
 
         // Получаем данные, отправленные как Extra для загрузки данных
-        card = intent.getSerializableExtra("card") as Card
+        uuid = intent.getStringExtra("uuid")!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        db = AppDatabase.getInstance(this)
+        val card = db.cardDao().getCardById(uuid)
 
         // Устанавливаем меню для работы с шаблонной визитки
-        popupMenu = getTemplateCardMenu()
+        val popupMenu = getTemplateCardMenu(card)
         card_title_view.setOnClickListener {
             popupMenu.show()
         }
@@ -53,24 +60,23 @@ class TemplateCardActivity: AppCompatActivity() {
         // Устанавливаем параметры в View
         card_color.setCardBackgroundColor(Color.parseColor(card.color))
         card_title.text = card.title
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        // Получаем данные о шаблонной визитке
-        db = AppDatabase.getInstance(this)
+        // Получаем данные самой визитки
         val idPair = db.idPairDao().getIdPairById(card.cardUuid)
         val ownerUser = db.userDao().getOwnerUser()!!
 
         FirebaseFirestore.getInstance()
-            .collection("users").document(idPair.parentUuid)
-            .collection("cards").document(idPair.uuid)
-            .get().addOnSuccessListener { document ->
+            .collection("users")
+            .document(idPair.parentUuid)
+            .collection("cards")
+            .document(idPair.uuid)
+            .get()
+            .addOnSuccessListener { document ->
                 val cardTypeRaw = document.data?.get("type") as? String
                 val cardType = if (cardTypeRaw != null) CardType.valueOf(cardTypeRaw) else null
                 val currentUser: User
                 val businessCard: BusinessCard<*>
+                val data: ArrayList<DataItem>
                 when (cardType) {
                     CardType.personal -> {
                         businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
@@ -80,8 +86,8 @@ class TemplateCardActivity: AppCompatActivity() {
                     }
                     CardType.company -> {
                         businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
-                        val businessCardCompany = Gson().fromJson(Gson().toJson(businessCard.data).toString(), Company::class.java)
-                        data = DataUtils.setCompanyData(businessCardCompany)
+                        businessCardCompany = Gson().fromJson(Gson().toJson(businessCard.data).toString(), Company::class.java)
+                        data = DataUtils.setCompanyData(businessCardCompany!!)
                     }
                     else -> {
                         val businessCardData = Gson().fromJson(Gson().toJson(document.data).toString(), UserBoolean::class.java)
@@ -98,14 +104,22 @@ class TemplateCardActivity: AppCompatActivity() {
             }
     }
 
-    private fun getTemplateCardMenu(): PopupMenu {
+    private fun getTemplateCardMenu(card: Card): PopupMenu {
         val popupMenu = PopupMenu(this, card_title_view, Gravity.END)
         popupMenu.inflate(R.menu.template_card_menu)
 
         // Устанавливаем красный цвет текста для последней кнопки меню "Удалить"
         val s = SpannableString(getString(R.string.delete))
         s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
-        popupMenu.menu.getItem(2).title = s
+        popupMenu.menu.getItem(3).title = s
+
+        // В зависимости от типа визитки скрываем те или иные пункты меню
+        if (card.type == CardType.personal) {
+            popupMenu.menu.getItem(1).isVisible = false
+        } else {
+            popupMenu.menu.getItem(0).isVisible = false
+            popupMenu.menu.getItem(2).isVisible = false
+        }
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -151,6 +165,12 @@ class TemplateCardActivity: AppCompatActivity() {
                     }
 
                     alert.show()
+                }
+                R.id.edit_card -> {
+                    val intent = Intent(this, CreateCompanyCardActivity::class.java)
+                    intent.putExtra("card", card)
+                    intent.putExtra("company", businessCardCompany)
+                    startActivity(intent)
                 }
                 R.id.change_color -> {
                     val cardColor = ColorUtils.getColorList()[(0 until ColorUtils.getColorList().count()).random()]
