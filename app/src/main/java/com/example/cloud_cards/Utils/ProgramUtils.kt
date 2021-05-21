@@ -137,7 +137,7 @@ class ProgramUtils {
                     val alert = AlertDialog.Builder(context)
                     alert.setTitle("Предупреждение")
                     alert.setMessage("Ошибка при экспорте фотографии контакта! Все данные будут сохранены без фотографии.")
-                    alert.setPositiveButton("Продолжить") { dialog, _ ->
+                    alert.setPositiveButton("Продолжить") { _, _ ->
                         intent.putExtra(ContactsContract.Intents.Insert.DATA, data)
                         context.startActivity(intent)
                     }

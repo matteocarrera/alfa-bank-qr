@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.cloud_cards.Adapters.DataAdapter
+import com.example.cloud_cards.Entities.Company
 import com.example.cloud_cards.Entities.DataItem
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.R
@@ -28,14 +29,34 @@ import kotlinx.android.synthetic.main.activity_card_view.*
 class CardViewActivity : AppCompatActivity() {
 
     private lateinit var user: User
-    private var isProfile = false
-    private var data = ArrayList<DataItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_view)
 
+        // Получаем данные, отправленные как Extra для загрузки данных
+        user = intent.getSerializableExtra("user") as User
+        val company = intent.getSerializableExtra("company") as? Company
+        val isProfile = intent.getBooleanExtra("isProfile", false)
+
+        val data: ArrayList<DataItem>
+
+        // Устанавливаем Toolbar
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar_card_view)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        // Если передана компания, то это визитка компании, устанавливаем данные о ней
+        if (company != null) {
+            layout.visibility = View.GONE
+            data = DataUtils.setCompanyData(company)
+            toolbar.title = getString(R.string.company_card)
+            applyAdapter(data)
+            return
+        }
+
+        // Если визитка не является визиткой компании, то устанавливаем меню
         toolbar.inflateMenu(R.menu.card_view_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -47,13 +68,6 @@ class CardViewActivity : AppCompatActivity() {
             }
             true
         }
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
-
-        // Получаем данные, отправленные как Extra для загрузки данных
-        user = intent.getSerializableExtra("user") as User
-        isProfile = intent.getBooleanExtra("isProfile", false)
 
         // Если вызвано окно профиля, то меняем заголовок и убираем меню
         if (isProfile) {
@@ -73,14 +87,21 @@ class CardViewActivity : AppCompatActivity() {
         }
 
         data = DataUtils.setUserData(user)
+        applyAdapter(data)
+    }
 
+    /*
+        Метод, устанавливающий адаптер для списка элементов + действия при нажатии на элемент
+     */
+
+    private fun applyAdapter(data: ArrayList<DataItem>) {
         val adapter = DataAdapter(data, View.GONE, this)
         data_list.adapter = adapter
         data_list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val item = data_list.adapter.getItem(position) as DataItem
             when (item.title) {
-                "мобильный номер", "мобильный номер (другой)" -> ProgramUtils.makeCall(this, this, item.data)
-                "email", "email (другой)" -> ProgramUtils.makeEmail(this, item.data)
+                "мобильный номер", "мобильный номер (другой)", "телефон" -> ProgramUtils.makeCall(this, this, item.data)
+                "email", "email (другой)", "электронная почта" -> ProgramUtils.makeEmail(this, item.data)
                 "адрес", "адрес (другой)" -> ProgramUtils.openMap(this, item.data)
                 "vk", "facebook", "instagram", "twitter" -> ProgramUtils.openWebsite(this, item)
                 else -> {

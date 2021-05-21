@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -86,7 +85,7 @@ internal class TemplatesAdapter(private val fragment: TemplatesFragment, private
                 when (item.itemId) {
                     R.id.more -> {
                         val intent = Intent(fragment.context, TemplateCardActivity::class.java)
-                        intent.putExtra("card", card)
+                        intent.putExtra("uuid", card.uuid)
                         fragment.startActivity(intent)
                     }
                     R.id.share -> {

@@ -27,6 +27,7 @@
     <!-- Template Card Activity -->
     <string name="rename">Переименовать</string>
     <string name="change_color">Изменить цвет</string>
+    <string name="edit_card">Редактировать</string>
 
     <!-- QR Activity -->
     <string name="share">Поделиться</string>

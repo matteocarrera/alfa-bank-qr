@@ -4,9 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.cloud_cards.Entities.Card
 import com.example.cloud_cards.Entities.IdPair
-import com.example.cloud_cards.Entities.User
 
 @Dao
 interface IdPairDao {

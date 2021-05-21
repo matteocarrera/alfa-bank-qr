@@ -5,6 +5,9 @@
         android:id="@+id/rename"
         android:title="@string/rename" />
     <item
+        android:id="@+id/edit_card"
+        android:title="@string/edit_card"/>
+    <item
         android:id="@+id/change_color"
         android:title="@string/change_color"/>
     <item

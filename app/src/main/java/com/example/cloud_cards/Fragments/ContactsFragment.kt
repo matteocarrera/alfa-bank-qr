@@ -8,19 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cloud_cards.Activities.CameraActivity
+import com.example.cloud_cards.Adapters.CompanyAdapter
 import com.example.cloud_cards.Adapters.ContactsAdapter
 import com.example.cloud_cards.Database.AppDatabase
-import com.example.cloud_cards.Entities.User
-import com.example.cloud_cards.Entities.UserBoolean
+import com.example.cloud_cards.Entities.*
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.DataUtils
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_qr.view.*
@@ -30,6 +31,7 @@ class ContactsFragment : Fragment() {
 
     private lateinit var db: AppDatabase
     private var contactList = ArrayList<User>()
+    private var companyList = ArrayList<Company>()
     private var checkedItem = 1
 
     override fun onCreateView(
@@ -39,11 +41,14 @@ class ContactsFragment : Fragment() {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         val view = inflater.inflate(R.layout.fragment_contacts, container, false)
+
+        // Устанавливаем Toolbar во фрагмент
         val toolbar = view.findViewById(R.id.contacts_toolbar) as MaterialToolbar
         toolbar.inflateMenu(R.menu.main_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.sort -> {
+                    // Сортировка контактов
                     val listItems = arrayOf("По имени", "По фамилии", "По компании", "По должности")
                     val mBuilder = AlertDialog.Builder(requireContext())
                     mBuilder.setTitle("Сортировать:")
@@ -65,9 +70,6 @@ class ContactsFragment : Fragment() {
                     val mDialog = mBuilder.create()
                     mDialog.show()
                 }
-                R.id.search -> {
-                    Toast.makeText(requireContext(), "SEARCH", Toast.LENGTH_SHORT).show()
-                }
                 R.id.camera -> {
                     val intent = Intent(context, CameraActivity::class.java)
                     startActivity(intent)
@@ -75,9 +77,25 @@ class ContactsFragment : Fragment() {
             }
             true
         }
-        toolbar.setNavigationOnClickListener {
-            Toast.makeText(requireContext(), "CHANGE", Toast.LENGTH_SHORT).show()
-        }
+
+        // Устанавливаем TabBar во фрагмент, задаем адаптер для RecyclerView относительно Таба
+        val tabBar = view.findViewById(R.id.tab_layout) as TabLayout
+        tabBar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        applyRecyclerView(ContactsAdapter(contactList, this@ContactsFragment), R.drawable.divider_contacts)
+                    }
+                    else -> {
+                        applyRecyclerView(CompanyAdapter(companyList, this@ContactsFragment), R.drawable.divider_data)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
 
         return view
     }
@@ -87,6 +105,7 @@ class ContactsFragment : Fragment() {
 
         db = AppDatabase.getInstance(requireContext())
         contactList.clear()
+        companyList.clear()
         progress_bar.visibility = View.VISIBLE
 
         val ownerUser = db.userDao().getOwnerUser()
@@ -94,37 +113,52 @@ class ContactsFragment : Fragment() {
 
         Thread {
             idPairs.forEach { idPair ->
+
                 FirebaseFirestore.getInstance()
-                    .collection("users").document(idPair.parentUuid)
-                    .collection("cards").document(idPair.uuid)
-                    .get().addOnSuccessListener { document ->
-                        val businessCardUser = Gson().fromJson(Gson().toJson(document.data).toString(), UserBoolean::class.java)
+                    .collection("users")
+                    .document(idPair.parentUuid)
+                    .collection("cards")
+                    .document(idPair.uuid)
+                    .get()
+                    .addOnSuccessListener { document ->
+
+                        val cardTypeRaw = document.data?.get("type") as? String
+                        val cardType = if (cardTypeRaw != null) CardType.valueOf(cardTypeRaw) else null
+                        val businessCardUser = when (cardType) {
+                            CardType.personal -> {
+                                val businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
+                                Gson().fromJson(Gson().toJson(businessCard.data).toString(), UserBoolean::class.java)
+                            }
+                            CardType.company -> {
+                                val businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
+                                val businessCardCompany = Gson().fromJson(Gson().toJson(businessCard.data).toString(), Company::class.java)
+                                companyList.add(businessCardCompany)
+                                return@addOnSuccessListener
+                            }
+                            else -> {
+                                Gson().fromJson(Gson().toJson(document.data).toString(), UserBoolean::class.java)
+                            }
+                        }
+
                         FirebaseFirestore.getInstance()
-                            .collection("users").document(idPair.parentUuid)
-                            .collection("data").document(idPair.parentUuid)
-                            .get().addOnSuccessListener { secondDocument ->
+                            .collection("users")
+                            .document(idPair.parentUuid)
+                            .collection("data")
+                            .document(idPair.parentUuid)
+                            .get()
+                            .addOnSuccessListener { secondDocument ->
+
                                 val mainUser = Gson().fromJson(Gson().toJson(secondDocument.data).toString(), User::class.java)
                                 val currentUser = DataUtils.getUserFromTemplate(mainUser, businessCardUser)
 
                                 contactList.add(currentUser)
 
-                                val itemDecorator = DividerItemDecoration(
-                                    context, DividerItemDecoration.VERTICAL
-                                )
-                                itemDecorator.setDrawable(
-                                    ContextCompat.getDrawable(
-                                        requireContext(),
-                                        R.drawable.divider_contacts
-                                    )!!
-                                )
-
-                                if (contact_list.itemDecorationCount != 0) contact_list.removeItemDecorationAt(0)
-                                if (contactList.size == idPairs.size) {
+                                if (contactList.size + companyList.size == idPairs.size) {
                                     contactList.sortBy { it.surname }
-                                    contact_list.apply {
-                                        layoutManager = LinearLayoutManager(activity)
-                                        adapter = ContactsAdapter(contactList, this@ContactsFragment)
-                                        addItemDecoration(itemDecorator)
+                                    if (tab_layout.selectedTabPosition == 0) {
+                                        applyRecyclerView(ContactsAdapter(contactList, this@ContactsFragment), R.drawable.divider_contacts)
+                                    } else {
+                                        applyRecyclerView(CompanyAdapter(companyList, this@ContactsFragment), R.drawable.divider_data)
                                     }
                                     progress_bar.visibility = View.GONE
                                 }
@@ -138,5 +172,30 @@ class ContactsFragment : Fragment() {
                     }
             }
         }.start()
+    }
+
+    /*
+        Метод, позволяющий установить необходимые данные в RecyclerView
+     */
+
+    private fun applyRecyclerView(mAdapter: RecyclerView.Adapter<*>, drawableInt: Int) {
+        val itemDecorator = DividerItemDecoration(
+            context, DividerItemDecoration.VERTICAL
+        )
+        itemDecorator.setDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                drawableInt
+            )!!
+        )
+
+        val list = view?.findViewById(R.id.contact_list) as RecyclerView
+        if (list.itemDecorationCount != 0) contact_list.removeItemDecorationAt(0)
+        list.adapter = null
+        list.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = mAdapter
+            addItemDecoration(itemDecorator)
+        }
     }
 }
