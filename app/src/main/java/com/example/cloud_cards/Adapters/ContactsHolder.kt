@@ -20,7 +20,6 @@ import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
 import com.example.cloud_cards.Utils.ProgramUtils
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.contact_list_item.view.*
 
 class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.contact_list_item, parent, false)) {
@@ -29,16 +28,16 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var name: TextView = itemView.findViewById(R.id.name)
     private var jobTitle: TextView = itemView.findViewById(R.id.job_title)
     private var company: TextView = itemView.findViewById(R.id.company)
+    private var letters: TextView = itemView.findViewById(R.id.letters)
 
     @SuppressLint("ResourceAsColor")
     fun bind(user: User, fragment: ContactsFragment) {
         if (user.photo == "") {
-            itemView.letters.visibility = View.VISIBLE
-            itemView.letters.text = user.name.take(1).plus(user.surname.take(1))
+            letters.visibility = View.VISIBLE
+            letters.text = user.name.take(1).plus(user.surname.take(1))
             photo.setImageResource(R.color.colorPrimary)
         } else {
-            photo.visibility = View.VISIBLE
-            itemView.letters.visibility = View.GONE
+            letters.visibility = View.GONE
             ImageUtils.getImageFromFirebase(user.photo, photo)
         }
         name.text = user.name.plus(" ").plus(user.surname)
