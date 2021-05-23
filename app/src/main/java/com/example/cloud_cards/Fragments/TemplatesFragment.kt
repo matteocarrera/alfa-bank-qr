@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cloud_cards.Activities.CreateCompanyCardActivity
 import com.example.cloud_cards.Activities.CreatePersonalCardActivity
@@ -37,6 +38,10 @@ class TemplatesFragment : Fragment() {
         val toolbar = view.findViewById(R.id.templates_toolbar) as MaterialToolbar
         toolbar.inflateMenu(R.menu.add_template_menu)
         toolbar.setOnMenuItemClickListener { item ->
+            if (db.userDao().getOwnerUser() == null) {
+                Toast.makeText(context, "Создайте профиль в настройках, чтобы открыть доступ к созданию визиток!", Toast.LENGTH_SHORT).show()
+                return@setOnMenuItemClickListener false
+            }
             when (item.itemId) {
                 R.id.personal_card -> {
                     val intent = Intent(context, CreatePersonalCardActivity::class.java)
@@ -59,9 +64,12 @@ class TemplatesFragment : Fragment() {
 
         templatesIdPairList.forEach { idPair ->
             FirebaseFirestore.getInstance()
-                .collection("users").document(idPair.parentUuid)
-                .collection("cards").document(idPair.uuid)
-                .get().addOnSuccessListener { document ->
+                .collection("users")
+                .document(idPair.parentUuid)
+                .collection("cards")
+                .document(idPair.uuid)
+                .get()
+                .addOnSuccessListener { document ->
                     val templateUser = Gson().fromJson(Gson().toJson(document.data).toString(), UserBoolean::class.java)
 
                     templateUserList.add(templateUser)
@@ -85,6 +93,10 @@ class TemplatesFragment : Fragment() {
 
         templates_grid.onItemClickListener = AdapterView.OnItemClickListener { _, view, position, _ ->
             if (templateCards[position] == null) {
+                if (db.userDao().getOwnerUser() == null) {
+                    Toast.makeText(context, "Создайте профиль в настройках, чтобы открыть доступ к созданию визиток!", Toast.LENGTH_SHORT).show()
+                    return@OnItemClickListener
+                }
                 val pop = PopupMenu(context, view, Gravity.END)
                 pop.inflate(R.menu.add_template_menu)
 

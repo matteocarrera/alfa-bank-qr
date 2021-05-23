@@ -11,9 +11,12 @@
     <string name="company_card">Визитка компании</string>
 
     <!-- Contacts Fragment -->
-    <string name="search">Поиск</string>
+    <string name="search">Поиск...</string>
     <string name="sort">Сортировка</string>
     <string name="camera">Камера</string>
+    <string name="people_tab">Люди</string>
+    <string name="company_tab">Компании</string>
+    <string name="scan_hint">Отсканируйте или импортируйте\nсвою первую визитку!</string>
 
     <!-- Card Fragment -->
     <string name="card">Визитка</string>
@@ -100,9 +103,5 @@
     <string name="contacts">Контакты</string>
     <string name="settings">Настройки</string>
     <string name="title_activity_cards">Cards</string>
-
-    <string name="tab_templates">Мои визитки</string>
-    <string name="tab_contacts">Контакты</string>
-    <string name="tab_settings">Настройки</string>
 
 </resources>

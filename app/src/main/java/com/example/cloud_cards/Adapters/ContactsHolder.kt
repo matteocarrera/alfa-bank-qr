@@ -20,6 +20,7 @@ import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
 import com.example.cloud_cards.Utils.ProgramUtils
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.fragment_contacts.*
 
 class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.contact_list_item, parent, false)) {
@@ -66,7 +67,8 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
                         val db = AppDatabase.getInstance(this.itemView.context)
                         val idPair = db.idPairDao().getIdPairById(user.uuid)
                         db.idPairDao().deletePair(idPair)
-                        fragment.onActivityCreated(null)
+                        fragment.contact_list.adapter?.notifyDataSetChanged()
+                        fragment.onResume()
                     }
                 }
                 true

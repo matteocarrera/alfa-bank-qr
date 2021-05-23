@@ -1,13 +1,16 @@
 package com.example.cloud_cards.Fragments
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,12 +27,14 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_card_view.*
 import kotlinx.android.synthetic.main.activity_qr.view.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
 
 class ContactsFragment : Fragment() {
 
     private lateinit var db: AppDatabase
+    private lateinit var searchView: SearchView
     private var contactList = ArrayList<User>()
     private var companyList = ArrayList<Company>()
     private var checkedItem = 1
@@ -71,17 +76,40 @@ class ContactsFragment : Fragment() {
                     mDialog.show()
                 }
                 R.id.camera -> {
-                    val intent = Intent(context, CameraActivity::class.java)
-                    startActivity(intent)
+                    if (cameraPermissionIsGranted()) {
+                        val intent = Intent(context, CameraActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
             true
         }
 
+        // Устанавливаем поведение SearchView в Toolbar
+        val searchItem = toolbar.menu.findItem(R.id.search)
+        searchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (tab_layout.selectedTabPosition == 0) {
+                    val sortedContacts = contactList.filter { it.surname.lowercase().contains(newText?.lowercase() ?: String()) }
+                    applyRecyclerView(ContactsAdapter(sortedContacts, this@ContactsFragment), R.drawable.divider_contacts)
+                } else {
+                    val sortedCompanies = companyList.filter { it.name.lowercase().contains(newText?.lowercase() ?: String()) }
+                    applyRecyclerView(CompanyAdapter(sortedCompanies, this@ContactsFragment), R.drawable.divider_data)
+                }
+                return true
+            }
+        })
+
         // Устанавливаем TabBar во фрагмент, задаем адаптер для RecyclerView относительно Таба
         val tabBar = view.findViewById(R.id.tab_layout) as TabLayout
         tabBar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                searchView.setQuery(String(), false)
+                searchView.isIconified = true
                 when (tab?.position) {
                     0 -> {
                         applyRecyclerView(ContactsAdapter(contactList, this@ContactsFragment), R.drawable.divider_contacts)
@@ -103,13 +131,23 @@ class ContactsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        if (!searchView.isIconified) {
+            return
+        }
+
         db = AppDatabase.getInstance(requireContext())
         contactList.clear()
         companyList.clear()
         progress_bar.visibility = View.VISIBLE
 
         val ownerUser = db.userDao().getOwnerUser()
-        val idPairs = ArrayList(db.idPairDao().getAllContactsPairs(ownerUser?.parentId))
+        val idPairs = ArrayList(db.idPairDao().getAllContactsPairs(ownerUser?.uuid ?: String()))
+
+        if (idPairs.size == 0) {
+            scan_hint.visibility = View.VISIBLE
+            progress_bar.visibility = View.GONE
+            return
+        }
 
         Thread {
             idPairs.forEach { idPair ->
@@ -133,6 +171,7 @@ class ContactsFragment : Fragment() {
                                 val businessCard = Gson().fromJson(Gson().toJson(document.data).toString(), BusinessCard::class.java)
                                 val businessCardCompany = Gson().fromJson(Gson().toJson(businessCard.data).toString(), Company::class.java)
                                 companyList.add(businessCardCompany)
+                                checkForEndOfContactList(idPairs)
                                 return@addOnSuccessListener
                             }
                             else -> {
@@ -152,16 +191,7 @@ class ContactsFragment : Fragment() {
                                 val currentUser = DataUtils.getUserFromTemplate(mainUser, businessCardUser)
 
                                 contactList.add(currentUser)
-
-                                if (contactList.size + companyList.size == idPairs.size) {
-                                    contactList.sortBy { it.surname }
-                                    if (tab_layout.selectedTabPosition == 0) {
-                                        applyRecyclerView(ContactsAdapter(contactList, this@ContactsFragment), R.drawable.divider_contacts)
-                                    } else {
-                                        applyRecyclerView(CompanyAdapter(companyList, this@ContactsFragment), R.drawable.divider_data)
-                                    }
-                                    progress_bar.visibility = View.GONE
-                                }
+                                checkForEndOfContactList(idPairs)
                             }
                             .addOnFailureListener { exception ->
                                 Log.d("Error", "An error occurred while retrieving data about Parent User", exception)
@@ -196,6 +226,49 @@ class ContactsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = mAdapter
             addItemDecoration(itemDecorator)
+        }
+    }
+
+    private fun checkForEndOfContactList(idPairs: List<IdPair>) {
+        if (contactList.size + companyList.size == idPairs.size) {
+            contactList.sortBy { it.surname }
+            if (tab_layout.selectedTabPosition == 0) {
+                applyRecyclerView(ContactsAdapter(contactList, this@ContactsFragment), R.drawable.divider_contacts)
+            } else {
+                applyRecyclerView(CompanyAdapter(companyList, this@ContactsFragment), R.drawable.divider_data)
+            }
+            progress_bar.visibility = View.GONE
+            scan_hint.visibility = View.GONE
+        }
+    }
+
+    /*
+        Метод, позволяющий проверить наличие разрешений на взаимодействие с камерой
+     */
+
+    private fun cameraPermissionIsGranted(): Boolean {
+        val cameraPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                arrayOf(Manifest.permission.CAMERA),
+                1)
+            return false
+        }
+        return true
+    }
+
+    /*
+        Метод, позволяющий обработать результат запроса на разрешение доступа к камере
+     */
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            val intent = Intent(context, CameraActivity::class.java)
+            startActivity(intent)
         }
     }
 }
