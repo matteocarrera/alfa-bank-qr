@@ -18,6 +18,7 @@ import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Fragments.ContactsFragment
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ProgramUtils
+import kotlinx.android.synthetic.main.fragment_contacts.*
 
 class CompanyHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.company_list_item, parent, false)) {
@@ -55,7 +56,8 @@ class CompanyHolder(inflater: LayoutInflater, parent: ViewGroup) :
                         val db = AppDatabase.getInstance(this.itemView.context)
                         val idPair = db.idPairDao().getIdPairById(company.uuid)
                         db.idPairDao().deletePair(idPair)
-                        fragment.onActivityCreated(null)
+                        fragment.contact_list.adapter?.notifyDataSetChanged()
+                        fragment.onResume()
                     }
                 }
                 true

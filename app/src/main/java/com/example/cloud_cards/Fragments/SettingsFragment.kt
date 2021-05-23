@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.cloud_cards.Activities.CardViewActivity
@@ -47,6 +48,10 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         settings_profile_info.setOnClickListener {
+            if (db.userDao().getOwnerUser() == null) {
+                Toast.makeText(context, "Создайте профиль в настройках, чтобы открыть доступ к просмотру профиля!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val intent = Intent(context, CardViewActivity::class.java)
             intent.putExtra("user", ownerUser)
             intent.putExtra("isProfile", true)
