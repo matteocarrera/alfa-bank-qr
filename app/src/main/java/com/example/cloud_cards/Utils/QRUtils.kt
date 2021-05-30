@@ -32,7 +32,7 @@ class QRUtils {
 
             // Запрет на добавление своей же визитки
             if (ownerUser != null && parentId == ownerUser.parentId) {
-                Toast.makeText(context, "Вы не можете сканировать свою же визитку!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Вы не можете сканировать свою визитку!", Toast.LENGTH_SHORT).show()
                 return
             }
 
