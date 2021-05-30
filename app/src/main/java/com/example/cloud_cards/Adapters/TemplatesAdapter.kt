@@ -23,6 +23,7 @@ import com.example.cloud_cards.Entities.CardType
 import com.example.cloud_cards.Fragments.TemplatesFragment
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ProgramUtils
+import com.example.cloud_cards.Utils.QRUtils
 
 internal class TemplatesAdapter(private val fragment: TemplatesFragment, private val templateCards: List<Card?>) : BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
@@ -90,7 +91,7 @@ internal class TemplatesAdapter(private val fragment: TemplatesFragment, private
                     }
                     R.id.share -> {
                         val parentUuid = AppDatabase.getInstance(fragment.requireContext()).userDao().getOwnerUser()?.uuid
-                        val link = "http://cloudcards.h1n.ru/#${parentUuid}&${card.cardUuid}"
+                        val link = QRUtils.generateSiteLink(parentUuid!!, card.cardUuid, card.type == CardType.personal)
                         ProgramUtils.showShareIntent(fragment.requireContext(), link)
                     }
                     R.id.delete -> {

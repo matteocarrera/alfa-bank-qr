@@ -15,10 +15,12 @@ import com.example.cloud_cards.Activities.CreateCompanyCardActivity
 import com.example.cloud_cards.Activities.CreatePersonalCardActivity
 import com.example.cloud_cards.Adapters.TemplatesAdapter
 import com.example.cloud_cards.Database.AppDatabase
+import com.example.cloud_cards.Entities.CardType
 import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Entities.UserBoolean
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ProgramUtils
+import com.example.cloud_cards.Utils.QRUtils
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
@@ -116,8 +118,9 @@ class TemplatesFragment : Fragment() {
                 }
                 pop.show()
             } else {
-                val templateLink = "http://cloudcards.h1n.ru/#${ownerUser?.uuid}&${templateCards[position]?.cardUuid}"
-                ProgramUtils.setQRWindow(context, templateLink)
+                val card = templateCards[position]
+                val link = QRUtils.generateSiteLink(ownerUser!!.uuid, card!!.cardUuid, card.type == CardType.personal)
+                ProgramUtils.setQRWindow(context, link)
             }
         }
     }
