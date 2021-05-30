@@ -19,6 +19,7 @@ import com.example.cloud_cards.Fragments.ContactsFragment
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ImageUtils
 import com.example.cloud_cards.Utils.ProgramUtils
+import com.example.cloud_cards.Utils.QRUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_contacts.*
 
@@ -56,11 +57,11 @@ class ContactsHolder(inflater: LayoutInflater, parent: ViewGroup) :
             pop.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.qr -> {
-                        val contactLink = "http://cloudcards.h1n.ru/#${user.parentId}&${user.uuid}"
-                        ProgramUtils.setQRWindow(fragment.context, contactLink)
+                        val link = QRUtils.generateSiteLink(user.parentId, user.uuid, true)
+                        ProgramUtils.setQRWindow(fragment.context, link)
                     }
                     R.id.share -> {
-                        val link = "http://cloudcards.h1n.ru/#${user.parentId}&${user.uuid}"
+                        val link = QRUtils.generateSiteLink(user.parentId, user.uuid, true)
                         ProgramUtils.showShareIntent(fragment.requireContext(), link)
                     }
                     R.id.delete -> {

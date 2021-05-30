@@ -18,6 +18,7 @@ import com.example.cloud_cards.Entities.User
 import com.example.cloud_cards.Fragments.ContactsFragment
 import com.example.cloud_cards.R
 import com.example.cloud_cards.Utils.ProgramUtils
+import com.example.cloud_cards.Utils.QRUtils
 import kotlinx.android.synthetic.main.fragment_contacts.*
 
 class CompanyHolder(inflater: LayoutInflater, parent: ViewGroup) :
@@ -45,11 +46,11 @@ class CompanyHolder(inflater: LayoutInflater, parent: ViewGroup) :
             pop.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.qr -> {
-                        val contactLink = "http://cloudcards.h1n.ru/#${company.parentUuid}&${company.uuid}"
-                        ProgramUtils.setQRWindow(fragment.context, contactLink)
+                        val link = QRUtils.generateSiteLink(company.parentUuid, company.uuid, false)
+                        ProgramUtils.setQRWindow(fragment.context, link)
                     }
                     R.id.share -> {
-                        val link = "http://cloudcards.h1n.ru/#${company.parentUuid}&${company.uuid}"
+                        val link = QRUtils.generateSiteLink(company.parentUuid, company.uuid, false)
                         ProgramUtils.showShareIntent(fragment.requireContext(), link)
                     }
                     R.id.delete -> {
