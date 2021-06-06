@@ -95,7 +95,6 @@ class EditProfileActivity : AppCompatActivity() {
             facebookField.setText(user.facebook)
             twitterField.setText(user.twitter)
             instagramField.setText(user.instagram)
-            notesField.setText(user.notes)
         }
     }
 
@@ -121,7 +120,6 @@ class EditProfileActivity : AppCompatActivity() {
         user.facebook = facebookField.text.toString()
         user.instagram = instagramField.text.toString()
         user.twitter = twitterField.text.toString()
-        user.notes = notesField.text.toString()
         return user
     }
 
